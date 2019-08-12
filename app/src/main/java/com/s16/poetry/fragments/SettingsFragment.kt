@@ -2,6 +2,9 @@ package com.s16.poetry.fragments
 
 import android.os.Bundle
 import android.text.Html
+import android.text.method.LinkMovementMethod
+import android.util.DisplayMetrics
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceFragmentCompat
 import com.s16.poetry.Constants
@@ -22,6 +25,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             showAboutDialog()
             true
         }
+
+        findPreference(Constants.PREFS_RESTORE)?.setOnPreferenceClickListener {
+            showRestoreDialog()
+            true
+        }
     }
 
     private val versionName: String
@@ -33,16 +41,34 @@ class SettingsFragment : PreferenceFragmentCompat() {
             return ""
         }
 
+    private fun dpToPixel(dp: Int): Int {
+        val metrics = context!!.resources.displayMetrics
+        val px = dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+        return px.toInt()
+    }
+
     private fun showAboutDialog() {
         var aboutText = context!!.getText(R.string.about_text)
+        val paddingX = dpToPixel(20)
+        val paddingY = dpToPixel(16)
+        val message = TextView(context).apply {
+            setPadding(paddingX, paddingY, paddingX, paddingY)
+            movementMethod = LinkMovementMethod.getInstance()
+            text = Html.fromHtml(aboutText.toString())
+        }
+
         val dialogBuilder = AlertDialog.Builder(context!!).apply {
             setTitle(R.string.prefs_about)
             setIcon(android.R.drawable.ic_dialog_info)
-            setMessage(Html.fromHtml(aboutText.toString()))
+            setView(message)
             setPositiveButton(null, null)
             setNegativeButton(android.R.string.ok) { _, _ ->
             }
         }
         dialogBuilder.create().show()
+    }
+
+    private fun showRestoreDialog() {
+        RestoreFragment.newInstance().show(childFragmentManager, "restoreDialog")
     }
 }

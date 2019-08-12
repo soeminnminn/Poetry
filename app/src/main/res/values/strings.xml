@@ -33,13 +33,15 @@
     <!-- About Preferences -->
     <string name="prefs_about">About Poetry</string>
     <string name="version_text">Version - %s</string>
-    <string name="about_text"><Data>
-        <![CDATA[
+    <string name="about_text">
+        <Data>
+            <![CDATA[
       <p><b>Poetry</b></p>
       <p>Develop by <a href='http://www.facebook.com/soeminnminn'>Soe Minn Minn</a></p>
       <p>Copyright \u00A9 2019 The Android Open Source Project</p>
       ]]>
-    </Data></string>
+    </Data>
+    </string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"
