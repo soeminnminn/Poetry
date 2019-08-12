@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.DetailViewFragment" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_16dp">
+
+        <TextView
+                android:id="@+id/noteTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:lines="1"
+                android:ems="100"
+                tools:text="@string/app_name"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+                android:id="@+id/noteContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:ems="100"
+                tools:text="@string/app_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintTop_toBottomOf="@+id/noteTitle"
+                android:layout_marginTop="16dp"/>
+
+        <TextView
+                android:id="@+id/noteCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="?android:textColorSecondary"
+                android:lines="1"
+                android:drawableLeft="@drawable/ic_category_gray"
+                android:drawableStart="@drawable/ic_category_gray"
+                android:drawablePadding="@dimen/dimen_4dp"
+                tools:text="@string/app_name"
+                app:layout_constraintTop_toBottomOf="@+id/noteContent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"/>
+
+        <TextView
+                android:id="@+id/noteLastModify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="?android:textColorSecondary"
+                android:lines="1"
+                tools:text="@string/app_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/noteContent"
+                android:layout_marginTop="16dp"/>
+
+        <com.google.android.material.chip.ChipGroup
+                android:id="@+id/noteTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:chipSpacing="@dimen/dimen_4dp"
+                app:layout_constraintTop_toBottomOf="@+id/noteCategory"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" >
+
+            <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_settings"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

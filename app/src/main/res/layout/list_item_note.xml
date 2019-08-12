@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:selectableItemBackground"
+        android:padding="@dimen/dimen_4dp">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_background">
+
+        <TextView
+                android:id="@+id/noteTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_8dp"
+                android:paddingTop="@dimen/dimen_12dp"
+                android:paddingLeft="@dimen/dimen_16dp"
+                android:paddingStart="@dimen/dimen_16dp"
+                android:paddingRight="@dimen/dimen_16dp"
+                android:paddingEnd="@dimen/dimen_16dp"
+                android:layout_toLeftOf="@+id/note_more"
+                android:layout_toStartOf="@+id/note_more"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:lineSpacingExtra="@dimen/dimen_2dp"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/textSize_18sp"
+                tools:text="Label Text"/>
+
+        <TextView
+                android:id="@+id/noteContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen_4dp"
+                android:paddingBottom="@dimen/dimen_4dp"
+                android:paddingLeft="@dimen/dimen_16dp"
+                android:paddingStart="@dimen/dimen_16dp"
+                android:paddingRight="@dimen/dimen_16dp"
+                android:paddingEnd="@dimen/dimen_16dp"
+                android:layout_below="@id/noteTitle"
+                android:maxLines="8"
+                android:lineSpacingExtra="@dimen/dimen_2dp"
+                tools:text="Content Text"
+                android:ellipsize="end"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="@dimen/textSize_16sp"/>
+
+        <TextView
+                android:id="@+id/noteLastModify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen_8dp"
+                android:paddingBottom="@dimen/dimen_8dp"
+                android:paddingLeft="@dimen/dimen_16dp"
+                android:paddingStart="@dimen/dimen_16dp"
+                android:paddingRight="@dimen/dimen_16dp"
+                android:paddingEnd="@dimen/dimen_16dp"
+                android:layout_below="@id/noteContent"
+                tools:text="24/5/2015"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="?android:textColorHint"
+                android:textSize="@dimen/textSize_12sp"/>
+
+        <ImageButton
+                android:id="@+id/note_more"
+                style="@style/AppWidget.ActionbarButton"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/empty_string"
+                android:src="@drawable/ic_more_gray"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

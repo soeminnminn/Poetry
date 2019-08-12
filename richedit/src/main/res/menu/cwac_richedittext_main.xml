@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item
+    android:id="@+id/cwac_richedittext_bold"
+	app:showAsAction="always|withText"
+    android:title="@string/cwac_richedittext_bold">
+  </item>
+
+  <item
+    android:id="@+id/cwac_richedittext_italic"
+	app:showAsAction="always|withText"
+    android:title="@string/cwac_richedittext_italic">
+  </item>
+		<item
+		android:id="@+id/cwac_richedittext_effects"
+		app:showAsAction="always|withText"
+		android:title="@string/cwac_richedittext_effects">
+	</item>
+	<item
+		android:id="@+id/cwac_richedittext_fonts"
+		app:showAsAction="always|withText"
+		android:title="@string/cwac_richedittext_fonts">
+	</item>
+<!--   <item -->
+<!--     android:id="@+id/cwac_richedittext_lines" -->
+<!--     android:showAsAction="always|withText" -->
+<!--     android:title="@string/lines"> -->
+<!--   </item> -->
+	
+</menu>
