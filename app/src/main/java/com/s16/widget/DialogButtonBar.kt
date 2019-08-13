@@ -56,7 +56,7 @@ class DialogButtonBar : LinearLayout {
     private fun initialize(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         orientation = HORIZONTAL
         gravity = Gravity.BOTTOM
-        setPadding(dpToPixel(12), dpToPixel(10), dpToPixel(12), dpToPixel(10))
+        setPadding(dpToPixel(context, 12), dpToPixel(context, 10), dpToPixel(context, 12), dpToPixel(context, 10))
 
         val space = Space(context).apply {
             visibility = View.INVISIBLE
@@ -70,37 +70,17 @@ class DialogButtonBar : LinearLayout {
         addPositiveButton()
     }
 
-    private fun dpToPixel(dp: Int): Int {
-        val metrics = context.resources.displayMetrics
-        val px = dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-        return px.toInt()
-    }
-
     private fun addNegativeButton() {
         val buttonParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT)
-        buttonParams.rightMargin = dpToPixel(4)
+        buttonParams.rightMargin = dpToPixel(context, 4)
 
-        val button = AppCompatTextView(context).apply {
-            gravity = Gravity.CENTER
+        val button = DialogButton(context).apply {
             setText(android.R.string.cancel)
             setBackgroundResource(selectableBackground)
-            isClickable = true
-            minEms = 1
-            maxLines = 1
-            isAllCaps = true
-            setTypeface(typeface, Typeface.BOLD)
-            setPadding(dpToPixel(20), dpToPixel(8), dpToPixel(20), dpToPixel(8))
+            rippleColor = colorControlHighlight
             layoutParams = buttonParams
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val sd = ShapeDrawable()
-            val radii = FloatArray(8)
-            radii.fill(8f)
-            sd.shape = RoundRectShape(radii, null, null)
-            button.background = RippleDrawable(ColorStateList.valueOf(colorControlHighlight), null, sd)
         }
 
         addView(button)
@@ -111,29 +91,61 @@ class DialogButtonBar : LinearLayout {
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT)
 
-        val button = AppCompatTextView(context).apply {
-            gravity = Gravity.CENTER
+        val button = DialogButton(context).apply {
             setText(android.R.string.ok)
             setTextColor(colorAccent)
             setBackgroundResource(selectableBackground)
-            isClickable = true
-            minEms = 1
-            maxLines = 1
-            isAllCaps = true
-            setTypeface(typeface, Typeface.BOLD)
-            setPadding(dpToPixel(20), dpToPixel(8), dpToPixel(20), dpToPixel(8))
+            rippleColor = ColorUtils.setAlphaComponent(colorAccent, 60)
             layoutParams = buttonParams
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val sd = ShapeDrawable()
-            val radii = FloatArray(8)
-            radii.fill(12f)
-            sd.shape = RoundRectShape(radii, null, null)
-            val color = ColorUtils.setAlphaComponent(colorAccent, 60)
-            button.background = RippleDrawable(ColorStateList.valueOf(color), null, sd)
+        addView(button)
+    }
+
+    class DialogButton: AppCompatTextView {
+
+        constructor(context: Context) : super(context) {
+            initialize(context, null, 0)
         }
 
-        addView(button)
+        constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+            initialize(context, attrs, 0)
+        }
+
+        constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int)
+                : super(context, attrs, defStyleAttr) {
+            initialize(context, attrs, defStyleAttr)
+        }
+
+        private fun initialize(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
+            gravity = Gravity.CENTER
+            isClickable = true
+            minEms = 1
+            maxLines = 1
+            minWidth = dpToPixel(context,52)
+            isAllCaps = true
+            setTypeface(typeface, Typeface.BOLD)
+            setPadding(dpToPixel(context,12), dpToPixel(context,8), dpToPixel(context,12), dpToPixel(context,8))
+        }
+
+        var rippleColor: Int = 0
+            set(color) {
+                field = color
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    val sd = ShapeDrawable()
+                    val radii = FloatArray(8)
+                    radii.fill(12f)
+                    sd.shape = RoundRectShape(radii, null, null)
+                    background = RippleDrawable(ColorStateList.valueOf(color), null, sd)
+                }
+            }
+    }
+
+    companion object {
+        fun dpToPixel(context: Context, dp: Int): Int {
+            val metrics = context.resources.displayMetrics
+            val px = dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+            return px.toInt()
+        }
     }
 }
