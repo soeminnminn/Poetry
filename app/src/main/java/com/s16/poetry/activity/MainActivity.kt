@@ -25,6 +25,7 @@ import com.s16.poetry.data.Category
 import com.s16.poetry.data.CategoryModel
 import com.s16.poetry.data.Record
 import com.s16.poetry.data.RecordPagedModel
+import com.s16.utils.decorView
 import com.s16.utils.startActivity
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -39,10 +40,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -139,10 +140,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         menuItemViewMode?.run {
             if (isChecked) {
                 layoutManager.spanCount = 2
-                setIcon(R.drawable.ic_view_grid_white)
+                setIcon(R.drawable.ic_view_list_gray)
             } else {
                 layoutManager.spanCount = 1
-                setIcon(R.drawable.ic_view_list_white)
+                setIcon(R.drawable.ic_view_grid_gray
+                )
             }
             isChecked = !isChecked
         }

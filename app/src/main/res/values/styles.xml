@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="chipStyle">@style/AppWidget.Chip</item>
+        <item name="chipGroupStyle">@style/AppWidget.ChipGroup</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -49,6 +50,13 @@
 
     <style name="AppWidget.Chip" parent="@style/Widget.MaterialComponents.Chip.Filter">
         <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="chipBackgroundColor">@color/transparent</item>
+        <item name="chipStrokeColor">@color/grey_90</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+    <style name="AppWidget.ChipGroup" parent="@style/Widget.MaterialComponents.ChipGroup">
+        <!-- Add ChipGroup attrs here -->
     </style>
 
 </resources>

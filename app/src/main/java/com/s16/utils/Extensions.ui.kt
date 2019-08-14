@@ -23,6 +23,11 @@ import androidx.fragment.app.Fragment
 val Activity.context: Context
     get() = this
 
+val Activity.decorView: View
+    get() {
+        return window.decorView
+    }
+
 val Activity.contentView: ViewGroup
     get() {
         val decorView = window.decorView as ViewGroup

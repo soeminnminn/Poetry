@@ -33,7 +33,14 @@ class RecordsPagedAdapter: PagedListAdapter<Record, RecyclerViewHolder>(DIFF_CAL
             val label: TextView = holder[R.id.noteTitle]
             label.text = record.title
 
+            val linesCount = record.text?.split(Regex("\\n"))?.size ?: 0
             val content: TextView = holder[R.id.noteContent]
+            if (linesCount > 4) {
+                content.maxLines = Math.max(linesCount / 2, 4).toInt()
+            } else {
+                content.maxLines = 3
+            }
+
             content.text = record.text
 
             val lastEdit: TextView = holder[R.id.noteLastModify]

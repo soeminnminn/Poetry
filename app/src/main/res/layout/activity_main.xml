@@ -17,20 +17,19 @@
         <com.google.android.material.appbar.AppBarLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:background="@drawable/card_background"
-                android:layout_marginTop="@dimen/dimen_2dp"
-                android:layout_marginLeft="@dimen/dimen_16dp"
-                android:layout_marginStart="@dimen/dimen_16dp"
-                android:layout_marginRight="@dimen/dimen_16dp"
-                android:layout_marginEnd="@dimen/dimen_16dp"
-                app:elevation="@dimen/dimen_0dp"
-                android:padding="@dimen/dimen_8dp">
+                android:background="@null"
+                app:elevation="@dimen/dimen_0dp" >
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@null"
+                    android:layout_marginTop="@dimen/dimen_4dp"
+                    android:layout_marginLeft="@dimen/dimen_16dp"
+                    android:layout_marginStart="@dimen/dimen_16dp"
+                    android:layout_marginRight="@dimen/dimen_16dp"
+                    android:layout_marginEnd="@dimen/dimen_16dp"
+                    android:background="@drawable/card_background"
                     app:layout_scrollFlags="scroll"
                     app:popupTheme="@style/AppTheme.PopupOverlay"/>
 

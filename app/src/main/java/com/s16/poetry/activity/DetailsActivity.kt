@@ -2,7 +2,9 @@ package com.s16.poetry.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -13,12 +15,16 @@ import com.s16.poetry.data.DetailRecord
 import com.s16.poetry.data.DetailsModel
 import com.s16.poetry.data.DetailsModelFactory
 import com.s16.poetry.fragments.DetailViewFragment
+import com.s16.utils.decorView
+import com.s16.utils.startActivity
 
 class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -36,10 +42,19 @@ class DetailsActivity : AppCompatActivity() {
             .commit()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_details, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
+                true
+            }
+            R.id.action_settings -> {
+                startActivity<SettingsActivity>()
                 true
             }
             else -> super.onOptionsItemSelected(item)
