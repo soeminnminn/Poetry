@@ -1,23 +1,21 @@
 package com.s16.poetry.activity
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.view.Menu
 import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
+import android.view.View
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import android.view.Menu
-import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 import com.s16.poetry.adapters.NavMenuAdapter
@@ -29,18 +27,22 @@ import com.s16.poetry.data.Record
 import com.s16.poetry.data.RecordPagedModel
 import com.s16.utils.startActivity
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.list_item_note.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var navAdapter: NavMenuAdapter
     private lateinit var recordsModel: RecordPagedModel
 
+    private lateinit var layoutManager: StaggeredGridLayoutManager
+    private var menuItemViewMode: MenuItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -65,7 +67,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity<DetailsActivity>(Pair(Constants.ARG_PARAM_ID, id))
         }
 
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = recordsAdapter
 
         recordsModel = ViewModelProviders.of(this).get(RecordPagedModel::class.java)
@@ -97,10 +100,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menuItemViewMode = menu?.findItem(R.id.action_view_mode)
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
                 startActivity<SettingsActivity>()
+                true
+            }
+            R.id.action_view_mode -> {
+                toggleViewMode()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -120,6 +132,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             recordsModel.filter(null)
         } else {
             recordsModel.filter(category.name)
+        }
+    }
+
+    private fun toggleViewMode() {
+        menuItemViewMode?.run {
+            if (isChecked) {
+                layoutManager.spanCount = 2
+                setIcon(R.drawable.ic_view_grid_white)
+            } else {
+                layoutManager.spanCount = 1
+                setIcon(R.drawable.ic_view_list_white)
+            }
+            isChecked = !isChecked
         }
     }
 }

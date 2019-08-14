@@ -189,7 +189,7 @@ class ProgressDialog : AlertDialog {
     }
 
     @SuppressLint("HandlerLeak")
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         if (mProgressStyle == STYLE_HORIZONTAL) {
 
             /* Use a separate handler to update the text views as they

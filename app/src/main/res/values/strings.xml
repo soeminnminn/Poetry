@@ -8,11 +8,14 @@
     <string name="nav_header_subtitle">Soe Minn Minn</string>
     <string name="nav_header_desc">Navigation header</string>
 
+    <string name="action_view_mode">View Modes</string>
     <string name="action_settings">Settings</string>
 
     <string name="menu_all">[all]</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+
+    <string name="message_backup_process">Backup is processing …</string>
 
     <string name="title_activity_settings">@string/action_settings</string>
 
@@ -51,7 +54,7 @@
         "technologically advanced and open to imagination and magic.\n"
         "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
         "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
+        "flexibility of the material creates new affordances that supersede those in the physical "
         "world, without breaking the rules of physics.\n"
         "The fundamentals of light, surface, and movement are key to conveying how objects move, "
         "interact, and exist in space and in relation to each other. Realistic lighting shows "
@@ -74,7 +77,7 @@
         "All action takes place in a single environment. Objects are presented to the user without "
         "breaking the continuity of experience even as they transform and reorganize.\n"
         "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+        "Feedback is subtle yet clear. Transitions are efficient yet coherent.\n\n"
 
         "3D world.\n\n"
 

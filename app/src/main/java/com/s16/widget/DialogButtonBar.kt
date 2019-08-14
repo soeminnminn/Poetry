@@ -1,6 +1,7 @@
 package com.s16.widget
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.graphics.drawable.RippleDrawable
@@ -14,10 +15,12 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Space
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.ColorUtils
 
-class DialogButtonBar : LinearLayout {
+class DialogButtonBar : LinearLayout, DialogInterface {
 
     private val colorAccent: Int
         get() {
@@ -40,6 +43,20 @@ class DialogButtonBar : LinearLayout {
             return typedValue.resourceId
         }
 
+    private var mPositiveButtonTextId = 0
+    private var mPositiveButtonText: CharSequence? = null
+    private var mPositiveButtonListener: DialogInterface.OnClickListener? = null
+    private var mNegativeButtonTextId = 0
+    private var mNegativeButtonText: CharSequence? = null
+    private var mNegativeButtonListener: DialogInterface.OnClickListener? = null
+    private var mNeutralButtonTextId = 0
+    private var mNeutralButtonText: CharSequence? = null
+    private var mNeutralButtonListener: DialogInterface.OnClickListener? = null
+
+    private lateinit var neutralButton: DialogButton
+    private lateinit var negativeButton: DialogButton
+    private lateinit var positiveButton: DialogButton
+
     constructor(context: Context) : super(context) {
         initialize(context, null, 0)
     }
@@ -58,51 +75,189 @@ class DialogButtonBar : LinearLayout {
         gravity = Gravity.BOTTOM
         setPadding(dpToPixel(context, 12), dpToPixel(context, 10), dpToPixel(context, 12), dpToPixel(context, 10))
 
+        val buttonParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        buttonParams.rightMargin = dpToPixel(context, 4)
+
+        neutralButton = DialogButton(context).apply {
+            id = AlertDialog.BUTTON_NEUTRAL
+            setText(android.R.string.no)
+            setBackgroundResource(selectableBackground)
+            rippleColor = colorControlHighlight
+            layoutParams = buttonParams
+            visibility = View.GONE
+        }
+        neutralButton.setOnClickListener {
+            if (mNeutralButtonListener != null) {
+                mNeutralButtonListener!!.onClick(this, AlertDialog.BUTTON_NEUTRAL)
+            }
+        }
+        addView(neutralButton)
+
         val space = Space(context).apply {
             visibility = View.INVISIBLE
         }
-        val spaceParams = LinearLayout.LayoutParams(0, 0).apply {
+        val spaceParams = LayoutParams(0, 0).apply {
             weight = 1f
         }
         addView(space, spaceParams)
 
-        addNegativeButton()
-        addPositiveButton()
-    }
-
-    private fun addNegativeButton() {
-        val buttonParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT)
-        buttonParams.rightMargin = dpToPixel(context, 4)
-
-        val button = DialogButton(context).apply {
+        negativeButton = DialogButton(context).apply {
+            id = AlertDialog.BUTTON_NEGATIVE
             setText(android.R.string.cancel)
-            setBackgroundResource(selectableBackground)
-            rippleColor = colorControlHighlight
-            layoutParams = buttonParams
-        }
-
-        addView(button)
-    }
-
-    private fun addPositiveButton() {
-        val buttonParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT)
-
-        val button = DialogButton(context).apply {
-            setText(android.R.string.ok)
             setTextColor(colorAccent)
             setBackgroundResource(selectableBackground)
             rippleColor = ColorUtils.setAlphaComponent(colorAccent, 60)
             layoutParams = buttonParams
         }
+        negativeButton.setOnClickListener {
+            if (mNegativeButtonListener != null) {
+                mNegativeButtonListener!!.onClick(this, AlertDialog.BUTTON_NEGATIVE)
+            }
+        }
+        addView(negativeButton)
 
-        addView(button)
+        val positiveButtonParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+
+        positiveButton = DialogButton(context).apply {
+            id = AlertDialog.BUTTON_POSITIVE
+            setText(android.R.string.ok)
+            setTextColor(colorAccent)
+            setBackgroundResource(selectableBackground)
+            rippleColor = ColorUtils.setAlphaComponent(colorAccent, 60)
+            layoutParams = positiveButtonParams
+        }
+        positiveButton.setOnClickListener {
+            if (mPositiveButtonListener != null) {
+                mPositiveButtonListener!!.onClick(this, AlertDialog.BUTTON_POSITIVE)
+            }
+        }
+        addView(positiveButton)
     }
 
-    class DialogButton: AppCompatTextView {
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        updateLayout()
+    }
+
+    override fun dismiss() {
+    }
+
+    override fun cancel() {
+    }
+
+    private fun updateLayout() {
+        when {
+            mPositiveButtonTextId != 0 -> {
+                positiveButton.setText(mPositiveButtonTextId)
+                positiveButton.visibility = View.VISIBLE
+
+            }
+            mPositiveButtonText != null -> {
+                positiveButton.text = mPositiveButtonText
+                positiveButton.visibility = View.VISIBLE
+
+            }
+            else -> positiveButton.visibility = View.GONE
+        }
+
+        when {
+            mNegativeButtonTextId != 0 -> {
+                negativeButton.setText(mNegativeButtonTextId)
+                negativeButton.visibility = View.VISIBLE
+
+            }
+            mNegativeButtonText != null -> {
+                negativeButton.text = mPositiveButtonText
+                negativeButton.visibility = View.VISIBLE
+
+            }
+            else -> negativeButton.visibility = View.GONE
+        }
+
+        when {
+            mNeutralButtonTextId != 0 -> {
+                neutralButton.setText(mNeutralButtonTextId)
+                neutralButton.visibility = View.VISIBLE
+
+            }
+            mNeutralButtonText != null -> {
+                neutralButton.text = mPositiveButtonText
+                neutralButton.visibility = View.VISIBLE
+
+            }
+            else -> neutralButton.visibility = View.GONE
+        }
+
+        requestLayout()
+    }
+
+    /**
+     * Set a listener to be invoked when the positive image_button of the dialog is pressed.
+     * @param textId The resource id of the text to onDisplayRebuyList in the positive image_button
+     * @param listener The [DialogInterface.OnClickListener] to use.
+     */
+    fun setPositiveButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener) {
+        mPositiveButtonTextId = textId
+        mPositiveButtonListener = listener
+        updateLayout()
+    }
+
+    /**
+     * Set a listener to be invoked when the positive image_button of the dialog is pressed.
+     * @param text The text to onDisplayRebuyList in the positive image_button
+     * @param listener The [DialogInterface.OnClickListener] to use.
+     */
+    fun setPositiveButton(text: CharSequence, listener: DialogInterface.OnClickListener) {
+        mPositiveButtonText = text
+        mPositiveButtonListener = listener
+        updateLayout()
+    }
+
+    /**
+     * Set a listener to be invoked when the negative image_button of the dialog is pressed.
+     * @param textId The resource id of the text to onDisplayRebuyList in the negative image_button
+     * @param listener The [DialogInterface.OnClickListener] to use.
+     */
+    fun setNegativeButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener) {
+        mNegativeButtonTextId = textId
+        mNegativeButtonListener = listener
+        updateLayout()
+    }
+
+    /**
+     * Set a listener to be invoked when the negative image_button of the dialog is pressed.
+     * @param text The text to onDisplayRebuyList in the negative image_button
+     * @param listener The [DialogInterface.OnClickListener] to use.
+     */
+    fun setNegativeButton(text: CharSequence, listener: DialogInterface.OnClickListener) {
+        mNegativeButtonText = text
+        mNegativeButtonListener = listener
+        updateLayout()
+    }
+
+    /**
+     * Set a listener to be invoked when the neutral image_button of the dialog is pressed.
+     * @param textId The resource id of the text to onDisplayRebuyList in the neutral image_button
+     * @param listener The [DialogInterface.OnClickListener] to use.
+     */
+    fun setNeutralButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener) {
+        mNeutralButtonTextId = textId
+        mNeutralButtonListener = listener
+        updateLayout()
+    }
+
+    /**
+     * Set a listener to be invoked when the neutral image_button of the dialog is pressed.
+     * @param text The text to onDisplayRebuyList in the neutral image_button
+     * @param listener The [DialogInterface.OnClickListener] to use.
+     */
+    fun setNeutralButton(text: CharSequence, listener: DialogInterface.OnClickListener) {
+        mNeutralButtonText = text
+        mNeutralButtonListener = listener
+        updateLayout()
+    }
+
+    private class DialogButton: AppCompatTextView {
 
         constructor(context: Context) : super(context) {
             initialize(context, null, 0)
@@ -148,4 +303,42 @@ class DialogButtonBar : LinearLayout {
             return px.toInt()
         }
     }
+}
+
+// MARK: Extensions
+
+inline fun DialogButtonBar.setPositiveButton(
+    @StringRes textId: Int, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
+    setPositiveButton(textId,
+        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+}
+
+inline fun DialogButtonBar.setPositiveButton(
+    textId: CharSequence, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
+    setPositiveButton(textId,
+        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+}
+
+inline fun DialogButtonBar.setNegativeButton(
+    @StringRes textId: Int, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
+    setNegativeButton(textId,
+        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+}
+
+inline fun DialogButtonBar.setNegativeButton(
+    textId: CharSequence, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
+    setNegativeButton(textId,
+        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+}
+
+inline fun DialogButtonBar.setNeutralButton(
+    @StringRes textId: Int, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
+    setNeutralButton(textId,
+        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+}
+
+inline fun DialogButtonBar.setNeutralButton(
+    textId: CharSequence, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
+    setNeutralButton(textId,
+        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
 }

@@ -110,6 +110,8 @@ class RecordsPagedAdapter: PagedListAdapter<Record, RecyclerViewHolder>(DIFF_CAL
     }
 }
 
+// MARK: Extensions
+
 inline fun RecordsPagedAdapter.setItemClickListener(
     crossinline listener: (view: View, id: Long, position: Int) -> Unit) {
 

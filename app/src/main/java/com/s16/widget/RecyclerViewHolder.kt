@@ -24,3 +24,10 @@ class RecyclerViewHolder(itemView: View, vararg ids: Int) : RecyclerView.ViewHol
 
     operator fun <T: View> get(id: Int): T = mViewHolder[id]!! as T
 }
+
+// MARK: Extensions
+
+inline fun RecyclerViewHolder.setOnClickListener(crossinline listener: (view: View?) -> Unit) {
+    val wrapper = View.OnClickListener { v -> listener(v) }
+    itemView.setOnClickListener(wrapper)
+}

@@ -7,6 +7,7 @@ import android.util.DisplayMetrics
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceFragmentCompat
+import com.s16.app.ProgressDialog
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 
@@ -23,6 +24,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         prefsAbout.setOnPreferenceClickListener {
             showAboutDialog()
+            true
+        }
+
+        findPreference(Constants.PREFS_BACKUP)?.setOnPreferenceClickListener {
+            doBackup()
             true
         }
 
@@ -66,6 +72,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
         dialogBuilder.create().show()
+    }
+
+    private fun doBackup() {
+        val progressDialog = ProgressDialog(context!!).apply {
+            isIndeterminate = true
+            setProgressStyle(ProgressDialog.STYLE_SPINNER)
+            setMessage(getText(R.string.message_backup_process))
+        }
+        progressDialog.show()
+
     }
 
     private fun showRestoreDialog() {
