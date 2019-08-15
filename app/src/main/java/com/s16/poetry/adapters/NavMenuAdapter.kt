@@ -5,11 +5,14 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import com.google.android.material.navigation.NavigationView
 import com.s16.poetry.R
 import com.s16.poetry.data.Category
 
-class NavMenuAdapter(private val menu: Menu, private val context: Context): BaseAdapter() {
+class NavMenuAdapter(navView: NavigationView, private val context: Context): BaseAdapter() {
     var items: List<Category> = mutableListOf()
+
+    private val menu: Menu = navView.menu
 
     override fun hasStableIds(): Boolean = true
 
@@ -34,6 +37,14 @@ class NavMenuAdapter(private val menu: Menu, private val context: Context): Base
             menuItem.setIcon(R.drawable.ic_category_gray)
         }
         menu.setGroupCheckable(categoryGroupId, true, false)
+
+        menu.add(generalGroupId, R.id.action_settings, 0, R.string.action_settings).apply {
+            setIcon(R.drawable.ic_settings_gray)
+        }
+        menu.add(generalGroupId, R.id.action_about, 0, R.string.action_about).apply {
+            setIcon(R.drawable.ic_about_gray)
+        }
+
         super.notifyDataSetChanged()
     }
 
@@ -46,5 +57,6 @@ class NavMenuAdapter(private val menu: Menu, private val context: Context): Base
 
     companion object {
         const val categoryGroupId = 1
+        const val generalGroupId = 2
     }
 }

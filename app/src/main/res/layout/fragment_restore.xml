@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/title"
                 style="?android:attr/windowTitleStyle"
                 android:singleLine="true"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:minHeight="64dp">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@android:id/message"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"

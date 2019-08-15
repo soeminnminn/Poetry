@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="tagsChipStyle" format="reference"></attr>
+    <attr name="navigationHeaderStyle" format="reference" />
+    <attr name="navigationHeader" format="reference" />
+    <attr name="toolbarMain" format="reference" />
+    <attr name="listCardMain" format="reference" />
 </resources>

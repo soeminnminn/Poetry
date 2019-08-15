@@ -4,26 +4,24 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 import com.s16.poetry.data.DetailRecord
 import com.s16.poetry.data.DetailsModel
 import com.s16.poetry.data.DetailsModelFactory
 import com.s16.poetry.fragments.DetailViewFragment
-import com.s16.utils.decorView
 import com.s16.utils.startActivity
 
-class DetailsActivity : AppCompatActivity() {
+class DetailsActivity : ThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        updateStatusBarColor()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

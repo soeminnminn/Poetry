@@ -1,12 +1,23 @@
 <resources xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- https://medium.com/androiddevelopers/appcompat-v23-2-daynight-d10f90c83e94 -->
+    <style name="Theme.AppCompat.DayNight" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="isLightTheme">true</item>
+
+        <item name="popupMenuStyle">@style/AppTheme.PopupOverlay.Light</item>
+        <item name="navigationHeaderStyle">@style/AppTheme.AppBarHeader.Light</item>
+        <item name="navigationHeader">@style/AppTheme.PopupOverlay.Light</item>
+        <item name="toolbarMain">@style/AppWidget.Toolbar.Light</item>
+        <item name="listCardMain">@style/AppWidget.ListCard.Light</item>
+        <item name="chipStyle">@style/AppWidget.Chip.Light</item>
+        <item name="chipGroupStyle">@style/AppWidget.ChipGroup</item>
+    </style>
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="chipStyle">@style/AppWidget.Chip</item>
-        <item name="chipGroupStyle">@style/AppWidget.ChipGroup</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -31,6 +42,10 @@
     </style>
 
     <style name="AppTheme.Dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_full_holo_dark</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Light" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_full_holo_light</item>
     </style>
 
@@ -38,9 +53,28 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.Dialog.Light.NoTitle" parent="@style/AppTheme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.AppBarOverlay.Light" parent="ThemeOverlay.AppCompat.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat"/>
+
+    <style name="AppTheme.PopupOverlay.Light" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="AppTheme.AppBarHeader" parent="ThemeOverlay.AppCompat">
+        <item name="android:background">@drawable/side_nav_bar</item>
+    </style>
+
+    <style name="AppTheme.AppBarHeader.Light" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:background">@drawable/side_nav_bar_light</item>
+    </style>
+
+    <style name="AppWidget">
+    </style>
 
     <style name="AppWidget.BorderlessButton" parent="@style/Widget.AppCompat.Button.Borderless">
     </style>
@@ -48,7 +82,30 @@
     <style name="AppWidget.ActionbarButton" parent="@style/Widget.AppCompat.ActionButton">
     </style>
 
+    <style name="AppWidget.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:background">@drawable/card_background</item>
+    </style>
+
+    <style name="AppWidget.Toolbar.Light" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:background">@drawable/card_background_light</item>
+    </style>
+
+    <style name="AppWidget.ListCard">
+        <item name="android:background">@drawable/card_background</item>
+    </style>
+
+    <style name="AppWidget.ListCard.Light">
+        <item name="android:background">@drawable/card_background_light</item>
+    </style>
+
     <style name="AppWidget.Chip" parent="@style/Widget.MaterialComponents.Chip.Filter">
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="chipBackgroundColor">@color/transparent</item>
+        <item name="chipStrokeColor">@color/white_33_opacity</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+    <style name="AppWidget.Chip.Light" parent="@style/Widget.MaterialComponents.Chip.Filter">
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="chipBackgroundColor">@color/transparent</item>
         <item name="chipStrokeColor">@color/grey_90</item>
@@ -56,7 +113,6 @@
     </style>
 
     <style name="AppWidget.ChipGroup" parent="@style/Widget.MaterialComponents.ChipGroup">
-        <!-- Add ChipGroup attrs here -->
     </style>
 
 </resources>

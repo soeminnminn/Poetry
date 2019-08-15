@@ -22,6 +22,7 @@
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
+                    style="?toolbarMain"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_marginTop="@dimen/dimen_4dp"
@@ -29,9 +30,8 @@
                     android:layout_marginStart="@dimen/dimen_16dp"
                     android:layout_marginRight="@dimen/dimen_16dp"
                     android:layout_marginEnd="@dimen/dimen_16dp"
-                    android:background="@drawable/card_background"
                     app:layout_scrollFlags="scroll"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                    app:popupTheme="?attr/popupMenuStyle"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/dimen_16dp"
-                android:src="@drawable/ic_edit_white"/>
+                app:srcCompat="@drawable/ic_edit_white"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -54,6 +54,6 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/activity_main_drawer"/>
+            app:menu="@menu/main_drawer"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -3,9 +3,7 @@ package com.s16.poetry.activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -16,6 +14,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 import com.s16.poetry.adapters.NavMenuAdapter
@@ -25,11 +24,10 @@ import com.s16.poetry.data.Category
 import com.s16.poetry.data.CategoryModel
 import com.s16.poetry.data.Record
 import com.s16.poetry.data.RecordPagedModel
-import com.s16.utils.decorView
 import com.s16.utils.startActivity
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var navAdapter: NavMenuAdapter
     private lateinit var recordsModel: RecordPagedModel
@@ -40,7 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        updateStatusBarColor()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -77,7 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             recordsAdapter.submitList(it)
         })
 
-        navAdapter = NavMenuAdapter(navView.menu, this)
+        navAdapter = NavMenuAdapter(navView, this)
         val categoryModel by lazy {
             ViewModelProviders.of(this).get(CategoryModel::class.java)
         }
@@ -121,7 +119,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        filterRecords(item.itemId)
+        when (item.itemId) {
+            R.id.action_settings -> {
+                startActivity<SettingsActivity>()
+            }
+            R.id.action_about -> {
+            }
+            else -> filterRecords(item.itemId)
+        }
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -143,8 +149,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 setIcon(R.drawable.ic_view_list_gray)
             } else {
                 layoutManager.spanCount = 1
-                setIcon(R.drawable.ic_view_grid_gray
-                )
+                setIcon(R.drawable.ic_view_grid_gray)
             }
             isChecked = !isChecked
         }

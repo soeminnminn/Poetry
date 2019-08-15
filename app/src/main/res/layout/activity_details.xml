@@ -23,7 +23,7 @@
                 android:layout_marginRight="@dimen/dimen_4dp"
                 android:layout_marginEnd="@dimen/dimen_4dp"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="?attr/popupMenuStyle"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
