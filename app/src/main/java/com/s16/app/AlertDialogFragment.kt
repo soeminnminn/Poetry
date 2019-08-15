@@ -23,7 +23,7 @@ import androidx.fragment.app.DialogFragment
 /**
  * Created by SMM on 9/20/2016.
  */
-class AlertDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
+open class AlertDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
     private val P: AlertParams
     private var mButtonHandler: ButtonHandler? = null
 
@@ -216,7 +216,7 @@ class AlertDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
      * @param text The text to onDisplayRebuyList in the positive image_button
      * @param listener The [DialogInterface.OnClickListener] to use.
      */
-    fun setPositiveButton(text: CharSequence, listener: DialogInterface.OnClickListener) {
+    fun setPositiveButton(text: CharSequence?, listener: DialogInterface.OnClickListener?) {
         P.mPositiveButtonText = text
         P.mPositiveButtonListener = listener
     }
@@ -236,7 +236,7 @@ class AlertDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
      * @param text The text to onDisplayRebuyList in the negative image_button
      * @param listener The [DialogInterface.OnClickListener] to use.
      */
-    fun setNegativeButton(text: CharSequence, listener: DialogInterface.OnClickListener) {
+    fun setNegativeButton(text: CharSequence?, listener: DialogInterface.OnClickListener?) {
         P.mNegativeButtonText = text
         P.mNegativeButtonListener = listener
     }
@@ -256,7 +256,7 @@ class AlertDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
      * @param text The text to onDisplayRebuyList in the neutral image_button
      * @param listener The [DialogInterface.OnClickListener] to use.
      */
-    fun setNeutralButton(text: CharSequence, listener: DialogInterface.OnClickListener) {
+    fun setNeutralButton(text: CharSequence?, listener: DialogInterface.OnClickListener?) {
         P.mNeutralButtonText = text
         P.mNeutralButtonListener = listener
     }
@@ -600,7 +600,6 @@ class AlertDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
     }
 
     companion object {
-
         private const val SAVED_DIALOG_STATE_TAG = "android:savedDialogState"
     }
 }

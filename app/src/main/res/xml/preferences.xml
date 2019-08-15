@@ -20,6 +20,13 @@
     <PreferenceCategory
             app:title="@string/prefs_category_general">
 
+        <androidx.preference.ListPreference
+                app:key="select_theme"
+                app:title="@string/prefs_select_theme"
+                app:defaultValue="@string/prefs_select_theme_def"
+                app:entries="@array/prefs_select_theme_titles"
+                app:entryValues="@array/prefs_select_theme_values" />
+
         <Preference
             app:key="manage_category"
             app:title="@string/prefs_manage_category"

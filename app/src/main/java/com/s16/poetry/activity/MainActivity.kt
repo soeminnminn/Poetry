@@ -24,6 +24,7 @@ import com.s16.poetry.data.Category
 import com.s16.poetry.data.CategoryModel
 import com.s16.poetry.data.Record
 import com.s16.poetry.data.RecordPagedModel
+import com.s16.poetry.fragments.AboutFragment
 import com.s16.utils.startActivity
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -38,7 +39,7 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        updateStatusBarColor()
+        updateSystemUiColor()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -124,6 +125,7 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
                 startActivity<SettingsActivity>()
             }
             R.id.action_about -> {
+                AboutFragment.newInstance().show(supportFragmentManager, "aboutDialog")
             }
             else -> filterRecords(item.itemId)
         }

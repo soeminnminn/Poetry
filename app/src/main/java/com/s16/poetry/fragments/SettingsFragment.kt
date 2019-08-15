@@ -54,24 +54,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun showAboutDialog() {
-        var aboutText = context!!.getText(R.string.about_text)
-        val paddingX = dpToPixel(20)
-        val paddingY = dpToPixel(16)
-        val message = TextView(context).apply {
-            setPadding(paddingX, paddingY, paddingX, paddingY)
-            movementMethod = LinkMovementMethod.getInstance()
-            text = Html.fromHtml(aboutText.toString())
-        }
-
-        val dialogBuilder = AlertDialog.Builder(context!!).apply {
-            setTitle(R.string.prefs_about)
-            setIcon(android.R.drawable.ic_dialog_info)
-            setView(message)
-            setPositiveButton(null, null)
-            setNegativeButton(android.R.string.ok) { _, _ ->
-            }
-        }
-        dialogBuilder.create().show()
+        AboutFragment.newInstance().show(childFragmentManager, "aboutDialog")
     }
 
     private fun doBackup() {

@@ -23,6 +23,19 @@
     <string name="prefs_category_about">About</string>
 
     <!-- General Preferences -->
+    <string name="prefs_select_theme">Select Theme</string>
+    <string name="prefs_select_theme_def">1</string>
+    <string-array name="prefs_select_theme_titles">
+        <item>System</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="prefs_select_theme_values">
+        <item>2</item>
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <string name="prefs_manage_category">Manage Categories</string>
     <string name="prefs_manage_category_summary">Manage Categories of the user</string>
     <string name="prefs_manage_tags">Manage Tags</string>
@@ -134,4 +147,5 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
 </resources>
