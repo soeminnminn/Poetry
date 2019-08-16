@@ -50,7 +50,7 @@ abstract class ThemeActivity: AppCompatActivity(), SharedPreferences.OnSharedPre
             }
         }
 
-    private val isLightTheme: Boolean
+    val isLightTheme: Boolean
         get() {
             val typedValue = TypedValue()
             theme.resolveAttribute(com.google.android.material.R.attr.isLightTheme, typedValue, false)

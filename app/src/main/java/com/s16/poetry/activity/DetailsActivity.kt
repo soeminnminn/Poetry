@@ -35,7 +35,8 @@ class DetailsActivity : ThemeActivity() {
             Log.i("DetailsActivity", it.title)
         })
 
-        supportFragmentManager.beginTransaction()
+        supportFragmentManager
+            .beginTransaction()
             .replace(R.id.detailContainer, DetailViewFragment.newInstance(id))
             .commit()
     }

@@ -15,6 +15,9 @@ import android.animation.Animator
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.animation.ObjectAnimator
+import androidx.core.content.ContextCompat
+import com.s16.widget.CheckableCardView
+import kotlin.math.max
 
 class RecordsPagedAdapter: PagedListAdapter<Record, RecyclerViewHolder>(DIFF_CALLBACK) {
 
@@ -24,7 +27,11 @@ class RecordsPagedAdapter: PagedListAdapter<Record, RecyclerViewHolder>(DIFF_CAL
     private var mItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_note, parent, false)
+        val view: ViewGroup = LayoutInflater.from(parent.context).inflate(R.layout.list_item_note, parent, false) as ViewGroup
+
+//        val cardView: CheckableCardView = view.findViewById(R.id.cardView)
+//        cardView.isLongClickable = true
+
         return RecyclerViewHolder(view, R.id.noteTitle, R.id.noteContent, R.id.noteLastModify)
     }
 
@@ -36,7 +43,7 @@ class RecordsPagedAdapter: PagedListAdapter<Record, RecyclerViewHolder>(DIFF_CAL
             val linesCount = record.text?.split(Regex("\\n"))?.size ?: 0
             val content: TextView = holder[R.id.noteContent]
             if (linesCount > 4) {
-                content.maxLines = Math.max(linesCount / 2, 4).toInt()
+                content.maxLines = max(linesCount / 2, 4)
             } else {
                 content.maxLines = 3
             }

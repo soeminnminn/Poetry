@@ -11,13 +11,13 @@
         <item name="colorAccent">@color/colorPrimary</item>
 
         <item name="activityBackground">@color/bright_foreground_holo_light</item>
+        <item name="dialogTheme">@style/AppTheme.Dialog.NoTitle</item>
         <item name="popupMenuStyle">@style/AppTheme.PopupOverlay.Light</item>
         <item name="navigationHeaderStyle">@style/AppTheme.AppBarHeader</item>
         <item name="navigationHeader">@style/AppTheme.PopupOverlay</item>
         <item name="toolbarMain">@style/AppWidget.Toolbar</item>
-        <item name="listCardMain">@style/AppWidget.ListCard</item>
+        <item name="materialCardViewStyle">@style/AppWidget.ListCard</item>
         <item name="chipStyle">@style/AppWidget.Chip</item>
-        <item name="chipGroupStyle">@style/AppWidget.ChipGroup</item>
     </style>
 
     <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light.DarkActionBar">
@@ -28,13 +28,13 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="activityBackground">@color/background_holo_light</item>
+        <item name="dialogTheme">@style/AppTheme.Dialog.Light.NoTitle</item>
         <item name="popupMenuStyle">@style/AppTheme.PopupOverlay.Light</item>
         <item name="navigationHeaderStyle">@style/AppTheme.AppBarHeader.Light</item>
         <item name="navigationHeader">@style/AppTheme.PopupOverlay.Light</item>
         <item name="toolbarMain">@style/AppWidget.Toolbar.Light</item>
-        <item name="listCardMain">@style/AppWidget.ListCard.Light</item>
+        <item name="materialCardViewStyle">@style/AppWidget.ListCard.Light</item>
         <item name="chipStyle">@style/AppWidget.Chip.Light</item>
-        <item name="chipGroupStyle">@style/AppWidget.ChipGroup</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -63,19 +63,17 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="AppTheme.Dialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@drawable/dialog_full_holo_dark</item>
+    <style name="AppTheme.Dialog" parent="@android:style/Theme.Holo.Dialog">
     </style>
 
-    <style name="AppTheme.Dialog.Light" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@drawable/dialog_full_holo_light</item>
+    <style name="AppTheme.Dialog.Light" parent="@android:style/Theme.Holo.Dialog">
     </style>
 
-    <style name="AppTheme.Dialog.NoTitle" parent="@style/AppTheme.Dialog">
+    <style name="AppTheme.Dialog.NoTitle" parent="@android:style/Theme.Holo.Dialog.NoActionBar.MinWidth">
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.Dialog.Light.NoTitle" parent="@style/AppTheme.Dialog">
+    <style name="AppTheme.Dialog.Light.NoTitle" parent="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth">
         <item name="android:windowNoTitle">true</item>
     </style>
 
@@ -105,19 +103,25 @@
     </style>
 
     <style name="AppWidget.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
-        <item name="android:background">@drawable/card_background</item>
+        <item name="android:background">@drawable/border_background</item>
     </style>
 
     <style name="AppWidget.Toolbar.Light" parent="@style/Widget.AppCompat.Toolbar">
-        <item name="android:background">@drawable/card_background_light</item>
+        <item name="android:background">@drawable/border_background_light</item>
     </style>
 
-    <style name="AppWidget.ListCard">
-        <item name="android:background">@drawable/card_background</item>
+    <style name="AppWidget.ListCard" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="strokeColor">@drawable/cardview_stroke_color</item>
+        <item name="strokeWidth">@dimen/dimen_1dp</item>
+        <item name="cardCornerRadius">@dimen/dimen_10dp</item>
+        <item name="cardElevation">@dimen/dimen_0dp</item>
     </style>
 
-    <style name="AppWidget.ListCard.Light">
-        <item name="android:background">@drawable/card_background_light</item>
+    <style name="AppWidget.ListCard.Light" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="strokeColor">@drawable/cardview_stroke_color_light</item>
+        <item name="strokeWidth">@dimen/dimen_1dp</item>
+        <item name="cardCornerRadius">@dimen/dimen_10dp</item>
+        <item name="cardElevation">@dimen/dimen_0dp</item>
     </style>
 
     <style name="AppWidget.Chip" parent="@style/Widget.MaterialComponents.Chip.Filter">
@@ -132,9 +136,6 @@
         <item name="chipBackgroundColor">@color/transparent</item>
         <item name="chipStrokeColor">@color/grey_90</item>
         <item name="chipStrokeWidth">1dp</item>
-    </style>
-
-    <style name="AppWidget.ChipGroup" parent="@style/Widget.MaterialComponents.ChipGroup">
     </style>
 
 </resources>
