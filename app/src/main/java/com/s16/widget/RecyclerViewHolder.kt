@@ -4,8 +4,8 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 @Suppress("UNCHECKED_CAST")
-class RecyclerViewHolder(itemView: View, vararg ids: Int) : RecyclerView.ViewHolder(itemView) {
-    private val mViewHolder: MutableMap<Int, View> = mutableMapOf()
+open class RecyclerViewHolder(itemView: View, vararg ids: Int) : RecyclerView.ViewHolder(itemView) {
+    private val mViewHolder: MutableMap<Int, View?> = mutableMapOf()
 
     init {
         ids.forEach {
@@ -13,7 +13,7 @@ class RecyclerViewHolder(itemView: View, vararg ids: Int) : RecyclerView.ViewHol
         }
     }
 
-    fun <T: View> findViewById(id: Int): T {
+    open fun <T: View> findViewById(id: Int): T {
         return if (mViewHolder.containsKey(id)) {
             mViewHolder[id]!! as T
         } else {
@@ -22,7 +22,7 @@ class RecyclerViewHolder(itemView: View, vararg ids: Int) : RecyclerView.ViewHol
         }
     }
 
-    operator fun <T: View> get(id: Int): T = mViewHolder[id]!! as T
+    operator fun <T: View> get(id: Int): T = findViewById(id)
 }
 
 // MARK: Extensions

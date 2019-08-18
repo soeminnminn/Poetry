@@ -1,17 +1,26 @@
 package com.s16.poetry.fragments
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Html
-import android.text.method.LinkMovementMethod
-import android.util.DisplayMetrics
-import android.widget.TextView
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
 import com.s16.app.ProgressDialog
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
+
+    private val versionName: String
+        get() {
+            val pInfo = context?.packageManager?.getPackageInfo(context?.packageName, 0)
+            if (pInfo != null) {
+                return pInfo.versionName
+            }
+            return ""
+        }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -28,29 +37,60 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         findPreference(Constants.PREFS_BACKUP)?.setOnPreferenceClickListener {
-            doBackup()
+            requestPermission(Constants.PERMISSION_RESULT_BACKUP)
             true
         }
 
         findPreference(Constants.PREFS_RESTORE)?.setOnPreferenceClickListener {
-            showRestoreDialog()
+            requestPermission(Constants.PERMISSION_RESULT_RESTORE)
             true
         }
     }
 
-    private val versionName: String
-        get() {
-            val pInfo = context?.packageManager?.getPackageInfo(context?.packageName, 0)
-            if (pInfo != null) {
-                return pInfo.versionName
-            }
-            return ""
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            onPermissionsGranted(requestCode)
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 
-    private fun dpToPixel(dp: Int): Int {
-        val metrics = context!!.resources.displayMetrics
-        val px = dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-        return px.toInt()
+    private fun onPermissionsGranted(requestCode: Int) {
+        when(requestCode) {
+            Constants.PERMISSION_RESULT_BACKUP -> {
+                doBackup()
+            }
+            Constants.PERMISSION_RESULT_RESTORE -> {
+                showRestoreDialog()
+            }
+            else -> { }
+        }
+    }
+
+    private fun requestPermission(requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                AlertDialog.Builder(context!!).apply {
+                    setTitle(R.string.title_request_permission)
+                    setMessage(R.string.message_request_permission)
+                    setNegativeButton(android.R.string.cancel, null)
+                    setPositiveButton(android.R.string.ok) { dialog, which ->
+                        requestPermissions(
+                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                            requestCode)
+                        dialog.dismiss()
+                    }
+                }.show()
+
+            } else {
+                requestPermissions(
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    requestCode)
+            }
+
+        } else {
+            onPermissionsGranted(requestCode)
+        }
     }
 
     private fun showAboutDialog() {

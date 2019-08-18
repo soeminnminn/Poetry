@@ -1,70 +1,93 @@
 package com.s16.poetry.adapters
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.view.animation.LinearInterpolator
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.s16.poetry.R
 import com.s16.poetry.data.Record
-import com.s16.utils.formatToViewDateDefaults
-import com.s16.widget.RecyclerViewHolder
-import java.util.*
-import android.animation.Animator
-import android.view.View
-import android.view.animation.LinearInterpolator
-import android.animation.ObjectAnimator
-import androidx.core.content.ContextCompat
-import com.s16.widget.CheckableCardView
-import kotlin.math.max
 
-class RecordsPagedAdapter: PagedListAdapter<Record, RecyclerViewHolder>(DIFF_CALLBACK) {
+class RecordsPagedAdapter:
+    PagedListAdapter<Record, NoteItemViewHolder>(DIFF_CALLBACK), LongClickSelectable {
+
+    interface OnItemSelectListener {
+        fun onItemSelectStart()
+        fun onItemSelectionChange(position: Int, count: Int)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(view: View, id: Long, position: Int)
+    }
 
     private val mInterpolator: LinearInterpolator = LinearInterpolator()
     private val mDuration: Long = 300
     private var mLastPosition: Int = -1
+
+    private val mCheckedItems: MutableList<Int> = mutableListOf()
+    private var mSelectMode = false
     private var mItemClickListener: OnItemClickListener? = null
+    private var mItemSelectListener: OnItemSelectListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteItemViewHolder {
         val view: ViewGroup = LayoutInflater.from(parent.context).inflate(R.layout.list_item_note, parent, false) as ViewGroup
-
-//        val cardView: CheckableCardView = view.findViewById(R.id.cardView)
-//        cardView.isLongClickable = true
-
-        return RecyclerViewHolder(view, R.id.noteTitle, R.id.noteContent, R.id.noteLastModify)
+        return NoteItemViewHolder(view, this)
     }
 
-    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NoteItemViewHolder, position: Int) {
         getItem(position)?.let { record ->
-            val label: TextView = holder[R.id.noteTitle]
-            label.text = record.title
-
-            val linesCount = record.text?.split(Regex("\\n"))?.size ?: 0
-            val content: TextView = holder[R.id.noteContent]
-            if (linesCount > 4) {
-                content.maxLines = max(linesCount / 2, 4)
-            } else {
-                content.maxLines = 3
-            }
-
-            content.text = record.text
-
-            val lastEdit: TextView = holder[R.id.noteLastModify]
-            lastEdit.text = if (record.date != null) {
-                Date(record.date!!).formatToViewDateDefaults()
-            } else {
-                ""
-            }
-
-            holder.itemView.setOnClickListener {
-                if (mItemClickListener != null) {
-                    mItemClickListener!!.onItemClick(holder.itemView, record.id, position)
-                }
-            }
+            holder.dataBind(record, mCheckedItems.contains(position))
         }
 
         animate(holder, position);
+    }
+
+    fun setItemClickListener(listener: OnItemClickListener) {
+        mItemClickListener = listener;
+    }
+
+    fun setItemSelectListener(listener: OnItemSelectListener) {
+        mItemSelectListener = listener;
+    }
+
+    override fun setSelectMode(mode: Boolean) {
+        mSelectMode = mode
+    }
+
+    override fun isSelectedMode(): Boolean = mSelectMode
+
+    override fun onSelectStart() {
+        if (!mSelectMode && mItemSelectListener != null) {
+            mItemSelectListener!!.onItemSelectStart()
+        }
+    }
+
+    override fun onSelectionChange(position: Int, isChecked: Boolean) {
+        if (isChecked) {
+            if (!mCheckedItems.contains(position)) mCheckedItems.add(position)
+        } else {
+            if (mCheckedItems.contains(position)) mCheckedItems.remove(position)
+        }
+
+        if (mItemSelectListener != null) {
+            mItemSelectListener!!.onItemSelectionChange(position, mCheckedItems.size)
+        }
+    }
+
+    override fun onItemClick(view: View, id: Long, position: Int) {
+        if (mItemClickListener != null) {
+            mItemClickListener!!.onItemClick(view, id, position)
+        }
+    }
+
+    fun endSelection() {
+        mSelectMode = false
+        mCheckedItems.clear()
+        notifyDataSetChanged()
     }
 
     private fun animate(holder: RecyclerView.ViewHolder, position: Int) {
@@ -105,14 +128,6 @@ class RecordsPagedAdapter: PagedListAdapter<Record, RecyclerViewHolder>(DIFF_CAL
             pivotY = measuredHeight / 2f
             pivotX = measuredWidth / 2f
         }.animate().interpolator = null
-    }
-
-    fun setItemClickListener(listener: OnItemClickListener) {
-        mItemClickListener = listener;
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(view: View, id: Long, position: Int)
     }
 
     companion object {

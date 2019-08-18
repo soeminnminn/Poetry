@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_4dp">
 
-    <com.s16.widget.CheckableCardView
+    <com.s16.widget.CheckedCardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -77,6 +77,6 @@
 
         </FrameLayout>
 
-    </com.s16.widget.CheckableCardView>
+    </com.s16.widget.CheckedCardView>
 
 </FrameLayout>

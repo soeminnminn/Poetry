@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 import com.s16.poetry.data.DetailRecord
@@ -15,7 +17,6 @@ import com.s16.poetry.data.DetailsModel
 import com.s16.poetry.data.DetailsModelFactory
 import com.s16.utils.formatToViewDateDefaults
 import com.s16.utils.gone
-import kotlinx.android.synthetic.main.fragment_detail_view.*
 import java.util.*
 
 class DetailViewFragment : Fragment() {
@@ -37,6 +38,12 @@ class DetailViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val noteTitle: TextView = view.findViewById(R.id.noteTitle)
+        val noteContent: TextView = view.findViewById(R.id.noteContent)
+        val noteLastModify: TextView = view.findViewById(R.id.noteLastModify)
+        val noteCategory: TextView = view.findViewById(R.id.noteCategory)
+        val noteTags: ChipGroup = view.findViewById(R.id.noteTags)
 
         val model: DetailsModel = ViewModelProviders.of(activity!!, DetailsModelFactory(activity!!.application, id))
             .get(DetailsModel::class.java)

@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".fragments.DetailEditFragment">
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.DetailEditFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.appcompat.widget.AppCompatTextView
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/large_text"/>
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dimen_4dp"
+            android:paddingLeft="@dimen/dimen_16dp"
+            android:paddingStart="@dimen/dimen_16dp"
+            android:paddingRight="@dimen/dimen_16dp"
+            android:paddingEnd="@dimen/dimen_16dp"
+            android:paddingBottom="@dimen/dimen_16dp">
 
-</FrameLayout>
+        <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/editTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/hint_edit_title"
+                android:inputType="text">
+            <requestFocus/>
+        </androidx.appcompat.widget.AppCompatEditText>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_8dp"
+            android:layout_below="@+id/editTitle"/>
+
+        <com.commonsware.cwac.richedit.RichEditText
+                android:id="@+id/richEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/divider"
+                android:layout_marginTop="@dimen/dimen_4dp"
+                android:background="@null"
+                android:minLines="10"
+                android:gravity="top|left|start"
+                android:hint="@string/hint_edit_note"
+                android:inputType="textMultiLine" />
+
+    </RelativeLayout>
+
+</ScrollView>

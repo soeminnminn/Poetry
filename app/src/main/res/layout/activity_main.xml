@@ -15,6 +15,7 @@
             android:layout_height="match_parent" >
 
         <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:background="?attr/activityBackground"
@@ -35,6 +36,22 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <androidx.cardview.widget.CardView
+                android:id="@+id/appBarEdit"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                app:cardCornerRadius="@dimen/dimen_0dp"
+                app:cardElevation="@dimen/dimen_4dp"
+                android:visibility="gone" >
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="?attr/popupMenuStyle"/>
+
+        </androidx.cardview.widget.CardView>
+
         <include layout="@layout/content_main"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -43,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/dimen_16dp"
-                app:srcCompat="@drawable/ic_edit_white"/>
+                app:srcCompat="@drawable/ic_add_white"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -54,6 +71,6 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/main_drawer"/>
+            app:menu="@menu/menu_main_drawer"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

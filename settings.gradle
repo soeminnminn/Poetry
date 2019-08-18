@@ -1,1 +1,1 @@
-include ':app', ':roomasset', ':richedit', ':helper'
+include ':app', ':roomasset', ':richedit'

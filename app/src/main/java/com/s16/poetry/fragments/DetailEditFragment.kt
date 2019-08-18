@@ -1,13 +1,11 @@
 package com.s16.poetry.fragments
 
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.s16.poetry.Constants
-
 import com.s16.poetry.R
 
 class DetailEditFragment : Fragment() {

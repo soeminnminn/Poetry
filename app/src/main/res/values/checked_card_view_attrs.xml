@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="checkedCardViewStyle" format="reference"/>
+
+    <declare-styleable name="CheckedCardView">
+        <!-- Background color for CardView. -->
+        <attr name="cardBackgroundColor"/>
+        <!-- Corner radius for CardView. -->
+        <attr name="cardCornerRadius"/>
+        <!-- Elevation for CardView. -->
+        <attr name="cardElevation"/>
+        <!-- Maximum Elevation for CardView. -->
+        <attr name="cardMaxElevation"/>
+        <!-- Add padding in API v21+ as well to have the same measurements with previous versions. -->
+        <attr name="cardUseCompatPadding"/>
+        <!-- Add padding to CardView on v20 and before to prevent intersections between the Card content and rounded corners. -->
+        <attr name="cardPreventCornerOverlap"/>
+        <!-- Inner padding between the edges of the Card and children of the CardView. -->
+        <attr name="contentPadding"/>
+        <!-- Inner padding between the left edge of the Card and children of the CardView. -->
+        <attr name="contentPaddingLeft"/>
+        <!-- Inner padding between the right edge of the Card and children of the CardView. -->
+        <attr name="contentPaddingRight"/>
+        <!-- Inner padding between the top edge of the Card and children of the CardView. -->
+        <attr name="contentPaddingTop"/>
+        <!-- Inner padding between the bottom edge of the Card and children of the CardView. -->
+        <attr name="contentPaddingBottom"/>
+        <!-- Workaround to read user defined minimum width -->
+        <attr name="android:minWidth"/>
+        <!-- Workaround to read user defined minimum height -->
+        <attr name="android:minHeight"/>
+        <!-- Whether the card can be checked. -->
+        <attr name="android:checkable"/>
+        <!-- Specifies the color used to draw the path outline of the card. Attribute type definition is
+         in resources package. -->
+        <attr name="strokeColor"/>
+        <!-- Width of the stroke path of the card. Default is 0. Attribute type definition is in
+             resources package. -->
+        <attr name="strokeWidth"/>
+    </declare-styleable>
+</resources>

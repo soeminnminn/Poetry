@@ -20,7 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.ColorUtils
 
-class DialogButtonBar : LinearLayout, DialogInterface {
+open class DialogButtonBar : LinearLayout, DialogInterface {
 
     private val colorAccent: Int
         get() {
@@ -42,6 +42,8 @@ class DialogButtonBar : LinearLayout, DialogInterface {
             context.theme.resolveAttribute(com.google.android.material.R.attr.selectableItemBackground, typedValue, true)
             return typedValue.resourceId
         }
+
+    var dialog: DialogInterface? = null
 
     private var mPositiveButtonTextId = 0
     private var mPositiveButtonText: CharSequence? = null
@@ -140,9 +142,15 @@ class DialogButtonBar : LinearLayout, DialogInterface {
     }
 
     override fun dismiss() {
+        if (dialog != null) {
+            dialog!!.dismiss()
+        }
     }
 
     override fun cancel() {
+        if (dialog != null) {
+            dialog!!.cancel()
+        }
     }
 
     private fun updateLayout() {
@@ -198,6 +206,7 @@ class DialogButtonBar : LinearLayout, DialogInterface {
      */
     fun setPositiveButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener) {
         mPositiveButtonTextId = textId
+        mPositiveButtonText = null
         mPositiveButtonListener = listener
         updateLayout()
     }
@@ -207,7 +216,8 @@ class DialogButtonBar : LinearLayout, DialogInterface {
      * @param text The text to onDisplayRebuyList in the positive image_button
      * @param listener The [DialogInterface.OnClickListener] to use.
      */
-    fun setPositiveButton(text: CharSequence, listener: DialogInterface.OnClickListener) {
+    fun setPositiveButton(text: CharSequence?, listener: DialogInterface.OnClickListener?) {
+        mPositiveButtonTextId = 0
         mPositiveButtonText = text
         mPositiveButtonListener = listener
         updateLayout()
@@ -220,6 +230,7 @@ class DialogButtonBar : LinearLayout, DialogInterface {
      */
     fun setNegativeButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener) {
         mNegativeButtonTextId = textId
+        mNegativeButtonText = null
         mNegativeButtonListener = listener
         updateLayout()
     }
@@ -229,7 +240,8 @@ class DialogButtonBar : LinearLayout, DialogInterface {
      * @param text The text to onDisplayRebuyList in the negative image_button
      * @param listener The [DialogInterface.OnClickListener] to use.
      */
-    fun setNegativeButton(text: CharSequence, listener: DialogInterface.OnClickListener) {
+    fun setNegativeButton(text: CharSequence?, listener: DialogInterface.OnClickListener?) {
+        mNegativeButtonTextId = 0
         mNegativeButtonText = text
         mNegativeButtonListener = listener
         updateLayout()
@@ -242,6 +254,7 @@ class DialogButtonBar : LinearLayout, DialogInterface {
      */
     fun setNeutralButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener) {
         mNeutralButtonTextId = textId
+        mNeutralButtonText = null
         mNeutralButtonListener = listener
         updateLayout()
     }
@@ -251,7 +264,8 @@ class DialogButtonBar : LinearLayout, DialogInterface {
      * @param text The text to onDisplayRebuyList in the neutral image_button
      * @param listener The [DialogInterface.OnClickListener] to use.
      */
-    fun setNeutralButton(text: CharSequence, listener: DialogInterface.OnClickListener) {
+    fun setNeutralButton(text: CharSequence?, listener: DialogInterface.OnClickListener?) {
+        mNeutralButtonTextId = 0
         mNeutralButtonText = text
         mNeutralButtonListener = listener
         updateLayout()

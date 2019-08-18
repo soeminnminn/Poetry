@@ -1,4 +1,4 @@
-<resources xmlns:app="http://schemas.android.com/apk/res-auto">
+<resources>
 
     <!-- https://medium.com/androiddevelopers/appcompat-v23-2-daynight-d10f90c83e94 -->
 
@@ -16,7 +16,7 @@
         <item name="navigationHeaderStyle">@style/AppTheme.AppBarHeader</item>
         <item name="navigationHeader">@style/AppTheme.PopupOverlay</item>
         <item name="toolbarMain">@style/AppWidget.Toolbar</item>
-        <item name="materialCardViewStyle">@style/AppWidget.ListCard</item>
+        <item name="checkedCardViewStyle">@style/AppWidget.ListCard</item>
         <item name="chipStyle">@style/AppWidget.Chip</item>
     </style>
 
@@ -33,7 +33,7 @@
         <item name="navigationHeaderStyle">@style/AppTheme.AppBarHeader.Light</item>
         <item name="navigationHeader">@style/AppTheme.PopupOverlay.Light</item>
         <item name="toolbarMain">@style/AppWidget.Toolbar.Light</item>
-        <item name="materialCardViewStyle">@style/AppWidget.ListCard.Light</item>
+        <item name="checkedCardViewStyle">@style/AppWidget.ListCard.Light</item>
         <item name="chipStyle">@style/AppWidget.Chip.Light</item>
     </style>
 
@@ -111,14 +111,16 @@
     </style>
 
     <style name="AppWidget.ListCard" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="strokeColor">@drawable/cardview_stroke_color</item>
+        <item name="android:checkable">true</item>
+        <item name="strokeColor">@color/cardview_stroke_color</item>
         <item name="strokeWidth">@dimen/dimen_1dp</item>
         <item name="cardCornerRadius">@dimen/dimen_10dp</item>
         <item name="cardElevation">@dimen/dimen_0dp</item>
     </style>
 
     <style name="AppWidget.ListCard.Light" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="strokeColor">@drawable/cardview_stroke_color_light</item>
+        <item name="android:checkable">true</item>
+        <item name="strokeColor">@color/cardview_stroke_color_light</item>
         <item name="strokeWidth">@dimen/dimen_1dp</item>
         <item name="cardCornerRadius">@dimen/dimen_10dp</item>
         <item name="cardElevation">@dimen/dimen_0dp</item>

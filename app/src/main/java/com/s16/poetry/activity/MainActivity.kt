@@ -3,6 +3,8 @@ package com.s16.poetry.activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -10,10 +12,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
@@ -26,15 +28,21 @@ import com.s16.poetry.data.Record
 import com.s16.poetry.data.RecordPagedModel
 import com.s16.poetry.fragments.AboutFragment
 import com.s16.utils.startActivity
-import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : ThemeActivity(),
+    NavigationView.OnNavigationItemSelectedListener,
+    RecordsPagedAdapter.OnItemSelectListener {
 
     private lateinit var navAdapter: NavMenuAdapter
+    private lateinit var recordsAdapter: RecordsPagedAdapter
     private lateinit var recordsModel: RecordPagedModel
 
     private lateinit var layoutManager: StaggeredGridLayoutManager
     private var menuItemViewMode: MenuItem? = null
+
+    private lateinit var appbar: ViewGroup
+    private lateinit var appbarEdit: ViewGroup
+    private lateinit var toolbarEdit: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +52,24 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        toolbarEdit = findViewById(R.id.toolbarEdit)
+        toolbarEdit.setNavigationIcon(R.drawable.ic_close_gray)
+        toolbarEdit.inflateMenu(R.menu.menu_main_edit)
+        toolbarEdit.setNavigationOnClickListener {
+            doSelectionEnd()
+        }
+        toolbarEdit.setOnMenuItemClickListener {
+            true
+        }
+
+        appbar = findViewById(R.id.appBar)
+        appbarEdit = findViewById(R.id.appBarEdit)
+
         val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        fab.setOnClickListener { _ ->
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
+            startActivity<DetailsActivity>(Pair(Constants.ARG_PARAM_ADD, 1))
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -62,11 +84,13 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
 
         navView.setNavigationItemSelectedListener(this)
 
-        val recordsAdapter = RecordsPagedAdapter()
+        recordsAdapter = RecordsPagedAdapter()
+        recordsAdapter.setItemSelectListener(this)
         recordsAdapter.setItemClickListener { _, id, _ ->
             startActivity<DetailsActivity>(Pair(Constants.ARG_PARAM_ID, id))
         }
 
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = recordsAdapter
@@ -87,16 +111,20 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
     }
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
+        if (recordsAdapter.isSelectedMode()) {
+            doSelectionEnd()
         } else {
-            super.onBackPressed()
+            val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                super.onBackPressed()
+            }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
@@ -133,6 +161,21 @@ class MainActivity : ThemeActivity(), NavigationView.OnNavigationItemSelectedLis
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onItemSelectStart() {
+        appbar.visibility = View.GONE
+        appbarEdit.visibility = View.VISIBLE
+    }
+
+    override fun onItemSelectionChange(position: Int, count: Int) {
+        toolbarEdit.title = "$count"
+    }
+
+    private fun doSelectionEnd() {
+        appbar.visibility = View.VISIBLE
+        appbarEdit.visibility = View.GONE
+        recordsAdapter.endSelection()
     }
 
     private fun filterRecords(categoryId: Int) {
