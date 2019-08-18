@@ -1,24 +1,46 @@
 package com.s16.poetry.data
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.AsyncTask
 import com.s16.utils.longOf
 import com.s16.utils.map
 import com.s16.utils.stringOf
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.*
 import java.lang.Exception
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 
-class RestoreRunnable(context: Context, private val file: File)
-    : ContextWrapper(context), Runnable {
+abstract class RestoreTask(private val context: Context, private val file: File)
+    : Runnable {
+
+    abstract fun onCanceled(message: String)
+
+    abstract fun onComplete()
+
+    override fun run() {
+        val manager = DbManager(context.applicationContext)
+
+        runBlocking {
+            val filePath = prepareFile(file)
+            if (filePath == null) {
+                onCanceled("Can not read backup file.")
+            } else {
+                val openHelper = createOpenHelper(filePath)
+                importData(manager, openHelper)
+                openHelper.close()
+
+                onComplete()
+            }
+        }
+    }
 
     private fun createOpenHelper(name: String): SQLiteOpenHelper {
-        return object: SQLiteOpenHelper(this, name, null, 1) {
+        return object: SQLiteOpenHelper(context, name, null, 1) {
             override fun onCreate(db: SQLiteDatabase?) {
                 db?.execSQL("PRAGMA user_version = 0;")
             }
@@ -28,74 +50,69 @@ class RestoreRunnable(context: Context, private val file: File)
         }
     }
 
-    private fun import(db: SQLiteDatabase) {
-        val provider = DbManager(applicationContext).provider()
+    private suspend fun prepareFile(file: File): String? =
+        withContext(Dispatchers.IO) {
+            var filePath: String? = "${context.cacheDir}/${file.name}"
 
-        val categories = db.rawQuery("SELECT * FROM categories", null)
-        if (categories != null) {
-            val data = categories.map {
-                Category(
-                    it longOf "_id",
-                    it stringOf "category_name",
-                    it stringOf "guid"
-                )
-            }
-
-            provider.insertAllCategories(data)
-            categories.close()
-        }
-
-
-        val tags = db.rawQuery("SELECT * FROM tags", null)
-        if (tags != null) {
-            val data = tags.map {
-                Tags(
-                    it longOf "_id",
-                    it stringOf "tag_name",
-                    it stringOf "guid"
-                )
-            }
-
-            provider.insertAllTags(data)
-            tags.close()
-        }
-    }
-
-    override fun run() {
-        var filePath = "$cacheDir/${file.name}"
-        try {
-            val fIn: InputStream = FileInputStream(file);
             if (file.extension == ".zip") {
-                val zis = ZipInputStream(BufferedInputStream(fIn))
-                val ze: ZipEntry = zis.nextEntry
+                try {
+                    val fIn: InputStream = FileInputStream(file);
+                    val zis = ZipInputStream(BufferedInputStream(fIn))
+                    val ze: ZipEntry = zis.nextEntry
 
-                filePath = "$cacheDir/${ze.name}"
-                val fOut = FileOutputStream(filePath)
-                val buffer = ByteArray(1024)
-                var length: Int = zis.read(buffer)
-                while (length > 0) {
-                    fOut.write(buffer, 0, length)
-                    length = zis.read(buffer)
+                    filePath = "${context.cacheDir}/${ze.name}"
+                    val fOut = FileOutputStream(filePath)
+                    val buffer = ByteArray(1024)
+                    var length: Int = zis.read(buffer)
+                    while (length > 0) {
+                        fOut.write(buffer, 0, length)
+                        length = zis.read(buffer)
+                    }
+                    fOut.flush()
+                    fOut.close()
+                    zis.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    filePath = null
                 }
-                fOut.flush()
-                fOut.close()
-                zis.close()
-
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+            filePath
         }
 
-        val openHelper = createOpenHelper(filePath)
+    private suspend fun importData(manager: DbManager, openHelper: SQLiteOpenHelper): String? =
+        withContext(Dispatchers.IO) {
+            val provider = manager.provider()
+            val db = openHelper.readableDatabase
 
-        import(openHelper.readableDatabase)
-        openHelper.close()
-    }
+            val categories = db.rawQuery("SELECT * FROM categories", null)
+            if (categories != null) {
+                val data = categories.map {
+                    Category(
+                        it longOf "_id",
+                        it stringOf "category_name",
+                        it stringOf "guid"
+                    )
+                }
 
-    companion object {
-        fun start(context: Context, file: File) {
-            val task = RestoreRunnable(context, file)
-            AsyncTask.execute(task)
+                provider.insertAllCategories(data)
+                categories.close()
+            }
+
+
+//            val tags = db.rawQuery("SELECT * FROM tags", null)
+//            if (tags != null) {
+//                val data = tags.map {
+//                    Tags(
+//                        it longOf "_id",
+//                        it stringOf "tag_name",
+//                        it stringOf "guid"
+//                    )
+//                }
+//
+//                provider.insertAllTags(data)
+//                tags.close()
+//            }
+
+            null
         }
-    }
 }

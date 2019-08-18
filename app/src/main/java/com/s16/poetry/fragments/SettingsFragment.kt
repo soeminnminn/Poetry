@@ -1,15 +1,19 @@
 package com.s16.poetry.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
 import com.s16.app.ProgressDialog
 import com.s16.poetry.Constants
 import com.s16.poetry.R
+import com.s16.poetry.data.BackupTask
+import com.s16.utils.alertDialog
+import com.s16.utils.confirmDialog
+import java.io.File
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -74,7 +78,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     setTitle(R.string.title_request_permission)
                     setMessage(R.string.message_request_permission)
                     setNegativeButton(android.R.string.cancel, null)
-                    setPositiveButton(android.R.string.ok) { dialog, which ->
+                    setPositiveButton(android.R.string.ok) { dialog, _ ->
                         requestPermissions(
                             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
                             requestCode)
@@ -97,14 +101,38 @@ class SettingsFragment : PreferenceFragmentCompat() {
         AboutFragment.newInstance().show(childFragmentManager, "aboutDialog")
     }
 
+    @SuppressLint("StaticFieldLeak")
     private fun doBackup() {
         val progressDialog = ProgressDialog(context!!).apply {
             isIndeterminate = true
             setProgressStyle(ProgressDialog.STYLE_SPINNER)
             setMessage(getText(R.string.message_backup_process))
         }
-        progressDialog.show()
 
+        val task = object: BackupTask(context!!) {
+            override fun onOverride(sender: BackupTask, file: File) {
+                context!!.confirmDialog(
+                    R.string.title_backup_dialog,
+                    R.string.message_backup_override) { _, _ ->
+                    sender.override(file)
+                }
+            }
+
+            override fun onStartBackup(file: File) {
+                progressDialog.show()
+            }
+
+            override fun onCanceled(message: String) {
+                progressDialog.hide()
+                context!!.alertDialog(R.string.title_backup_dialog, message)
+            }
+
+            override fun onComplete() {
+                progressDialog.hide()
+                context!!.alertDialog(R.string.title_backup_dialog, R.string.message_backup_complete)
+            }
+        }
+        task.run()
     }
 
     private fun showRestoreDialog() {

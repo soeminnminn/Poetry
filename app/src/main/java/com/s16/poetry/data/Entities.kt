@@ -27,12 +27,7 @@ data class Record(
     @ColumnInfo(name = "_id")
     var id: Long,
     var date: Long?,
-    var hours: String?,
-    var minutes: String?,
-    var seconds: String?,
-    var day: String?,
-    var month: String?,
-    var year: String?,
+//    var color: Long?,
     @ColumnInfo(name="note_title")
     var title: String?,
     @ColumnInfo(name="note_text")
@@ -76,6 +71,9 @@ data class DetailRecord(
 
     val date: Long?
         get() = record?.date
+
+//    val color: Long?
+//        get() = record?.color
 
     val title: String?
         get() = record?.title

@@ -22,16 +22,26 @@ interface DataProvider {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllRecordAdd(data: List<RecordsAdd>): List<Long>
 
-    @Query("SELECT * FROM categories")
+    @Query("""SELECT categories.* FROM categories
+        LEFT JOIN deleted ON categories.category_name = deleted.value AND deleted.type = 'Category'
+        WHERE deleted.value IS NULL""")
     fun listCategories(): LiveData<List<Category>>
 
-    @Query("SELECT * FROM tags")
+    @Query("""SELECT tags.* FROM tags
+        LEFT JOIN deleted ON tags.tag_name = deleted.value AND deleted.type = 'Tag'
+        WHERE deleted.value IS NULL""")
     fun listTags(): LiveData<List<Tags>>
 
-    @Query("SELECT * FROM records ORDER BY date DESC")
+    @Query("""SELECT records.* FROM records
+        LEFT JOIN deleted ON records.note_title = deleted.value AND deleted.type = 'Record'
+        WHERE deleted.value IS NULL
+        ORDER BY records.date DESC""")
     fun listPagedRecords(): DataSource.Factory<Int, Record>
 
-    @Query("SELECT * FROM records WHERE category IS :category ORDER BY date DESC")
+    @Query("""SELECT records.* FROM records
+        LEFT JOIN deleted ON records.note_title = deleted.value AND deleted.type = 'Record'
+        WHERE deleted.value IS NULL AND category IS :category
+        ORDER BY date DESC""")
     fun listPagedRecordsByCategory(category: String): DataSource.Factory<Int, Record>
 
     @Query("""SELECT records.*, records_add.type, records_add.value FROM records

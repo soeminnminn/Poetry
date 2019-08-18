@@ -12,7 +12,7 @@ class Constants {
         const val PREFS_RESTORE = "restore"
         const val PREFS_ABOUT = "about"
 
-        const val BACKUP_FILE_NAME = "PrivateDiaryBackup.zip"
+        const val BACKUP_FILE_NAME = "PrivateDiaryBackup"
 
         const val PERMISSION_RESULT_RESTORE = 0x1121
         const val PERMISSION_RESULT_BACKUP = 0x1221

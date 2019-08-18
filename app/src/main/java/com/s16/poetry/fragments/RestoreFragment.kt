@@ -13,7 +13,6 @@ import com.s16.poetry.R
 import com.s16.widget.DialogButtonBar
 import com.s16.widget.setNegativeButton
 import com.s16.widget.setPositiveButton
-import java.io.FilenameFilter
 
 
 class RestoreFragment : ThemeDialogFragment() {
@@ -55,7 +54,7 @@ class RestoreFragment : ThemeDialogFragment() {
             val extDir = Environment.getExternalStorageDirectory()
             Log.i("doRestore", "extDir = ${extDir.absolutePath}")
 
-            val files = extDir.listFiles { _, name -> name == Constants.BACKUP_FILE_NAME }
+            val files = extDir.listFiles { _, name -> name == "${Constants.BACKUP_FILE_NAME}.zip" }
             if (files.isEmpty()) {
                 fileNotFound()
             } else {

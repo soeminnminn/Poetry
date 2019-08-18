@@ -22,6 +22,7 @@
     <string name="title_activity_settings">@string/action_settings</string>
     <string name="title_request_permission">Poetry needs your permission</string>
     <string name="title_restore_dialog">Restore Poetry data</string>
+    <string name="title_backup_dialog">Backup Poetry data</string>
 
     <string name="message_request_permission">
         "Please allow us to access:\n\n"
@@ -31,7 +32,10 @@
     <string name="message_restore_process">Restoring data …</string>
     <string name="message_backup_file_not_found">Backup file not found in your storage</string>
     <string name="message_restore_warning">Warning: Current data will replaced by data backup. Continue?</string>
+    <string name="message_restore_complete">Restore complete</string>
+    <string name="message_backup_override">Backup file is already exists.\nAre you want to override?</string>
     <string name="message_backup_process">Backup is processing …</string>
+    <string name="message_backup_complete">Backup complete</string>
 
     <!-- Preference Titles -->
     <string name="prefs_category_general">General</string>
