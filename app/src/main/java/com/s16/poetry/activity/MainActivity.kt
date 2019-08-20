@@ -1,5 +1,7 @@
 package com.s16.poetry.activity
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -164,8 +166,23 @@ class MainActivity : ThemeActivity(),
     }
 
     override fun onItemSelectStart() {
-        appbar.visibility = View.GONE
-        appbarEdit.visibility = View.VISIBLE
+        appbar.animate()
+            .alpha(0f)
+            .setDuration(200)
+            .setListener(null)
+
+        appbarEdit.apply {
+            alpha = 0f
+            scaleX = 0f
+            scaleY = 0f
+            visibility = View.VISIBLE
+            animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .alpha(1f)
+                .setDuration(200)
+                .setListener(null)
+        }
     }
 
     override fun onItemSelectionChange(position: Int, count: Int) {
@@ -173,8 +190,21 @@ class MainActivity : ThemeActivity(),
     }
 
     private fun doSelectionEnd() {
-        appbar.visibility = View.VISIBLE
-        appbarEdit.visibility = View.GONE
+        appbar.animate()
+            .alpha(1f)
+            .setDuration(200)
+            .setListener(null)
+
+        appbarEdit.animate()
+            .alpha(0f)
+            .scaleX(0f)
+            .scaleY(0f)
+            .setDuration(200)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    appbarEdit.visibility = View.GONE
+                }
+            })
         recordsAdapter.endSelection()
     }
 
