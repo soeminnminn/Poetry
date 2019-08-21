@@ -37,6 +37,10 @@
     <string name="message_backup_override">Backup file is already exists.\nAre you want to override?</string>
     <string name="message_backup_process">Backup is processing …</string>
     <string name="message_backup_complete">Backup complete</string>
+    
+    <string name="transition_root">transition_root</string>
+    <string name="transition_title">transition_title</string>
+    <string name="transition_note">transition_note</string>
 
     <!-- Preference Titles -->
     <string name="prefs_category_general">General</string>
@@ -69,11 +73,9 @@
     <string name="prefs_about">About Poetry</string>
     <string name="version_text">Version - %s</string>
     <string name="about_text">
-        <Data><![CDATA[
-      <p><b>Poetry</b></p>
-      <p>Develop by <a href='http://www.facebook.com/soeminnminn'>Soe Minn Minn</a></p>
-      <p>Copyright \u00A9 2019 The Android Open Source Project</p>
-      ]]></Data>
+        "<p><b>Poetry</b></p>"
+        "<p>Develop by <a href='http://www.facebook.com/soeminnminn'>Soe Minn Minn</a></p>"
+        "<p>Copyright \u00A9 2019 The Android Open Source Project</p>"
     </string>
 
     <string name="large_text">

@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
@@ -263,6 +264,24 @@ fun Activity.translucentNavigationBar(value: Boolean) = window.let {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
         }
     }
+}
+
+/**
+ * Convenient method to avoid the Navigation Bar to blink during transitions on some devices
+ * @see https://stackoverflow.com/questions/26600263/how-do-i-prevent-the-status-bar-and-navigation-bar-from-animating-during-an-acti
+ */
+fun Activity.makeSceneTransitionAnimation(vararg pairs: Pair<View, String>): ActivityOptionsCompat {
+    val updatedPairs = pairs.toMutableList()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        val navBar = findViewById<View>(android.R.id.navigationBarBackground)
+        if (navBar != null) {
+            updatedPairs.add(Pair(navBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME))
+        }
+    }
+    val newPairs = updatedPairs.map {
+        androidx.core.util.Pair.create(it.first, it.second)
+    }
+    return ActivityOptionsCompat.makeSceneTransitionAnimation(this, *newPairs.toTypedArray())
 }
 
 fun Intent.clearTask(): Intent = apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK) }

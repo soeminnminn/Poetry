@@ -5,6 +5,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/background_holo_dark</item>
+
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/grid_detail_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/grid_detail_transition</item>
     </style>
 
     <style name="AppTheme.Light.NoActionBar">
@@ -12,6 +16,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/background_holo_light</item>
+
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/grid_detail_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/grid_detail_transition</item>
     </style>
 
     <style name="AppTheme.TranslucentStatus">

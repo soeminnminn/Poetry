@@ -2,13 +2,12 @@ package com.s16.poetry.activity
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -29,6 +28,7 @@ import com.s16.poetry.data.CategoryModel
 import com.s16.poetry.data.Record
 import com.s16.poetry.data.RecordPagedModel
 import com.s16.poetry.fragments.AboutFragment
+import com.s16.utils.makeSceneTransitionAnimation
 import com.s16.utils.startActivity
 
 class MainActivity : ThemeActivity(),
@@ -42,10 +42,6 @@ class MainActivity : ThemeActivity(),
     private lateinit var layoutManager: StaggeredGridLayoutManager
     private var menuItemViewMode: MenuItem? = null
 
-    private lateinit var appbar: ViewGroup
-    private lateinit var appbarEdit: ViewGroup
-    private lateinit var toolbarEdit: Toolbar
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -54,7 +50,7 @@ class MainActivity : ThemeActivity(),
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        toolbarEdit = findViewById(R.id.toolbarEdit)
+        val toolbarEdit: Toolbar = findViewById(R.id.toolbarEdit)
         toolbarEdit.setNavigationIcon(R.drawable.ic_close_gray)
         toolbarEdit.inflateMenu(R.menu.menu_main_edit)
         toolbarEdit.setNavigationOnClickListener {
@@ -63,9 +59,6 @@ class MainActivity : ThemeActivity(),
         toolbarEdit.setOnMenuItemClickListener {
             true
         }
-
-        appbar = findViewById(R.id.appBar)
-        appbarEdit = findViewById(R.id.appBarEdit)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {
@@ -86,8 +79,21 @@ class MainActivity : ThemeActivity(),
 
         recordsAdapter = RecordsPagedAdapter()
         recordsAdapter.setItemSelectListener(this)
-        recordsAdapter.setItemClickListener { _, id, _ ->
-            startActivity<DetailsActivity>(Pair(Constants.ARG_PARAM_ID, id))
+        recordsAdapter.setItemClickListener { view, id, _ ->
+            val intent = Intent(this, DetailsActivity::class.java)
+            intent.putExtra(Constants.ARG_PARAM_ID, id)
+
+            val cardView: View = view.findViewById(R.id.cardView)
+            val noteTitle: View = view.findViewById(R.id.noteTitle)
+            val noteContent: View = view.findViewById(R.id.noteContent)
+
+            val options = makeSceneTransitionAnimation(
+                Pair(cardView, getString(R.string.transition_root)),
+                Pair(noteTitle, getString(R.string.transition_title)),
+                Pair(noteContent, getString(R.string.transition_note))
+            ).toBundle()
+
+            ActivityCompat.startActivity(this, intent, options)
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
@@ -164,6 +170,9 @@ class MainActivity : ThemeActivity(),
     }
 
     override fun onItemSelectStart() {
+        val appbar: ViewGroup = findViewById(R.id.appBar)
+        val appbarEdit: ViewGroup = findViewById(R.id.appBarEdit)
+
         appbar.animate()
             .alpha(0f)
             .setDuration(200)
@@ -184,10 +193,14 @@ class MainActivity : ThemeActivity(),
     }
 
     override fun onItemSelectionChange(position: Int, count: Int) {
+        val toolbarEdit: Toolbar = findViewById(R.id.toolbarEdit)
         toolbarEdit.title = "$count"
     }
 
     private fun doSelectionEnd() {
+        val appbar: ViewGroup = findViewById(R.id.appBar)
+        val appbarEdit: ViewGroup = findViewById(R.id.appBarEdit)
+
         appbar.animate()
             .alpha(1f)
             .setDuration(200)

@@ -11,8 +11,10 @@
         <item name="colorAccent">@color/colorPrimary</item>
 
         <item name="activityBackground">@color/bright_foreground_holo_light</item>
+        <item name="brightBackground">@color/background_default</item>
         <item name="dialogTheme">@style/AppTheme.Dialog.NoTitle</item>
         <item name="popupMenuStyle">@style/AppTheme.PopupOverlay.Light</item>
+        <item name="bottomAppBarStyle">@style/AppWidget.BottomAppBar</item>
         <item name="navigationHeaderStyle">@style/AppTheme.AppBarHeader</item>
         <item name="navigationHeader">@style/AppTheme.PopupOverlay</item>
         <item name="toolbarMain">@style/AppWidget.Toolbar</item>
@@ -28,8 +30,10 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="activityBackground">@color/background_holo_light</item>
+        <item name="brightBackground">@color/white</item>
         <item name="dialogTheme">@style/AppTheme.Dialog.Light.NoTitle</item>
         <item name="popupMenuStyle">@style/AppTheme.PopupOverlay.Light</item>
+        <item name="bottomAppBarStyle">@style/AppWidget.BottomAppBar.Light</item>
         <item name="navigationHeaderStyle">@style/AppTheme.AppBarHeader.Light</item>
         <item name="navigationHeader">@style/AppTheme.PopupOverlay.Light</item>
         <item name="toolbarMain">@style/AppWidget.Toolbar.Light</item>
@@ -108,6 +112,14 @@
 
     <style name="AppWidget.Toolbar.Light" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:background">@drawable/border_background_light</item>
+    </style>
+
+    <style name="AppWidget.BottomAppBar" parent="@style/Widget.MaterialComponents.BottomAppBar">
+        <item name="backgroundTint">@color/bright_foreground_holo_light</item>
+    </style>
+
+    <style name="AppWidget.BottomAppBar.Light" parent="@style/Widget.MaterialComponents.BottomAppBar">
+        <item name="backgroundTint">@color/white</item>
     </style>
 
     <style name="AppWidget.ListCard" parent="@style/Widget.MaterialComponents.CardView">
