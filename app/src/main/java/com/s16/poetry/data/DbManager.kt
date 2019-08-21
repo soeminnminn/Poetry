@@ -15,7 +15,8 @@ import java.io.File
     Record::class,
     RecordsAdd::class,
     Tags::class],
-    version = 1)
+    version = 1,
+    exportSchema = false)
 abstract class DbManager: RoomDatabase() {
     abstract fun provider(): DataProvider
 

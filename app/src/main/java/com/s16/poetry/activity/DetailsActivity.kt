@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
@@ -25,6 +26,9 @@ class DetailsActivity : ThemeActivity() {
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val bottomBar: BottomAppBar = findViewById(R.id.bottomAppBar)
+        bottomBar.inflateMenu(R.menu.menu_details_bottom)
 
         val id = intent.getLongExtra(Constants.ARG_PARAM_ID, -1)
         openMode = intent.getIntExtra(Constants.ARG_PARAM_ADD, 0)

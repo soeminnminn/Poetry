@@ -32,6 +32,21 @@
             android:id="@+id/detailContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/app_bar"/>
+            android:layout_below="@+id/app_bar"
+            android:layout_above="@+id/bottom_bar"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottomAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="?attr/popupMenuStyle" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>
