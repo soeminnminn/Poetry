@@ -3,9 +3,9 @@ package com.s16.poetry.data
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.s16.utils.longOf
-import com.s16.utils.map
-import com.s16.utils.stringOf
+import android.util.Log
+import com.s16.poetry.Constants
+import com.s16.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -54,11 +54,14 @@ abstract class RestoreTask(private val context: Context, private val file: File)
         withContext(Dispatchers.IO) {
             var filePath: String? = "${context.cacheDir}/${file.name}"
 
-            if (file.extension == ".zip") {
+            if (file.extension == "zip") {
                 try {
                     val fIn: InputStream = FileInputStream(file);
                     val zis = ZipInputStream(BufferedInputStream(fIn))
-                    val ze: ZipEntry = zis.nextEntry
+                    var ze: ZipEntry = zis.nextEntry
+                    while (ze.name != "${Constants.BACKUP_FILE_NAME}.db") {
+                        ze = zis.nextEntry
+                    }
 
                     filePath = "${context.cacheDir}/${ze.name}"
                     val fOut = FileOutputStream(filePath)
@@ -76,6 +79,8 @@ abstract class RestoreTask(private val context: Context, private val file: File)
                     filePath = null
                 }
             }
+
+            Log.i("RestoreTask", "filePath = $filePath")
             filePath
         }
 
@@ -89,29 +94,81 @@ abstract class RestoreTask(private val context: Context, private val file: File)
                 val data = categories.map {
                     Category(
                         it longOf "_id",
-                        it stringOf "category_name",
+                        it nullableStringOf "category_name",
                         it stringOf "guid"
                     )
                 }
 
-                provider.insertAllCategories(data)
+                val result = provider.deleteInsertAllCategories(data)
                 categories.close()
+                Log.i("RestoreTask", "restore categories ${result.size}")
+            }
+
+            val deleted = db.rawQuery("SELECT * FROM deleted", null)
+            if (deleted != null) {
+                val data = deleted.map {
+                    Deleted(
+                        type = it nullableStringOf "type",
+                        value =  it nullableStringOf "value"
+                    )
+                }
+
+                val result = provider.deleteInsertAllDeleted(data)
+                deleted.close()
+                Log.i("RestoreTask", "restore deleted ${result.size}")
+            }
+
+            val records = db.rawQuery("SELECT * FROM records", null)
+            if (records != null) {
+                val data = records.map {
+                    Record(
+                        it longOf "_id",
+                        it nullableLongOf "date",
+                        it nullableLongOf "color",
+                        it nullableStringOf "note_title",
+                        it nullableStringOf "note_text",
+                        it nullableStringOf "category",
+                        it longOf "upd_time",
+                        it stringOf "guid"
+                    )
+                }
+
+                val result = provider.deleteInsertAllRecords(data)
+                records.close()
+                Log.i("RestoreTask", "restore records ${result.size}")
+            }
+
+            val recordsAdd = db.rawQuery("SELECT * FROM records_add", null)
+            if (recordsAdd != null) {
+                val data = recordsAdd.map {
+                    RecordsAdd(
+                        it longOf "_id",
+                        it nullableLongOf "record_id",
+                        it nullableStringOf "type",
+                        it nullableStringOf "value"
+                    )
+                }
+
+                val result = provider.deleteInsertAllRecordsAdd(data)
+                recordsAdd.close()
+                Log.i("RestoreTask", "restore recordsAdd ${result.size}")
             }
 
 
-//            val tags = db.rawQuery("SELECT * FROM tags", null)
-//            if (tags != null) {
-//                val data = tags.map {
-//                    Tags(
-//                        it longOf "_id",
-//                        it stringOf "tag_name",
-//                        it stringOf "guid"
-//                    )
-//                }
-//
-//                provider.insertAllTags(data)
-//                tags.close()
-//            }
+            val tags = db.rawQuery("SELECT * FROM tags", null)
+            if (tags != null) {
+                val data = tags.map {
+                    Tags(
+                        it longOf "_id",
+                        it nullableStringOf "tag_name",
+                        it stringOf "guid"
+                    )
+                }
+
+                val result = provider.deleteInsertAllTags(data)
+                tags.close()
+                Log.i("RestoreTask", "restore tags ${result.size}")
+            }
 
             null
         }

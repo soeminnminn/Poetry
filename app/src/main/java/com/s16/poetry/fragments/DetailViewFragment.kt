@@ -45,32 +45,38 @@ class DetailViewFragment : Fragment() {
         val noteCategory: TextView = view.findViewById(R.id.noteCategory)
         val noteTags: ChipGroup = view.findViewById(R.id.noteTags)
 
-        val model: DetailsModel = ViewModelProviders.of(activity!!, DetailsModelFactory(activity!!.application, id))
-            .get(DetailsModel::class.java)
-        model.data.observe(this, Observer<DetailRecord> { record ->
-            noteTitle.text = record.title
-            noteContent.text = record.text
-            noteLastModify.text = Date(record.date!!).formatToViewDateDefaults()
-            if (record.category != null) {
-                noteCategory.text = record.category
-            } else {
-                noteCategory.gone()
-            }
-            noteTags.removeAllViewsInLayout()
-            if (record.tags.isNotEmpty()) {
-                record.tags.forEach { tag ->
-                    val chip = Chip(noteTags.context).apply {
-                        text = tag
-                        isClickable = false
-                        setCheckedIconResource(R.drawable.ic_tag_gray)
-                        isChecked = true
+        if (id != -1L) {
+            val model: DetailsModel = ViewModelProviders.of(activity!!, DetailsModelFactory(activity!!.application, id))
+                .get(DetailsModel::class.java)
+            model.data.observe(this, Observer<DetailRecord> { record ->
+                if (record != null) {
+                    noteTitle.text = record.title ?: ""
+                    noteContent.text = record.text ?: ""
+                    if (record.date != null) {
+                        noteLastModify.text = Date(record.date!!).formatToViewDateDefaults()
                     }
-                    noteTags.addView(chip)
+                    if (record.category != null) {
+                        noteCategory.text = record.category
+                    } else {
+                        noteCategory.gone()
+                    }
+                    noteTags.removeAllViewsInLayout()
+                    if (record.tags.isNotEmpty()) {
+                        record.tags.forEach { tag ->
+                            val chip = Chip(noteTags.context).apply {
+                                text = tag
+                                isClickable = false
+                                setCheckedIconResource(R.drawable.ic_tag_gray)
+                                isChecked = true
+                            }
+                            noteTags.addView(chip)
+                        }
+                    } else {
+                        noteTags.gone()
+                    }
                 }
-            } else {
-                noteTags.gone()
-            }
-        })
+            })
+        }
     }
 
     companion object {

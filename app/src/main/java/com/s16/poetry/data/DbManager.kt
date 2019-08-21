@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.s16.roomasset.AssetSQLiteOpenHelperFactory
 import java.io.File
 
 // PRAGMA schema_version = 1;
@@ -16,8 +15,7 @@ import java.io.File
     Record::class,
     RecordsAdd::class,
     Tags::class],
-    version = 1,
-    exportSchema = false)
+    version = 1)
 abstract class DbManager: RoomDatabase() {
     abstract fun provider(): DataProvider
 
@@ -38,8 +36,6 @@ abstract class DbManager: RoomDatabase() {
             context,
             DbManager::class.java,
             "diary.db")
-            .fallbackToDestructiveMigration()
-            .openHelperFactory(AssetSQLiteOpenHelperFactory("database"))
             .build()
     }
 }

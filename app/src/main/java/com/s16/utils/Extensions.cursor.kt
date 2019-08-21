@@ -85,3 +85,45 @@ infix fun Cursor.doubleOf(columnName: String): Double {
     if (idx == -1) return (-1).toDouble()
     return getDouble(idx)
 }
+
+infix fun Cursor.nullableBlobOf(columnName: String): ByteArray? {
+    val idx = getColumnIndex(columnName)
+    if (idx == -1) return null
+    return getBlob(idx)
+}
+
+infix fun Cursor.nullableStringOf(columnName: String): String? {
+    val idx = getColumnIndex(columnName)
+    if (idx == -1) return null
+    return getString(idx)
+}
+
+infix fun Cursor.nullableShortOf(columnName: String): Short? {
+    val idx = getColumnIndex(columnName)
+    if (idx == -1) return null
+    return getShort(idx)
+}
+
+infix fun Cursor.nullableIntOf(columnName: String): Int? {
+    val idx = getColumnIndex(columnName)
+    if (idx == -1) return null
+    return getInt(idx)
+}
+
+infix fun Cursor.nullableLongOf(columnName: String): Long? {
+    val idx = getColumnIndex(columnName)
+    if (idx == -1) return null
+    return getLong(idx)
+}
+
+infix fun Cursor.nullableFloatOf(columnName: String): Float? {
+    val idx = getColumnIndex(columnName)
+    if (idx == -1) return null
+    return getFloat(idx)
+}
+
+infix fun Cursor.nullableDoubleOf(columnName: String): Double? {
+    val idx = getColumnIndex(columnName)
+    if (idx == -1) return null
+    return getDouble(idx)
+}

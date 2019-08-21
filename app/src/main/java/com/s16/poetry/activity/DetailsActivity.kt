@@ -13,39 +13,38 @@ import com.s16.utils.startActivity
 
 class DetailsActivity : ThemeActivity() {
 
+    private lateinit var toolbar: Toolbar
     private var openMode: Int = 0
+    private var currentMode: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         updateSystemUiColor()
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val id = intent.getLongExtra(Constants.ARG_PARAM_ID, -1)
         openMode = intent.getIntExtra(Constants.ARG_PARAM_ADD, 0)
 
-        when (openMode) {
-            1 ->
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.detailContainer, DetailEditFragment.newInstance(id))
-                    .commit()
-            else ->
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.detailContainer, DetailViewFragment.newInstance(id))
-                    .commit()
-        }
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.detailContainer, DetailEditFragment.newInstance(id), "detailsEdit")
+            .add(R.id.detailContainer, DetailViewFragment.newInstance(id), "detailsView")
+            .commitNow()
+
+
+        currentMode = openMode
+        swiftMode(openMode)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (openMode == 0)
-            menuInflater.inflate(R.menu.menu_details, menu)
-        else
+        if (currentMode == 1)
             menuInflater.inflate(R.menu.menu_details_edit, menu)
+        else
+            menuInflater.inflate(R.menu.menu_details, menu)
         return true
     }
 
@@ -55,11 +54,59 @@ class DetailsActivity : ThemeActivity() {
                 onBackPressed()
                 true
             }
+            R.id.action_edit -> {
+                currentMode = 1
+                swiftMode(1)
+                true
+            }
+            R.id.action_delete -> {
+                true
+            }
             R.id.action_settings -> {
                 startActivity<SettingsActivity>()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        if (currentMode == 1) {
+            save()
+        }
+
+        if (openMode == 0 && currentMode == 1) {
+            currentMode = 0
+            swiftMode(0)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    private fun swiftMode(mode: Int) {
+        when (mode) {
+            1 -> {
+                invalidateOptionsMenu()
+
+                supportFragmentManager
+                    .beginTransaction()
+                    .hide(supportFragmentManager.findFragmentByTag("detailsView")!!)
+                    .show(supportFragmentManager.findFragmentByTag("detailsEdit")!!)
+                    .commit()
+            }
+            else -> {
+                invalidateOptionsMenu()
+
+                supportFragmentManager
+                    .beginTransaction()
+                    .hide(supportFragmentManager.findFragmentByTag("detailsEdit")!!)
+                    .show(supportFragmentManager.findFragmentByTag("detailsView")!!)
+                    .commit()
+            }
+        }
+    }
+
+    private fun save() {
+
     }
 }

@@ -68,9 +68,7 @@ class MainActivity : ThemeActivity(),
         appbarEdit = findViewById(R.id.appBarEdit)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { _ ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
+        fab.setOnClickListener {
             startActivity<DetailsActivity>(Pair(Constants.ARG_PARAM_ADD, 1))
         }
 

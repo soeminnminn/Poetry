@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.StringRes
 import com.s16.app.ThemeDialogFragment
 import com.s16.poetry.Constants
 import com.s16.poetry.R
+import com.s16.poetry.data.RestoreTask
 import com.s16.widget.DialogButtonBar
 import com.s16.widget.setNegativeButton
 import com.s16.widget.setPositiveButton
+import java.io.File
 
 
 class RestoreFragment : ThemeDialogFragment() {
@@ -56,17 +59,45 @@ class RestoreFragment : ThemeDialogFragment() {
 
             val files = extDir.listFiles { _, name -> name == "${Constants.BACKUP_FILE_NAME}.zip" }
             if (files.isEmpty()) {
-                fileNotFound()
+                showMessage(R.string.message_backup_file_not_found)
             } else {
-                //
+                runRestoreTask(files.first())
             }
         } else {
-            fileNotFound()
+            showMessage(R.string.message_backup_file_not_found)
         }
     }
 
-    private fun fileNotFound() {
-        message.setText(R.string.message_backup_file_not_found)
+    private fun runRestoreTask(file: File) {
+        val task = object: RestoreTask(context!!, file) {
+            override fun onCanceled(message: String) {
+                showMessage(message)
+            }
+
+            override fun onComplete() {
+                showMessage(R.string.message_restore_complete)
+            }
+
+        }
+        task.run()
+    }
+
+    private fun showMessage(@StringRes msg: Int) {
+        message.setText(msg)
+        message.visibility = View.VISIBLE
+        message.visibility = View.VISIBLE
+        loading.visibility = View.GONE
+
+        dialogButtons.setNegativeButton(null, null)
+        dialogButtons.setPositiveButton(android.R.string.ok) { _, _ ->
+            dismiss()
+        }
+        dialogButtons.visibility = View.VISIBLE
+    }
+
+    private fun showMessage(msg: String) {
+        message.text = msg
+        message.visibility = View.VISIBLE
         message.visibility = View.VISIBLE
         loading.visibility = View.GONE
 

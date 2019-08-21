@@ -16,7 +16,7 @@ data class Category(
 data class Deleted(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var id: Long,
+    var id: Long = 0,
     var type: String?,
     var value: String?
 )
@@ -27,7 +27,7 @@ data class Record(
     @ColumnInfo(name = "_id")
     var id: Long,
     var date: Long?,
-//    var color: Long?,
+    var color: Long?,
     @ColumnInfo(name="note_title")
     var title: String?,
     @ColumnInfo(name="note_text")
@@ -72,8 +72,8 @@ data class DetailRecord(
     val date: Long?
         get() = record?.date
 
-//    val color: Long?
-//        get() = record?.color
+    val color: Long?
+        get() = record?.color
 
     val title: String?
         get() = record?.title

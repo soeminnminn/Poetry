@@ -9,7 +9,7 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dimen_4dp"
+            android:paddingTop="@dimen/dimen_16dp"
             android:paddingLeft="@dimen/dimen_16dp"
             android:paddingStart="@dimen/dimen_16dp"
             android:paddingRight="@dimen/dimen_16dp"
@@ -19,6 +19,7 @@
         <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/editTitle"
                 android:layout_width="match_parent"
+                android:textAppearance="?android:textAppearanceLarge"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="@string/hint_edit_title"
@@ -29,15 +30,15 @@
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_8dp"
+            android:layout_height="@dimen/dimen_16dp"
             android:layout_below="@+id/editTitle"/>
 
         <com.commonsware.cwac.richedit.RichEditText
-                android:id="@+id/richEditText"
+                android:id="@+id/editNote"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/divider"
-                android:layout_marginTop="@dimen/dimen_4dp"
+                android:textAppearance="?android:textAppearanceMedium"
                 android:background="@null"
                 android:minLines="10"
                 android:gravity="top|left|start"
