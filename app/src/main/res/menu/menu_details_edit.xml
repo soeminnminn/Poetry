@@ -4,9 +4,16 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".activity.DetailsActivity">
 
+    <item android:id="@+id/action_save"
+            android:title="@string/action_save"
+            android:icon="@drawable/ic_save_gray"
+            android:orderInCategory="1"
+            app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
-          android:orderInCategory="100"
-          app:showAsAction="never"/>
+            android:title="@string/action_settings"
+            android:icon="@drawable/ic_settings_gray"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
 
 </menu>

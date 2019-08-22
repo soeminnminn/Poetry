@@ -66,8 +66,8 @@ class RecordsPagedAdapter:
         }
     }
 
-    override fun onSelectionChange(position: Int, isChecked: Boolean) {
-        if (isChecked) {
+    override fun onSelectionChange(position: Int, checked: Boolean) {
+        if (checked) {
             if (!mCheckedItems.contains(position)) mCheckedItems.add(position)
         } else {
             if (mCheckedItems.contains(position)) mCheckedItems.remove(position)

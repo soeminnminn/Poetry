@@ -133,6 +133,7 @@ fun Date.toCalendar(): Calendar {
 /**
  * Calendar Extensions
  */
+@Suppress("DEPRECATION")
 fun Calendar.set(date: Date) {
     set(date.year + 1900, date.month, date.date)
 }

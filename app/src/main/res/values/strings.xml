@@ -13,6 +13,8 @@
     <string name="action_edit">Edit</string>
     <string name="action_share">Share</string>
     <string name="action_delete">Delete</string>
+    <string name="action_save">Save</string>
+    <string name="action_make_copy">Make a copy</string>
     <string name="action_add_category">Add Category</string>
     <string name="action_add_tags">Add Tag</string>
     <string name="action_about">About</string>
