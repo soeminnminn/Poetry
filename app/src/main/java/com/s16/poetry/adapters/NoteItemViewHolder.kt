@@ -2,9 +2,10 @@ package com.s16.poetry.adapters
 
 import android.view.View
 import android.widget.TextView
+import com.s16.poetry.Constants
 import com.s16.poetry.R
 import com.s16.poetry.data.Record
-import com.s16.utils.formatToViewDateDefaults
+import com.s16.utils.format
 import com.s16.widget.CheckedCardView
 import com.s16.widget.RecyclerViewHolder
 import java.util.*
@@ -72,7 +73,7 @@ class NoteItemViewHolder(view: View, private val adapter: LongClickSelectable)
         content.text = record.text
 
         lastEdit.text = if (record.date != null) {
-            Date(record.date!!).formatToViewDateDefaults()
+            Date(record.date!!).format(Constants.DISPLAY_DATE_FORMAT)
         } else {
             ""
         }

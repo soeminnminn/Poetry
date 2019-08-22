@@ -206,7 +206,7 @@ open class AlertDialogFragment : DialogFragment(), DialogInterface.OnShowListene
      * @param textId The resource id of the text to onDisplayRebuyList in the positive image_button
      * @param listener The [DialogInterface.OnClickListener] to use.
      */
-    fun setPositiveButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener) {
+    fun setPositiveButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener?) {
         P.mPositiveButtonTextId = textId
         P.mPositiveButtonListener = listener
     }
@@ -226,7 +226,7 @@ open class AlertDialogFragment : DialogFragment(), DialogInterface.OnShowListene
      * @param textId The resource id of the text to onDisplayRebuyList in the negative image_button
      * @param listener The [DialogInterface.OnClickListener] to use.
      */
-    fun setNegativeButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener) {
+    fun setNegativeButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener?) {
         P.mNegativeButtonTextId = textId
         P.mNegativeButtonListener = listener
     }
@@ -246,7 +246,7 @@ open class AlertDialogFragment : DialogFragment(), DialogInterface.OnShowListene
      * @param textId The resource id of the text to onDisplayRebuyList in the neutral image_button
      * @param listener The [DialogInterface.OnClickListener] to use.
      */
-    fun setNeutralButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener) {
+    fun setNeutralButton(@StringRes textId: Int, listener: DialogInterface.OnClickListener?) {
         P.mNeutralButtonTextId = textId
         P.mNeutralButtonListener = listener
     }

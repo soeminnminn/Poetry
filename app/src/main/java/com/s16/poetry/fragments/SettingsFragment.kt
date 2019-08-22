@@ -105,6 +105,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun doBackup() {
         val progressDialog = ProgressDialog(context!!).apply {
             isIndeterminate = true
+            setCancelable(false)
             setProgressStyle(ProgressDialog.STYLE_SPINNER)
             setMessage(getText(R.string.message_backup_process))
         }

@@ -33,35 +33,10 @@
             android:id="@+id/detailContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/appBar"
-            android:layout_above="@+id/bottom_bar">
+            android:layout_below="@+id/appBar">
 
         <include layout="@layout/content_details" />
 
     </FrameLayout>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/bottom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-                android:id="@+id/bottomAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="?attr/popupMenuStyle" >
-
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/noteLastModify"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:textAppearanceSmall"
-                    android:gravity="center"
-                    tools:text="@string/app_name"/>
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>

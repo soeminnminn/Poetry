@@ -5,6 +5,8 @@ class Constants {
         const val ARG_PARAM_ADD = "add"
         const val ARG_PARAM_ID = "id"
 
+        const val DISPLAY_DATE_FORMAT = "dd/MM/yyyy"
+
         const val PREFS_SELECT_THEME = "select_theme"
         const val PREFS_MANAGE_CATEGORY = "manage_category"
         const val PREFS_MANAGE_TAG = "manage_tags"

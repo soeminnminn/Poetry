@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- NumberPicker style. -->
+    <attr name="numberPickerStyle" />
+
+    <!-- The CalendarView style. -->
+    <attr name="calendarViewStyle" />
+
+    <!-- The TimePicker style. -->
+    <attr name="timePickerStyle" />
+
+    <!-- The TimePicker dialog theme. -->
+    <attr name="timePickerDialogTheme" />
+
+    <!-- The DatePicker style. -->
+    <attr name="datePickerStyle" />
+
+    <!-- The DatePicker dialog theme. -->
+    <attr name="datePickerDialogTheme" />
+
+    <declare-styleable name="DatePicker">
+        <!-- The first day of week according to {@link java.util.Calendar}. -->
+        <attr name="firstDayOfWeek" />
+        <!-- The minimal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="minDate" />
+        <!-- The maximal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="maxDate" />
+
+        <!-- Whether the spinners are shown. Only valid for "spinner" mode. -->
+        <attr name="spinnersShown" />
+        <!-- Whether the calendar view is shown. Only valid for "spinner" mode. -->
+        <attr name="calendarViewShown" />
+
+        <!-- @hide The layout of the date picker. -->
+        <attr name="dtp_internalLayout" format="reference" />
+        <!-- @hide The layout of the legacy DatePicker. -->
+        <attr name="dtp_legacyLayout" />
+
+        <!-- The text color for the selected date header text, ex. "2014" or
+             "Tue, Mar 18". This should be a color state list where the
+             activated state will be used when the year picker or day picker is
+             active.-->
+        <attr name="dtp_headerTextColor" format="color" />
+        <!-- The background for the selected date header. -->
+        <attr name="headerBackground" />
+
+        <!-- The text color list of the calendar. -->
+        <attr name="calendarTextColor" />
+
+        <!-- Defines the look of the widget. Prior to the L release, the only choice was
+             spinner. As of L, with the Material theme selected, the default layout is calendar,
+             but this attribute can be used to force spinner to be used instead. -->
+        <attr name="datePickerMode" />
+
+        <!-- Whether this time picker is being displayed within a dialog,
+             in which case it may ignore the requested time picker mode due to
+             space considerations. -->
+        <attr name="dtp_dialogMode" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="TimePicker">
+        <!-- @hide The layout of the legacy time picker. -->
+        <attr name="dtp_legacyLayout" />
+        <!-- @hide The layout of the time picker. -->
+        <attr name="dtp_internalLayout" />
+
+        <!-- The text color for the selected time header text, ex. "12" or
+             "PM". This should be a color state list where the activated state
+             will be used when the minute picker or hour picker is active.-->
+        <attr name="dtp_headerTextColor" />
+        <!-- The background for the header containing the currently selected time. -->
+        <attr name="headerBackground" />
+
+        <!-- The color for the hours/minutes numbers. This should be a color
+             state list where the activated state will be used when the number
+             is active.-->
+        <attr name="numbersTextColor" />
+        <!-- The color for the inner hours numbers used in 24-hour mode. This
+             should be a color state list where the activated state will be
+             used when the number is active.-->
+        <attr name="numbersInnerTextColor" />
+        <!-- The background color for the hours/minutes numbers. -->
+        <attr name="numbersBackgroundColor" />
+        <!-- The color for the hours/minutes selector. -->
+        <attr name="numbersSelectorColor" />
+
+        <!-- Defines the look of the widget. Prior to the L release, the only choice was
+             spinner. As of L, with the Material theme selected, the default layout is clock,
+             but this attribute can be used to force spinner to be used instead. -->
+        <attr name="timePickerMode" />
+
+        <!-- @hide Whether this time picker is being displayed within a dialog,
+             in which case it may ignore the requested time picker mode due to
+             space considerations. -->
+        <attr name="dtp_dialogMode" />
+    </declare-styleable>
+
+    <declare-styleable name="CalendarView">
+        <!-- The first day of week according to {@link java.util.Calendar}. -->
+        <attr name="firstDayOfWeek" />
+        <!-- The minimal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="minDate" />
+        <!-- The maximal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="maxDate" />
+        <!-- The text appearance for the month and year in the calendar header. -->
+        <attr name="dtp_monthTextAppearance" format="reference" />
+        <!-- The text appearance for the week day abbreviation in the calendar header. -->
+        <attr name="weekDayTextAppearance" />
+        <!-- The text appearance for the day numbers in the calendar grid. -->
+        <attr name="dateTextAppearance" />
+        <!-- @hide The background color used for the day selection indicator. -->
+        <attr name="dtp_daySelectorColor" format="color" />
+        <!-- @hide The background color used for the day highlight indicator. -->
+        <attr name="dtp_dayHighlightColor" format="color" />
+        <!-- @hide Which style of calendar delegate to use. -->
+        <attr name="dtp_calendarViewMode">
+            <enum name="holo" value="0" />
+            <enum name="material" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="NumberPicker">
+        <!-- @hide Color for the solid color background if such for optimized rendering. -->
+        <attr name="dtp_solidColor" format="color|reference" />
+        <!-- @hide The divider for making the selection area. -->
+        <attr name="dtp_selectionDivider" format="reference" />
+        <!-- @hide The height of the selection divider. -->
+        <attr name="dtp_selectionDividerHeight" format="dimension" />
+        <!-- @hide The distance between the two selection dividers. -->
+        <attr name="dtp_selectionDividersDistance" format="dimension" />
+        <!-- @hide The min height of the NumberPicker. -->
+        <attr name="dtp_internalMinHeight" format="dimension" />
+        <!-- @hide The max height of the NumberPicker. -->
+        <attr name="dtp_internalMaxHeight" format="dimension" />
+        <!-- @hide The min width of the NumberPicker. -->
+        <attr name="dtp_internalMinWidth" format="dimension" />
+        <!-- @hide The max width of the NumberPicker. -->
+        <attr name="dtp_internalMaxWidth" format="dimension" />
+        <!-- @hide The layout of the number picker. -->
+        <attr name="dtp_internalLayout" />
+        <!-- @hide The drawable for pressed virtual (increment/decrement) buttons. -->
+        <attr name="dtp_virtualButtonPressedDrawable" format="reference"/>
+        <!-- @hide If true then the selector wheel is hidden until the picker has focus. -->
+        <attr name="dtp_hideWheelUntilFocused" format="boolean"/>
+    </declare-styleable>
+</resources>

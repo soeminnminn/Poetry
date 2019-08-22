@@ -21,7 +21,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <EditText
                     android:id="@+id/editTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                     android:inputType="textMultiLine"
                     android:visibility="gone" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                     android:id="@+id/noteContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,19 +75,33 @@
 
         </FrameLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.button.MaterialButton
                 android:id="@+id/noteCategory"
+                style="@style/AppWidget.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="?android:textColorSecondary"
+                android:text="@string/action_add_category"
+                app:icon="@drawable/ic_category_gray"
+                app:iconPadding="@dimen/dimen_4dp"
+                app:iconTint="?android:textColorSecondary"
+                app:iconTintMode="multiply"
+                app:layout_constraintTop_toBottomOf="@+id/noteContentContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/dimen_16dp"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/noteLastModify"
+                style="@style/AppWidget.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textColor="?android:textColorSecondary"
                 android:lines="1"
-                android:drawableLeft="@drawable/ic_category_gray"
-                android:drawableStart="@drawable/ic_category_gray"
-                android:drawablePadding="@dimen/dimen_4dp"
                 tools:text="@string/app_name"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/noteContentContainer"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="@dimen/dimen_16dp"/>
 
         <com.google.android.material.chip.ChipGroup
@@ -101,9 +115,13 @@
                 app:layout_constraintStart_toStartOf="parent" >
 
             <com.google.android.material.chip.Chip
+                    android:id="@+id/action_add_tags"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_settings"/>
+                    android:text="@string/action_add_tags"
+                    android:checkable="false"
+                    app:chipIcon="@drawable/ic_add_gray"
+                    app:chipIconVisible="true" />
 
         </com.google.android.material.chip.ChipGroup>
 

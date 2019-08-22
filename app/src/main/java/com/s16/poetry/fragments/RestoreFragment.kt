@@ -40,6 +40,8 @@ class RestoreFragment : ThemeDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        isCancelable = false
+
         dialogButtons.setNegativeButton(android.R.string.cancel) { _, _ ->
             dialog.cancel()
         }

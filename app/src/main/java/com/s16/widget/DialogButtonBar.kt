@@ -15,9 +15,9 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Space
+import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.ColorUtils
 
 open class DialogButtonBar : LinearLayout, DialogInterface {
@@ -271,7 +271,7 @@ open class DialogButtonBar : LinearLayout, DialogInterface {
         updateLayout()
     }
 
-    private class DialogButton: AppCompatTextView {
+    private class DialogButton: TextView {
 
         constructor(context: Context) : super(context) {
             initialize(context, null, 0)
@@ -324,35 +324,35 @@ open class DialogButtonBar : LinearLayout, DialogInterface {
 inline fun DialogButtonBar.setPositiveButton(
     @StringRes textId: Int, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
     setPositiveButton(textId,
-        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+        DialogInterface.OnClickListener { dialog, which -> listener.invoke(dialog, which) })
 }
 
 inline fun DialogButtonBar.setPositiveButton(
-    textId: CharSequence, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
-    setPositiveButton(textId,
-        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+    text: CharSequence, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
+    setPositiveButton(text,
+        DialogInterface.OnClickListener { dialog, which -> listener.invoke(dialog, which) })
 }
 
 inline fun DialogButtonBar.setNegativeButton(
     @StringRes textId: Int, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
     setNegativeButton(textId,
-        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+        DialogInterface.OnClickListener { dialog, which -> listener.invoke(dialog, which) })
 }
 
 inline fun DialogButtonBar.setNegativeButton(
-    textId: CharSequence, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
-    setNegativeButton(textId,
-        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+    text: CharSequence, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
+    setNegativeButton(text,
+        DialogInterface.OnClickListener { dialog, which -> listener.invoke(dialog, which) })
 }
 
 inline fun DialogButtonBar.setNeutralButton(
     @StringRes textId: Int, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
     setNeutralButton(textId,
-        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+        DialogInterface.OnClickListener { dialog, which -> listener.invoke(dialog, which) })
 }
 
 inline fun DialogButtonBar.setNeutralButton(
-    textId: CharSequence, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
-    setNeutralButton(textId,
-        DialogInterface.OnClickListener { dialog, which -> listener(dialog, which) })
+    text: CharSequence, crossinline listener: (dialog: DialogInterface?, which: Int) -> Unit) {
+    setNeutralButton(text,
+        DialogInterface.OnClickListener { dialog, which -> listener.invoke(dialog, which) })
 }
