@@ -1,51 +1,49 @@
 package com.s16.poetry.adapters
 
-import android.content.Context
+
 import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
-import com.google.android.material.navigation.NavigationView
+import android.view.MenuItem
 import com.s16.poetry.R
 import com.s16.poetry.data.Category
+import com.s16.view.AdaptableMenu
+import com.s16.view.BaseMenuAdapter
 
-class NavMenuAdapter(navView: NavigationView, private val context: Context): BaseAdapter() {
+
+class NavMenuAdapter: BaseMenuAdapter() {
     var items: List<Category> = mutableListOf()
 
-    private val menu: Menu = navView.menu
+    override fun getCount(): Int = items.size + 3
 
-    override fun hasStableIds(): Boolean = true
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        return convertView ?: View(context)
+    override fun getMenuItem(menu: Menu, position: Int): MenuItem {
+        val maxSize = items.size + 1
+        return when {
+            position == 0 -> menu.add(categoryGroupId, 0, 0, R.string.menu_all).apply {
+                setIcon(R.drawable.ic_category_gray)
+                isChecked = true
+            }
+            position < maxSize -> {
+                val item = items[position - 1]
+                menu.add(categoryGroupId, item.id.toInt(), 0, item.name).apply {
+                    setIcon(R.drawable.ic_category_gray)
+                }
+            }
+            else -> when(position - maxSize) {
+                0 -> menu.add(generalGroupId, R.id.action_settings, 0, R.string.action_settings).apply {
+                    setIcon(R.drawable.ic_settings_gray)
+                }
+                else -> menu.add(generalGroupId, R.id.action_about, 0, R.string.action_about).apply {
+                    setIcon(R.drawable.ic_about_gray)
+                }
+            }
+        }
     }
 
-    override fun getItem(position: Int): Any = items[position]
-
-    override fun getItemId(position: Int): Long = items[position].id
-
-    override fun getCount(): Int = items.size
-
-    override fun notifyDataSetChanged() {
-        menu.clear()
-        val allMenuItem = menu.add(categoryGroupId, 0, 0, R.string.menu_all)
-        allMenuItem.setIcon(R.drawable.ic_category_gray)
-        allMenuItem.isChecked = true
-
-        items.forEach {
-            val menuItem = menu.add(categoryGroupId, it.id.toInt(), 0, it.name)
-            menuItem.setIcon(R.drawable.ic_category_gray)
+    override fun getGroupCheckable(groupId: Int): Int {
+        return if (groupId == categoryGroupId) {
+            AdaptableMenu.GROUP_CHECKABLE_YES
+        } else {
+            AdaptableMenu.GROUP_CHECKABLE_NO
         }
-        menu.setGroupCheckable(categoryGroupId, true, false)
-
-        menu.add(generalGroupId, R.id.action_settings, 0, R.string.action_settings).apply {
-            setIcon(R.drawable.ic_settings_gray)
-        }
-        menu.add(generalGroupId, R.id.action_about, 0, R.string.action_about).apply {
-            setIcon(R.drawable.ic_about_gray)
-        }
-
-        super.notifyDataSetChanged()
     }
 
     fun getItemById(id: Int): Category? {

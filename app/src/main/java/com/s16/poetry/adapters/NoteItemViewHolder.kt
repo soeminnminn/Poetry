@@ -7,7 +7,7 @@ import com.s16.poetry.R
 import com.s16.poetry.data.Record
 import com.s16.utils.format
 import com.s16.widget.CheckedCardView
-import com.s16.widget.RecyclerViewHolder
+import com.s16.view.RecyclerViewHolder
 import java.util.*
 import kotlin.math.max
 

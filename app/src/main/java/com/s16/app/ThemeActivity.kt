@@ -11,6 +11,7 @@ import android.os.Build
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.s16.poetry.Constants
 import com.s16.poetry.R
@@ -105,6 +106,11 @@ abstract class ThemeActivity: AppCompatActivity(), SharedPreferences.OnSharedPre
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String) {
         if (key == Constants.PREFS_SELECT_THEME) {
+            when(sharedPreferences?.getString(key, "2") ?: "2") {
+                "0" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                "1" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
+            }
             recreate()
         }
     }

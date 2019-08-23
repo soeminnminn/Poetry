@@ -10,6 +10,7 @@
         <item name="colorPrimaryDark">@color/colorAccentDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
 
+        <item name="iconTint">@color/white</item>
         <item name="activityBackground">@color/bright_foreground_holo_light</item>
         <item name="brightBackground">@color/background_default</item>
         <item name="dialogTheme">@style/AppTheme.Dialog</item>
@@ -29,6 +30,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="iconTint">@color/grey_30</item>
         <item name="activityBackground">@color/background_holo_light</item>
         <item name="brightBackground">@color/white</item>
         <item name="dialogTheme">@style/AppTheme.Dialog.Light</item>

@@ -1,4 +1,4 @@
-package com.s16.widget
+package com.s16.view
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

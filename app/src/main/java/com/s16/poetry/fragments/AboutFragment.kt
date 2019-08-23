@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import com.s16.app.AlertDialogFragment
-
 import com.s16.poetry.R
 
 class AboutFragment : AlertDialogFragment() {
@@ -18,7 +17,7 @@ class AboutFragment : AlertDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.prefs_about)
-        setIcon(android.R.drawable.ic_dialog_info)
+
         setPositiveButton(null, null)
 
         setNegativeButton(android.R.string.ok, DialogInterface.OnClickListener { dialog, _ ->

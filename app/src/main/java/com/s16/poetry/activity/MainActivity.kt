@@ -30,6 +30,7 @@ import com.s16.poetry.data.RecordPagedModel
 import com.s16.poetry.fragments.AboutFragment
 import com.s16.utils.makeSceneTransitionAnimation
 import com.s16.utils.startActivity
+import com.s16.view.AdaptableMenu
 
 class MainActivity : ThemeActivity(),
     NavigationView.OnNavigationItemSelectedListener,
@@ -106,7 +107,7 @@ class MainActivity : ThemeActivity(),
             recordsAdapter.submitList(it)
         })
 
-        navAdapter = NavMenuAdapter(navView, this)
+        navAdapter = NavMenuAdapter()
         val categoryModel by lazy {
             ViewModelProviders.of(this).get(CategoryModel::class.java)
         }
@@ -114,6 +115,8 @@ class MainActivity : ThemeActivity(),
             navAdapter.items = it
             navAdapter.notifyDataSetChanged()
         })
+        val menu = AdaptableMenu(navView.menu)
+        menu.adapter = navAdapter
     }
 
     override fun onBackPressed() {
