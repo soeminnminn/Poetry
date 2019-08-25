@@ -10,12 +10,17 @@ import androidx.preference.PreferenceFragmentCompat
 import com.s16.app.ProgressDialog
 import com.s16.poetry.Constants
 import com.s16.poetry.R
+import com.s16.poetry.activity.ManageCategoriesActivity
+import com.s16.poetry.activity.ManageTagsActivity
 import com.s16.poetry.data.BackupTask
 import com.s16.utils.alertDialog
 import com.s16.utils.confirmDialog
+import com.s16.utils.startActivity
 import java.io.File
 
 class SettingsFragment : PreferenceFragmentCompat() {
+
+    private var backupTask: BackupTask? = null
 
     private val versionName: String
         get() {
@@ -29,14 +34,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        val prefsAbout = findPreference(Constants.PREFS_ABOUT)
-        val versionText = context?.getText(R.string.version_text)
-        if (versionText != null) {
-            prefsAbout.summary = String.format(versionText.toString(), versionName)
+        findPreference(Constants.PREFS_MANAGE_CATEGORY)?.setOnPreferenceClickListener {
+            startActivity<ManageCategoriesActivity>()
+            true
         }
 
-        prefsAbout.setOnPreferenceClickListener {
-            showAboutDialog()
+        findPreference(Constants.PREFS_MANAGE_TAG)?.setOnPreferenceClickListener {
+            startActivity<ManageTagsActivity>()
             true
         }
 
@@ -49,6 +53,22 @@ class SettingsFragment : PreferenceFragmentCompat() {
             requestPermission(Constants.PERMISSION_RESULT_RESTORE)
             true
         }
+
+        val prefsAbout = findPreference(Constants.PREFS_ABOUT)
+        val versionText = context?.getText(R.string.version_text)
+        if (versionText != null) {
+            prefsAbout.summary = String.format(versionText.toString(), versionName)
+        }
+
+        prefsAbout.setOnPreferenceClickListener {
+            showAboutDialog()
+            true
+        }
+    }
+
+    override fun onDestroy() {
+        backupTask?.cancel()
+        super.onDestroy()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -110,7 +130,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             setMessage(getText(R.string.message_backup_process))
         }
 
-        val task = object: BackupTask(context!!) {
+        backupTask = object: BackupTask(context!!) {
             override fun onOverride(sender: BackupTask, file: File) {
                 context!!.confirmDialog(
                     R.string.title_backup_dialog,
@@ -133,7 +153,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 context!!.alertDialog(R.string.title_backup_dialog, R.string.message_backup_complete)
             }
         }
-        task.run()
+        backupTask?.run()
     }
 
     private fun showRestoreDialog() {

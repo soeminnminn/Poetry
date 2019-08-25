@@ -133,9 +133,13 @@ fun Date.toCalendar(): Calendar {
 /**
  * Calendar Extensions
  */
-@Suppress("DEPRECATION")
 fun Calendar.set(date: Date) {
-    set(date.year + 1900, date.month, date.date)
+    time = date
+}
+
+fun Calendar.set(dateStr: String, pattern: String) {
+    val sdf = SimpleDateFormat(pattern, Locale.getDefault())
+    time = sdf.parse(dateStr)
 }
 
 fun Calendar.format(pattern: String): String {

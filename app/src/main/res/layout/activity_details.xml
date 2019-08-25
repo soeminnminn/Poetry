@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:background="?attr/brightBackground"
         tools:context=".activity.DetailsActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
-            android:layout_height="wrap_content"
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:background="@null"
-            app:elevation="@dimen/dimen_0dp" >
+            android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_height="?attr/actionBarSize"
+        <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="@dimen/dimen_4dp"
-                android:layout_marginStart="@dimen/dimen_4dp"
-                android:layout_marginRight="@dimen/dimen_4dp"
-                android:layout_marginEnd="@dimen/dimen_4dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="?attr/popupMenuStyle"/>
+                android:background="@null"
+                app:elevation="@dimen/dimen_0dp" >
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="@dimen/dimen_4dp"
+                    android:layout_marginStart="@dimen/dimen_4dp"
+                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:layout_marginEnd="@dimen/dimen_4dp"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="?attr/popupMenuStyle"/>
 
-    <FrameLayout
-            android:id="@+id/detailContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/appBar">
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <include layout="@layout/content_details" />
+        <FrameLayout
+                android:id="@+id/detailContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appBar">
 
-    </FrameLayout>
+            <include layout="@layout/content_details" />
 
-</RelativeLayout>
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -28,7 +28,7 @@
                     android:textAppearance="?android:textAppearanceLarge"
                     android:background="@null"
                     android:hint="@string/hint_edit_title"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:visibility="gone" />
 
             <TextView
@@ -58,10 +58,10 @@
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="?android:textColorSecondary"
                     android:background="@null"
-                    android:minLines="10"
+                    android:minLines="2"
                     android:gravity="top|start|left"
                     android:hint="@string/hint_edit_note"
-                    android:inputType="textMultiLine"
+                    android:inputType="textMultiLine|textCapSentences"
                     android:visibility="gone" />
 
             <TextView
@@ -92,7 +92,7 @@
                 android:layout_marginTop="@dimen/dimen_16dp"/>
 
         <com.google.android.material.button.MaterialButton
-                android:id="@+id/noteLastModify"
+                android:id="@+id/noteDate"
                 style="@style/AppWidget.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

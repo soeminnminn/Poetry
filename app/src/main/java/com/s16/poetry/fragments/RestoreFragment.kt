@@ -20,6 +20,7 @@ import java.io.File
 
 class RestoreFragment : ThemeDialogFragment() {
 
+    private var restoreTask: RestoreTask? = null
     private lateinit var message: TextView
     private lateinit var loading: ViewGroup
     private lateinit var dialogButtons: DialogButtonBar
@@ -50,6 +51,11 @@ class RestoreFragment : ThemeDialogFragment() {
         }
     }
 
+    override fun onDestroy() {
+        restoreTask?.cancel()
+        super.onDestroy()
+    }
+
     private fun doRestore() {
         message.visibility = View.GONE
         loading.visibility = View.VISIBLE
@@ -71,7 +77,7 @@ class RestoreFragment : ThemeDialogFragment() {
     }
 
     private fun runRestoreTask(file: File) {
-        val task = object: RestoreTask(context!!, file) {
+        restoreTask = object: RestoreTask(context!!, file) {
             override fun onCanceled(message: String) {
                 showMessage(message)
             }
@@ -81,7 +87,7 @@ class RestoreFragment : ThemeDialogFragment() {
             }
 
         }
-        task.run()
+        restoreTask?.run()
     }
 
     private fun showMessage(@StringRes msg: Int) {

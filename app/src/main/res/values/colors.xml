@@ -4,4 +4,23 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorAccentDark">#880E4F</color>
+
+    <color name="accent_color">#ff333333</color>
+    <color name="primary_color">#ffffbb00</color>
+    <color name="primary_color_dark">#fff99f00</color>
+
+    <color name="keep_border_default_color">#ffdadce0</color>
+    <color name="keep_default_color">#ffffffff</color>
+
+    <color name="keep_brown">#ffe6c9a8</color>
+    <color name="keep_cerulean">#ffaecbfa</color>
+    <color name="keep_gray">#ffe8eaed</color>
+    <color name="keep_green">#ffccff90</color>
+    <color name="keep_lightblue">#ffcbf0f8</color>
+    <color name="keep_orange">#fffbbc04</color>
+    <color name="keep_pink">#fffdcfe8</color>
+    <color name="keep_purple">#ffd7aefb</color>
+    <color name="keep_red">#fff28b82</color>
+    <color name="keep_teal">#ffa7ffeb</color>
+    <color name="keep_yellow">#fffff475</color>
 </resources>

@@ -6,17 +6,19 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.s16.poetry.Constants
 import com.s16.utils.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.*
 import java.lang.Exception
+import java.lang.Runnable
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 
 abstract class RestoreTask(private val context: Context, private val file: File)
     : Runnable {
+
+    private var uiScope = CoroutineScope(Dispatchers.Main)
+    private var job: Job? = null
 
     abstract fun onCanceled(message: String)
 
@@ -25,7 +27,7 @@ abstract class RestoreTask(private val context: Context, private val file: File)
     override fun run() {
         val manager = DbManager(context.applicationContext)
 
-        runBlocking {
+        job = uiScope.launch {
             val filePath = prepareFile(file)
             if (filePath == null) {
                 onCanceled("Can not read backup file.")
@@ -37,6 +39,10 @@ abstract class RestoreTask(private val context: Context, private val file: File)
                 onComplete()
             }
         }
+    }
+
+    fun cancel() {
+        job?.cancel()
     }
 
     private fun createOpenHelper(name: String): SQLiteOpenHelper {

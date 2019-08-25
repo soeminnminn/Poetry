@@ -14,6 +14,9 @@ import java.util.zip.ZipOutputStream
 
 abstract class BackupTask(private val context: Context): Runnable {
 
+    private var uiScope = CoroutineScope(Dispatchers.Main)
+    private var job: Job? = null
+
     abstract fun onStartBackup(file: File)
 
     abstract fun onOverride(sender: BackupTask, file: File)
@@ -48,11 +51,15 @@ abstract class BackupTask(private val context: Context): Runnable {
         }
     }
 
+    fun cancel() {
+        job?.cancel()
+    }
+
     private fun runTask(file: File) {
         val dbManager = DbManager(context)
         dbManager.close()
 
-        runBlocking {
+        job = uiScope.launch {
             val result = createZip(dbManager.getDatabaseFile(context), file)
             if (result != null) {
                 Log.i("BackupTask", result)

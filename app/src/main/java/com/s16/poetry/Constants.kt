@@ -4,6 +4,10 @@ class Constants {
     companion object {
         const val ARG_PARAM_ADD = "add"
         const val ARG_PARAM_ID = "id"
+        const val ARG_PARAM_UUID = "uuid"
+
+        const val RESULT_SELECT_CATEGORY = 0x0021
+        const val RESULT_SELECT_TAG = 0x0022
 
         const val DISPLAY_DATE_FORMAT = "dd/MM/yyyy"
 

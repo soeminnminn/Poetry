@@ -34,7 +34,8 @@ class RecordsPagedAdapter:
     private var mItemSelectListener: OnItemSelectListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteItemViewHolder {
-        val view: ViewGroup = LayoutInflater.from(parent.context).inflate(R.layout.list_item_note, parent, false) as ViewGroup
+        val view: ViewGroup = LayoutInflater.from(parent.context)
+            .inflate(R.layout.list_item_note, parent, false) as ViewGroup
         return NoteItemViewHolder(view, this)
     }
 

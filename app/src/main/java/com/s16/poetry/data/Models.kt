@@ -10,6 +10,11 @@ class CategoryModel(application: Application) : AndroidViewModel(application) {
     val categories: LiveData<List<Category>> = provider.listCategories()
 }
 
+class TagsModel(application: Application) : AndroidViewModel(application) {
+    private var provider = DbManager(application).provider()
+    val tags: LiveData<List<Tags>> = provider.listTags()
+}
+
 class RecordPagedModel(application: Application) : AndroidViewModel(application) {
     private var provider = DbManager(application).provider()
 

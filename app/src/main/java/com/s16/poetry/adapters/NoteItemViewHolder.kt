@@ -25,7 +25,7 @@ class NoteItemViewHolder(view: View, private val adapter: LongClickSelectable)
 
     private val label: TextView = findViewById(R.id.noteTitle)
     private val content: TextView = findViewById(R.id.noteContent)
-    private val lastEdit: TextView = findViewById(R.id.noteLastModify)
+    private val lastEdit: TextView = findViewById(R.id.noteDate)
     private val cardView: CheckedCardView = findViewById(R.id.cardView)
 
     private var recordId: Long = -1
