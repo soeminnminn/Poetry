@@ -11,6 +11,9 @@
         <item name="colorAccent">@color/colorPrimary</item>
 
         <item name="iconTint">@color/white</item>
+        <item name="dividerColor">@color/white_33_opacity</item>
+        <item name="borderColor">@color/white_33_opacity</item>
+
         <item name="activityBackground">@color/bright_foreground_holo_light</item>
         <item name="brightBackground">@color/background_default</item>
         <item name="dialogTheme">@style/AppTheme.Dialog</item>
@@ -31,6 +34,9 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="iconTint">@color/grey_30</item>
+        <item name="dividerColor">@color/grey_80</item>
+        <item name="borderColor">@color/grey_90</item>
+
         <item name="activityBackground">@color/background_holo_light</item>
         <item name="brightBackground">@color/white</item>
         <item name="dialogTheme">@style/AppTheme.Dialog.Light</item>

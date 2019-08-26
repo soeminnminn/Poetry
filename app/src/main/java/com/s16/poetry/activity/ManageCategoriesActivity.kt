@@ -51,8 +51,7 @@ class ManageCategoriesActivity : ThemeActivity() {
             ViewModelProviders.of(this).get(CategoryModel::class.java)
         }
         categoryModel.categories.observe(this, Observer<List<Category>> {
-            adapter.clear()
-            adapter.addAll(it)
+            adapter.submitList(it)
         })
     }
 

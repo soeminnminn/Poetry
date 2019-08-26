@@ -49,8 +49,7 @@ class ManageTagsActivity : ThemeActivity() {
             ViewModelProviders.of(this).get(TagsModel::class.java)
         }
         tagsModel.tags.observe(this, Observer<List<Tags>> {
-            adapter.clear()
-            adapter.addAll(it)
+            adapter.submitList(it)
         })
     }
 

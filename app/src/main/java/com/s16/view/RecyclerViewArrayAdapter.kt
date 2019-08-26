@@ -36,6 +36,19 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
     private var mFilter: ArrayFilter? = null
 
     /**
+     * Set the new list to be displayed.
+     *
+     * @param collection The new list to be displayed.
+     */
+    fun submitList(collection: Collection<T>) {
+        synchronized(mLock) {
+            mObjects = ArrayList(collection)
+            mOriginalValues = null
+        }
+        if (mNotifyOnChange) notifyDataSetChanged()
+    }
+
+    /**
      * Adds the specified object at the end of the array.
      *
      * @param element The object to add at the end of the array.
@@ -122,6 +135,11 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
         if (index != -1) notifyItemRemoved(index)
     }
 
+    /**
+     * Removes a object at the specified [index] from the array.
+     *
+     * @param index The index to remove.
+     */
     fun removeAt(index: Int) {
         synchronized(mLock) {
             mOriginalValues?.removeAt(index) ?: mObjects.removeAt(index)
@@ -164,6 +182,20 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
     }
 
     /**
+     * Returns the first element matching the given [predicate], or `null` if no such element was found.
+     */
+    fun find(predicate: (T) -> Boolean): T? = mObjects.find(predicate)
+
+    /**
+     * Returns the index of the first occurrence of the specified element in the list, or -1 if the specified
+     * element is not contained in the list.
+     */
+    fun findIndex(predicate: (T) -> Boolean): Int {
+        val element = mObjects.find(predicate)
+        return if (element != null) mObjects.indexOf(element) else -1
+    }
+
+    /**
      * Control whether methods that change the list ([.add], [.addAll],
      * [.addAll], [.insert], [.remove], [.clear],
      * [.sort]) automatically call [.notifyDataSetChanged].  If set to
@@ -200,12 +232,13 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
     private inner class ArrayFilter: Filter() {
 
         override fun performFiltering(prefix: CharSequence?): FilterResults {
-            val results = Filter.FilterResults()
+            val results = FilterResults()
             if (mOriginalValues == null) {
                 synchronized(mLock) {
                     mOriginalValues = ArrayList(mObjects)
                 }
             }
+
             if (prefix == null || prefix.isEmpty()) {
                 val list: ArrayList<T>
                 synchronized(mLock) {
@@ -213,32 +246,30 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
                 }
                 results.values = list
                 results.count = list.size
+
             } else {
-                val prefixString = prefix.toString().toLowerCase()
+                val prefixString = "$prefix".toLowerCase()
                 val values: ArrayList<T>
                 synchronized(mLock) {
                     values = ArrayList(mOriginalValues)
                 }
-                val newValues = mutableListOf<T>()
-                for (value in values) {
-                    val valueText = value.toString().toLowerCase(Locale.getDefault())
-                    // First match against the whole, non-splitted value
+
+                val newValues = values.filter { value ->
+                    val valueText = "$value".toLowerCase(Locale.getDefault())
                     if (valueText.startsWith(prefixString)) {
-                        newValues.add(value)
+                        true
                     } else {
                         val words = valueText.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
-                            .toTypedArray()
-                        for (word in words) {
-                            if (word.startsWith(prefixString)) {
-                                newValues.add(value)
-                                break
-                            }
-                        }
+                        words.indexOfFirst { word ->
+                            word.startsWith(prefixString)
+                        } > -1
                     }
-                }
+                }.toMutableList()
+
                 results.values = newValues
                 results.count = newValues.size
             }
+
             return results
         }
 
@@ -246,9 +277,7 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             // noinspection unchecked
             mObjects = results?.values as MutableList<T>
-            if (results.count > 0) {
-                notifyDataSetChanged()
-            }
+            notifyDataSetChanged()
         }
     }
 }

@@ -10,7 +10,11 @@ data class Category(
     @ColumnInfo(name = "category_name")
     var name: String?,
     var guid: String = ""
-)
+) {
+    override fun toString(): String {
+        return name ?: super.toString()
+    }
+}
 
 @Entity(tableName = "deleted")
 data class Deleted(
@@ -57,7 +61,11 @@ data class Tags(
     @ColumnInfo(name = "tag_name")
     var name: String?,
     var guid: String = ""
-)
+) {
+    override fun toString(): String {
+        return name ?: super.toString()
+    }
+}
 
 data class DetailRecord(
     @Embedded

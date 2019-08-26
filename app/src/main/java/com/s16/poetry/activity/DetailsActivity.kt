@@ -100,6 +100,7 @@ class DetailsActivity : ThemeActivity() {
                     if (record.category != null && record.category!!.isNotBlank()) {
                         noteCategory.text = record.category
                         noteCategory.tag = record.category
+                        noteCategory.visibility = View.VISIBLE
                     } else {
                         noteCategory.visibility = View.GONE
                     }
@@ -119,7 +120,7 @@ class DetailsActivity : ThemeActivity() {
                     }
 
                     chipAdd = Chip(noteTags.context).apply {
-                        setId(R.id.action_add_tags)
+                        id = R.id.action_add_tags
                         setText(R.string.action_add_tags)
                         isCheckable = false
                         setChipIconResource(R.drawable.ic_add_gray)
@@ -135,6 +136,7 @@ class DetailsActivity : ThemeActivity() {
 
         noteCategory.setOnClickListener {
             val intent = Intent(this, SelectCategoryActivity::class.java)
+            intent.putExtra(Constants.ARG_PARAM_CATEGORY, "${noteCategory.tag ?: ""}")
             startActivityForResult(intent, Constants.RESULT_SELECT_CATEGORY)
         }
 
@@ -195,6 +197,19 @@ class DetailsActivity : ThemeActivity() {
     override fun onDestroy() {
         saveJob?.cancel()
         super.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == Constants.RESULT_SELECT_CATEGORY && resultCode == Constants.RESULT_OK) {
+            val noteCategory: TextView = findViewById(R.id.noteCategory)
+            data?.let {
+                val name = it.getStringExtra(Constants.ARG_PARAM_NAME)
+                noteCategory.text = name
+                noteCategory.tag = name
+                noteCategory.visibility = View.VISIBLE
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -267,6 +282,10 @@ class DetailsActivity : ThemeActivity() {
         val editContent: EditText = findViewById(R.id.editContent)
         val noteCategory: TextView = findViewById(R.id.noteCategory)
         val noteDate: TextView = findViewById(R.id.noteDate)
+
+        if ("${editTitle.text}".isBlank() && "${editContent.text}".isBlank()) {
+            return
+        }
 
         val date = Calendar.getInstance()
         date.set("${noteDate.text}", Constants.DISPLAY_DATE_FORMAT)

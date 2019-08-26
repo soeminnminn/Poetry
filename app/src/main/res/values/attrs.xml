@@ -4,5 +4,7 @@
     <attr name="navigationHeader" format="reference" />
     <attr name="activityBackground" format="reference" />
     <attr name="brightBackground" format="reference" />
+    <attr name="dividerColor" format="reference" />
+    <attr name="borderColor" format="reference" />
     <attr name="toolbarMain" format="reference" />
 </resources>

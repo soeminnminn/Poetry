@@ -14,6 +14,7 @@ import androidx.core.os.bundleOf
 import android.content.pm.ActivityInfo
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.*
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -203,17 +204,17 @@ fun Context.share(text: String, subject: String = "", title: String? = null): Bo
 }
 
 fun Context.browse(url: String, newTask: Boolean = false): Boolean {
-    try {
+    return try {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         if (newTask) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         startActivity(intent)
-        return true
+        true
     } catch (e: ActivityNotFoundException) {
         e.printStackTrace()
-        return false
+        false
     }
 }
 
@@ -223,6 +224,17 @@ fun Context.getColorCompat(@ColorRes resId: Int): Int {
 
 fun Context.getDrawableCompat(@DrawableRes resId: Int): Drawable? {
     return ContextCompat.getDrawable(this, resId)
+}
+
+fun Context.dpToPixel(dp: Int): Int {
+    val metrics = resources.displayMetrics
+    val px = dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    return px.toInt()
+}
+
+fun Context.dpToPixel(dp: Float): Float {
+    val metrics = resources.displayMetrics
+    return dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
 }
 
 fun Activity.showInputMethod(v: EditText) {
