@@ -33,7 +33,9 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:inputType="text"
-                    android:hint="@string/hint_edit_category" />
+                    android:hint="@string/hint_edit_category">
+                <requestFocus />
+            </EditText>
 
         </androidx.appcompat.widget.Toolbar>
 

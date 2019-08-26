@@ -36,6 +36,7 @@
     <string name="title_backup_dialog">Backup Poetry data</string>
     <string name="title_add_category">Add Category</string>
     <string name="title_add_tag">Add Tag</string>
+    <string name="title_delete_confirm">Delete</string>
 
     <string name="message_request_permission">
         "Please allow us to access:\n\n"
@@ -50,6 +51,7 @@
     <string name="message_backup_process">Backup is processing …</string>
     <string name="message_backup_complete">Backup complete</string>
     <string name="message_no_data">Empty</string>
+    <string name="message_delete_confirm">Are you sure to delete?</string>
 
     <string name="transition_root">transition_root</string>
     <string name="transition_title">transition_title</string>

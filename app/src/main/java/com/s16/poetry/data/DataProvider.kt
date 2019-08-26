@@ -1,5 +1,6 @@
 package com.s16.poetry.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
@@ -101,6 +102,43 @@ interface DataProvider {
 
     @Update
     fun updateTag(data: Tags)
+
+    // delete
+    @Query("DELETE FROM records WHERE _id IS :id")
+    fun deleteRecord(id: Long)
+
+    @Query("DELETE FROM records_add WHERE record_id IS :recordId")
+    fun deleteRecordAdd(recordId: Long)
+
+    @Transaction
+    fun deleteRecordAll(vararg recordId: Long) {
+        recordId.forEach { id ->
+            deleteRecord(id)
+            deleteRecordAdd(id)
+        }
+    }
+
+    // save
+    @Transaction
+    fun saveRecord(record: Record, recordAdd: List<RecordsAdd>): Long {
+        val id: Long = if (record.id != 0L) {
+            updateRecord(record)
+            record.id
+        } else {
+            insertRecord(record)
+        }
+
+        deleteRecordAdd(id)
+        if (recordAdd.isNotEmpty()) {
+            recordAdd.forEach {
+                it.recordId = id
+                Log.i("saveRecord", "${it.value}")
+                insertRecordAdd(it)
+            }
+        }
+
+        return id
+    }
 
     // Select
     @Query("""SELECT categories.* FROM categories

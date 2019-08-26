@@ -21,6 +21,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import java.lang.Exception
 
 val Activity.context: Context
     get() = this
@@ -191,10 +192,10 @@ inline fun <reified T: Any> Fragment.intentFor(vararg params: Pair<String, Any?>
 
 fun Context.share(text: String, subject: String = "", title: String? = null): Boolean {
     return try {
-        val intent = Intent(android.content.Intent.ACTION_SEND)
+        val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject)
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, text)
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        intent.putExtra(Intent.EXTRA_TEXT, text)
         startActivity(Intent.createChooser(intent, title))
         true
     } catch (e: ActivityNotFoundException) {
@@ -258,16 +259,6 @@ fun Activity.translucentStatusBar(value: Boolean) = window.let {
     }
 }
 
-fun Activity.fullScreenWindow(value: Boolean) = window.let {
-    if (Build.VERSION.SDK_INT >= 19) {
-        if (value) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        }
-    }
-}
-
 fun Activity.translucentNavigationBar(value: Boolean) = window.let {
     if (Build.VERSION.SDK_INT >= 19) {
         if (value) {
@@ -278,9 +269,19 @@ fun Activity.translucentNavigationBar(value: Boolean) = window.let {
     }
 }
 
+fun Activity.fullScreenWindow(value: Boolean) = window.let {
+    if (Build.VERSION.SDK_INT >= 19) {
+        if (value) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        }
+    }
+}
+
 /**
  * Convenient method to avoid the Navigation Bar to blink during transitions on some devices
- * @see https://stackoverflow.com/questions/26600263/how-do-i-prevent-the-status-bar-and-navigation-bar-from-animating-during-an-acti
+ * @see <a href="https://stackoverflow.com/questions/26600263/how-do-i-prevent-the-status-bar-and-navigation-bar-from-animating-during-an-acti">stackoverflow.com</a>
  */
 fun Activity.makeSceneTransitionAnimation(vararg pairs: Pair<View, String>): ActivityOptionsCompat {
     val updatedPairs = pairs.toMutableList()
@@ -330,4 +331,16 @@ fun View.invisible() {
 
 fun View.gone() {
     this.visibility = View.GONE
+}
+
+inline fun <reified T> View.tagAs(): T? {
+    return if (tag == null) {
+        null
+    } else {
+        try {
+            tag as T
+        } catch(e: Exception) {
+            null
+        }
+    }
 }

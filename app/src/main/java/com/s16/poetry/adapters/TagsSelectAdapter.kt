@@ -7,20 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckedTextView
 import com.s16.poetry.R
-import com.s16.poetry.data.Category
+import com.s16.poetry.data.Tags
 import com.s16.utils.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
 import com.s16.view.RecyclerViewHolder
 
+class TagsSelectAdapter(private val context: Context):
+    RecyclerViewArrayAdapter<RecyclerViewHolder, Tags>() {
 
-class CategoriesSelectAdapter(private val context: Context):
-    RecyclerViewArrayAdapter<RecyclerViewHolder, Category>() {
-
-    private var selectedPosition: Int = -1
+    private val mCheckedItems: MutableList<Tags> = mutableListOf()
 
     private val checkMarkDrawable: Drawable
         get() {
-            val attrs = intArrayOf(android.R.attr.listChoiceIndicatorSingle)
+            val attrs = intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
             var drawable: Drawable? = null
             val ta = context.theme.obtainStyledAttributes(attrs)
             drawable = ta.getDrawable(0)
@@ -28,23 +27,21 @@ class CategoriesSelectAdapter(private val context: Context):
             return drawable
         }
 
-    fun setSelected(category: String) {
-        val position = findIndex {
-            it.name == category
-        }
-        if (position > -1) {
-            selectedPosition = position
-            notifyItemChanged(selectedPosition)
+    fun setSelected(tags: Array<String>) {
+        if (tags.isNotEmpty()) {
+            tags.forEach { tag ->
+                val found = find {
+                    it.name == tag
+                }
+                if (found != null && !mCheckedItems.contains(found)) {
+                    mCheckedItems.add(found)
+                }
+            }
+            notifyDataSetChanged()
         }
     }
 
-    fun getSelected(): Category? {
-        return if (selectedPosition > -1) {
-            getItem(selectedPosition)
-        } else {
-            null
-        }
-    }
+    fun getSelected(): List<Tags> = mCheckedItems
 
     override fun getItemId(position: Int): Long {
         return super.getItem(position)?.id ?: 0
@@ -55,30 +52,31 @@ class CategoriesSelectAdapter(private val context: Context):
             .inflate(R.layout.list_item_simple_selectable, parent, false)
 
         val textView: CheckedTextView = view.findViewById(android.R.id.text1)
-        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_gray, 0, 0, 0)
-        textView.compoundDrawablePadding = context.dpToPixel(8)
+        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tag_gray, 0, 0, 0)
+        textView.compoundDrawablePadding = parent.context.dpToPixel(8)
         textView.checkMarkDrawable = checkMarkDrawable
 
         return RecyclerViewHolder(view, android.R.id.text1)
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        getItem(position)?.let { category ->
+        getItem(position)?.let { tags ->
             val textView: CheckedTextView = holder[android.R.id.text1]
-            textView.text = category.name
-            textView.isChecked = (position == selectedPosition)
+            textView.text = tags.name
+            textView.isChecked = mCheckedItems.contains(tags)
 
             holder.itemView.setOnClickListener {
-                if (position != selectedPosition) {
-                    textView.isChecked = true
-                    notifyItemChanged(selectedPosition)
-                    selectedPosition = position
-                } else {
-                    textView.isChecked = false
-                    notifyItemChanged(selectedPosition)
-                    selectedPosition = -1
+                val found = getItem(position)
+                if (found != null) {
+                    if (mCheckedItems.contains(found)) {
+                        mCheckedItems.remove(found)
+                    } else {
+                        mCheckedItems.add(found)
+                    }
                 }
+                notifyItemChanged(position)
             }
         }
     }
+
 }

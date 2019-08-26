@@ -6,7 +6,7 @@ import androidx.room.*
 data class Category(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var id: Long,
+    var id: Long = 0,
     @ColumnInfo(name = "category_name")
     var name: String?,
     var guid: String = ""
@@ -29,7 +29,7 @@ data class Deleted(
 data class Record(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var id: Long,
+    var id: Long = 0,
     var date: Long?,
     var color: Long?,
     @ColumnInfo(name="note_title")
@@ -46,7 +46,7 @@ data class Record(
 data class RecordsAdd(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var id: Long?,
+    var id: Long = 0,
     @ColumnInfo(name = "record_id")
     var recordId: Long?,
     var type: String?,
@@ -57,7 +57,7 @@ data class RecordsAdd(
 data class Tags(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var id: Long,
+    var id: Long = 0,
     @ColumnInfo(name = "tag_name")
     var name: String?,
     var guid: String = ""
@@ -71,7 +71,7 @@ data class DetailRecord(
     @Embedded
     var record: Record? = null,
 
-    @Relation(parentColumn = "_id", entityColumn = "record_id", entity = RecordsAdd::class, projection = ["type", "value"])
+    @Relation(parentColumn = "_id", entityColumn = "record_id", entity = RecordsAdd::class)
     var recordAdd: List<RecordsAdd> = listOf()
 ) {
     val id: Long?

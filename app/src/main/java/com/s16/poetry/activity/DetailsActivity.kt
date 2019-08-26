@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -36,6 +37,7 @@ class DetailsActivity : ThemeActivity() {
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
     private var saveJob: Job? = null
+    private var deleteJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,39 +107,28 @@ class DetailsActivity : ThemeActivity() {
                         noteCategory.visibility = View.GONE
                     }
 
-                    noteTags.removeAllViewsInLayout()
-                    if (record.tags.isNotEmpty()) {
-                        record.tags.forEach { tag ->
-                            val chip = Chip(noteTags.context).apply {
-                                text = tag
-                                isClickable = false
-                                isCheckable = false
-                                setChipIconResource(R.drawable.ic_tag_gray)
-                                isChipIconVisible = true
-                            }
-                            noteTags.addView(chip)
-                        }
-                    }
+                    buildTags(record.tags)
+                    chipAdd.visibility = View.GONE
 
-                    chipAdd = Chip(noteTags.context).apply {
-                        id = R.id.action_add_tags
-                        setText(R.string.action_add_tags)
-                        isCheckable = false
-                        setChipIconResource(R.drawable.ic_add_gray)
-                        isChipIconVisible = true
-                        visibility = View.GONE
+                } else {
+                    chipAdd = findViewById(R.id.action_add_tags)
+                    chipAdd.tag = listOf<String>()
+                    chipAdd.setOnClickListener {
+                        onAddTagsClick(it)
                     }
-                    noteTags.addView(chipAdd)
                 }
             })
         } else {
             chipAdd = findViewById(R.id.action_add_tags)
+            chipAdd.tag = listOf<String>()
+
+            chipAdd.setOnClickListener {
+                onAddTagsClick(it)
+            }
         }
 
         noteCategory.setOnClickListener {
-            val intent = Intent(this, SelectCategoryActivity::class.java)
-            intent.putExtra(Constants.ARG_PARAM_CATEGORY, "${noteCategory.tag ?: ""}")
-            startActivityForResult(intent, Constants.RESULT_SELECT_CATEGORY)
+            onAddCategoryClick(it)
         }
 
         currentMode = openMode
@@ -171,6 +162,7 @@ class DetailsActivity : ThemeActivity() {
                 true
             }
             R.id.action_delete -> {
+                deleteConfirm()
                 true
             }
             R.id.action_settings -> {
@@ -200,13 +192,28 @@ class DetailsActivity : ThemeActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.RESULT_SELECT_CATEGORY && resultCode == Constants.RESULT_OK) {
+        if (requestCode == Constants.RESULT_SELECT_CATEGORY) {
             val noteCategory: TextView = findViewById(R.id.noteCategory)
-            data?.let {
-                val name = it.getStringExtra(Constants.ARG_PARAM_NAME)
-                noteCategory.text = name
-                noteCategory.tag = name
-                noteCategory.visibility = View.VISIBLE
+            if (resultCode == Constants.RESULT_OK) {
+                data?.let {
+                    val name = it.getStringExtra(Constants.ARG_PARAM_NAME)
+                    noteCategory.text = name
+                    noteCategory.tag = name
+                }
+            } else {
+                noteCategory.tag = null
+                noteCategory.setText(R.string.title_add_category)
+            }
+        }
+
+        if (requestCode == Constants.RESULT_SELECT_TAG) {
+            if (resultCode == Constants.RESULT_OK) {
+                data?.let {
+                    val tags = it.getStringArrayExtra(Constants.ARG_PARAM_TAGS)
+                    buildTags(tags.toList())
+                }
+            } else {
+                buildTags(listOf())
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -224,6 +231,54 @@ class DetailsActivity : ThemeActivity() {
         if (savedInstanceState != null) {
             uuid = savedInstanceState.getString(Constants.ARG_PARAM_UUID)
         }
+    }
+
+    private fun onAddCategoryClick(view: View) {
+        startActivityForResult<SelectCategoryActivity>(
+            Constants.RESULT_SELECT_CATEGORY,
+            bundleOf(Constants.ARG_PARAM_CATEGORY to "${view.tag ?: ""}")
+        )
+    }
+
+    private fun onAddTagsClick(view: View) {
+        val tags: List<String> = view.tagAs() ?: listOf()
+        startActivityForResult<SelectTagActivity>(
+            Constants.RESULT_SELECT_TAG,
+            bundleOf(Constants.ARG_PARAM_TAGS to tags.toTypedArray())
+        )
+    }
+
+    private fun buildTags(values: List<String>): ChipGroup {
+        val noteTags: ChipGroup = findViewById(R.id.noteTags)
+
+        noteTags.removeAllViewsInLayout()
+        if (values.isNotEmpty()) {
+            values.forEach { tag ->
+                val chip = Chip(noteTags.context).apply {
+                    text = tag
+                    isClickable = false
+                    isCheckable = false
+                    setChipIconResource(R.drawable.ic_tag_gray)
+                    isChipIconVisible = true
+                }
+                noteTags.addView(chip)
+            }
+        }
+
+        chipAdd = Chip(noteTags.context).apply {
+            id = R.id.action_add_tags
+            setText(R.string.action_add_tags)
+            isCheckable = false
+            setChipIconResource(R.drawable.ic_add_gray)
+            isChipIconVisible = true
+            tag = values
+        }
+        chipAdd.setOnClickListener {
+            onAddTagsClick(it)
+        }
+        noteTags.addView(chipAdd)
+
+        return noteTags
     }
 
     private fun switchMode(mode: Int) {
@@ -302,18 +357,40 @@ class DetailsActivity : ThemeActivity() {
             Calendar.getInstance().timeInMillis,
             uuid)
 
+        val tags = mutableListOf<RecordsAdd>()
+        if (chipAdd.tag != null) {
+            val arr: List<String> = chipAdd.tagAs() ?: listOf()
+            arr.forEach {
+                tags.add(RecordsAdd(0, recordId, "Tag", it))
+            }
+        }
+
         val manager = DbManager(applicationContext)
         saveJob = uiScope.launch {
             val result = withContext(Dispatchers.IO) {
-                if (recordId != 0L) {
-                    manager.provider().updateRecord(record)
-                } else {
-                    manager.provider().insertRecord(record)
-                }
+                manager.provider().saveRecord(record, tags)
             }
+            recordId = result
+        }
+    }
 
-            if (result is Long) {
-                recordId = result
+    private fun deleteConfirm() {
+        confirmDialog(R.string.title_delete_confirm, R.string.message_delete_confirm) { dialog, _ ->
+            dialog.dismiss()
+            delete()
+        }
+    }
+
+    private fun delete() {
+        if (recordId != -1L) {
+            val manager = DbManager(applicationContext)
+            deleteJob = uiScope.launch {
+                withContext(Dispatchers.IO) {
+                    manager.provider().deleteRecordAll(recordId)
+                }
+
+                currentMode = 2
+                onBackPressed()
             }
         }
     }

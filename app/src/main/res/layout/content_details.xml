@@ -86,7 +86,7 @@
                 app:strokeColor="?attr/borderColor"
                 app:icon="@drawable/ic_category_gray"
                 app:iconPadding="@dimen/dimen_4dp"
-                app:iconTint="?attr/iconTint"
+                app:iconTint="?attr/borderColor"
                 app:iconTintMode="multiply"
                 app:layout_constraintTop_toBottomOf="@+id/noteContentContainer"
                 app:layout_constraintStart_toStartOf="parent"

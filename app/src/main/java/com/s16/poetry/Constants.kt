@@ -7,6 +7,7 @@ class Constants {
         const val ARG_PARAM_UUID = "uuid"
         const val ARG_PARAM_NAME = "name"
         const val ARG_PARAM_CATEGORY = "category"
+        const val ARG_PARAM_TAGS = "tags"
 
         const val RESULT_SELECT_CATEGORY = 0x0021
         const val RESULT_SELECT_TAG = 0x0022
