@@ -11,6 +11,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
 
         <item name="iconTint">@color/white</item>
+        <item name="dimIconTint">@color/grey_90</item>
         <item name="dividerColor">@color/white_33_opacity</item>
         <item name="borderColor">@color/white_33_opacity</item>
 
@@ -34,6 +35,7 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="iconTint">@color/grey_30</item>
+        <item name="dimIconTint">@color/grey_90</item>
         <item name="dividerColor">@color/grey_80</item>
         <item name="borderColor">@color/grey_90</item>
 

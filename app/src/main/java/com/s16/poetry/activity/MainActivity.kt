@@ -32,6 +32,7 @@ import com.s16.utils.makeSceneTransitionAnimation
 import com.s16.utils.startActivity
 import com.s16.view.AdaptableMenu
 
+
 class MainActivity : ThemeActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     RecordsPagedAdapter.OnItemSelectListener {
@@ -101,6 +102,7 @@ class MainActivity : ThemeActivity(),
         layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = recordsAdapter
+        // recyclerView.itemAnimator = SlideInItemAnimator()
 
         recordsModel = ViewModelProviders.of(this).get(RecordPagedModel::class.java)
         recordsModel.filterData.observe(this, Observer<PagedList<Record>> {

@@ -21,6 +21,7 @@ import com.takisoft.datetimepicker.DatePickerDialog
 import kotlinx.coroutines.*
 import java.util.*
 
+
 class DetailsActivity : ThemeActivity() {
 
     private lateinit var chipAdd: Chip
@@ -61,7 +62,6 @@ class DetailsActivity : ThemeActivity() {
         val noteContent: TextView = findViewById(R.id.noteContent)
         val noteCategory: TextView = findViewById(R.id.noteCategory)
         val noteDate: TextView = findViewById(R.id.noteDate)
-        val noteTags: ChipGroup = findViewById(R.id.noteTags)
         val editTitle: EditText = findViewById(R.id.editTitle)
         val editContent: EditText = findViewById(R.id.editContent)
 
@@ -393,5 +393,9 @@ class DetailsActivity : ThemeActivity() {
                 onBackPressed()
             }
         }
+    }
+
+    companion object {
+        private const val SCALE_DELAY = 30
     }
 }

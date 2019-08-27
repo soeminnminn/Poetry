@@ -9,14 +9,23 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.TextView
 import com.s16.app.AlertDialogFragment
 
 class EditInputDialog: AlertDialogFragment() {
 
-    var editText: EditText? = null
+    private var editText: EditText? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var mText: CharSequence = ""
+
+    fun getText(): CharSequence {
+        mText = "${editText?.text ?: ""}"
+        return mText
+    }
+
+    fun setText(value: CharSequence) {
+        mText = value
+        editText?.setText(mText, TextView.BufferType.EDITABLE)
     }
 
     override fun onCreateView(
@@ -38,6 +47,8 @@ class EditInputDialog: AlertDialogFragment() {
                     inputType = EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES
                 }
             }
+
+            editText?.setText(mText, TextView.BufferType.EDITABLE)
             content.addView(editText)
 
             return content

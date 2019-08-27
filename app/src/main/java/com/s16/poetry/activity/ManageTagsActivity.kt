@@ -123,10 +123,7 @@ class ManageTagsActivity : ThemeActivity() {
             dialog.cancel()
         })
         fragment.setPositiveButton(android.R.string.ok, DialogInterface.OnClickListener { dialog, _ ->
-            val newText = fragment.editText?.text
-            if (newText != null) {
-                adapter.add("$newText")
-            }
+            adapter.add("${fragment.getText()}")
             dialog.dismiss()
         })
         fragment.show(supportFragmentManager, "addNewDialog")

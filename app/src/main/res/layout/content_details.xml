@@ -9,6 +9,7 @@
         tools:context=".activity.DetailsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/detailContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dimen_16dp">
@@ -86,7 +87,7 @@
                 app:strokeColor="?attr/borderColor"
                 app:icon="@drawable/ic_category_gray"
                 app:iconPadding="@dimen/dimen_4dp"
-                app:iconTint="?attr/borderColor"
+                app:iconTint="?attr/dimIconTint"
                 app:iconTintMode="multiply"
                 app:layout_constraintTop_toBottomOf="@+id/noteContentContainer"
                 app:layout_constraintStart_toStartOf="parent"

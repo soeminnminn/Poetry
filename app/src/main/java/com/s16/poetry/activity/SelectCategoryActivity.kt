@@ -1,12 +1,13 @@
 package com.s16.poetry.activity
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -18,9 +19,18 @@ import com.s16.poetry.R
 import com.s16.poetry.adapters.CategoriesSelectAdapter
 import com.s16.poetry.data.Category
 import com.s16.poetry.data.CategoryModel
+import com.s16.poetry.data.DbManager
+import com.s16.poetry.view.EditInputDialog
 import com.s16.widget.SupportRecyclerView
+import kotlinx.coroutines.*
+import java.util.*
 
 class SelectCategoryActivity : ThemeActivity() {
+
+    private var uiScope = CoroutineScope(Dispatchers.Main)
+    private var saveJob: Job? = null
+
+    private var inserted: String? = null
 
     private lateinit var adapter: CategoriesSelectAdapter
 
@@ -62,8 +72,18 @@ class SelectCategoryActivity : ThemeActivity() {
         }
         categoryModel.categories.observe(this, Observer<List<Category>> {
             adapter.submitList(it)
-            adapter.setSelected(selectedCategory)
+
+            if (inserted != null) {
+                adapter.filter.filter("${textFilter.text}")
+            } else {
+                adapter.setSelected(selectedCategory)
+            }
         })
+
+        val addCategory: Button = findViewById(R.id.addCategory)
+        addCategory.setOnClickListener {
+            showAddNew()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -91,5 +111,36 @@ class SelectCategoryActivity : ThemeActivity() {
             }
         }
         super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        saveJob?.cancel()
+        super.onDestroy()
+    }
+
+    private fun showAddNew() {
+        val textFilter: EditText = findViewById(R.id.textFilter)
+
+        val fragment = EditInputDialog()
+        fragment.setText(textFilter.text)
+        fragment.setTitle(R.string.title_add_category)
+        fragment.setNegativeButton(android.R.string.cancel, DialogInterface.OnClickListener { dialog, _ ->
+            dialog.cancel()
+        })
+        fragment.setPositiveButton(android.R.string.ok, DialogInterface.OnClickListener { dialog, _ ->
+            save("${fragment.getText()}")
+            dialog.dismiss()
+        })
+        fragment.show(supportFragmentManager, "addNewDialog")
+    }
+
+    private fun save(value: String) {
+        val manager = DbManager(applicationContext)
+        saveJob = uiScope.launch {
+            withContext(Dispatchers.IO) {
+                manager.provider().insertCategory(Category(0, value, UUID.randomUUID().toString()))
+            }
+            inserted = value
+        }
     }
 }

@@ -1,11 +1,13 @@
 package com.s16.poetry.activity
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -15,11 +17,20 @@ import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 import com.s16.poetry.adapters.TagsSelectAdapter
+import com.s16.poetry.data.DbManager
 import com.s16.poetry.data.Tags
 import com.s16.poetry.data.TagsModel
+import com.s16.poetry.view.EditInputDialog
 import com.s16.widget.SupportRecyclerView
+import kotlinx.coroutines.*
+import java.util.*
 
 class SelectTagActivity : ThemeActivity() {
+
+    private var uiScope = CoroutineScope(Dispatchers.Main)
+    private var saveJob: Job? = null
+
+    private var inserted: String? = null
 
     private lateinit var adapter: TagsSelectAdapter
 
@@ -61,8 +72,18 @@ class SelectTagActivity : ThemeActivity() {
         }
         tagsModel.tags.observe(this, Observer<List<Tags>> {
             adapter.submitList(it)
-            adapter.setSelected(selectedTags)
+
+            if (inserted != null) {
+                adapter.filter.filter("${textFilter.text}")
+            } else {
+                adapter.setSelected(selectedTags)
+            }
         })
+
+        val addTags: Button = findViewById(R.id.addTags)
+        addTags.setOnClickListener {
+            showAddNew()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -91,5 +112,36 @@ class SelectTagActivity : ThemeActivity() {
             }
         }
         super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        saveJob?.cancel()
+        super.onDestroy()
+    }
+
+    private fun showAddNew() {
+        val textFilter: EditText = findViewById(R.id.textFilter)
+
+        val fragment = EditInputDialog()
+        fragment.setText(textFilter.text)
+        fragment.setTitle(R.string.title_add_tag)
+        fragment.setNegativeButton(android.R.string.cancel, DialogInterface.OnClickListener { dialog, _ ->
+            dialog.cancel()
+        })
+        fragment.setPositiveButton(android.R.string.ok, DialogInterface.OnClickListener { dialog, _ ->
+            save("${fragment.getText()}")
+            dialog.dismiss()
+        })
+        fragment.show(supportFragmentManager, "addNewDialog")
+    }
+
+    private fun save(value: String) {
+        val manager = DbManager(applicationContext)
+        saveJob = uiScope.launch {
+            withContext(Dispatchers.IO) {
+                manager.provider().insertTag(Tags(0, value, UUID.randomUUID().toString()))
+            }
+            inserted = value
+        }
     }
 }

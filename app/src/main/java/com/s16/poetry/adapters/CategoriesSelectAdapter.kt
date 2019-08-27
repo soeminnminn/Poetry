@@ -11,6 +11,7 @@ import com.s16.poetry.data.Category
 import com.s16.utils.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
 import com.s16.view.RecyclerViewHolder
+import java.util.*
 
 
 class CategoriesSelectAdapter(private val context: Context):
@@ -44,6 +45,11 @@ class CategoriesSelectAdapter(private val context: Context):
         } else {
             null
         }
+    }
+
+    fun add(category: String) {
+        val item = Category(0, category, UUID.randomUUID().toString())
+        add(item)
     }
 
     override fun getItemId(position: Int): Long {

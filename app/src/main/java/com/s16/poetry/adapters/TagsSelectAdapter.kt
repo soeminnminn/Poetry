@@ -11,6 +11,7 @@ import com.s16.poetry.data.Tags
 import com.s16.utils.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
 import com.s16.view.RecyclerViewHolder
+import java.util.*
 
 class TagsSelectAdapter(private val context: Context):
     RecyclerViewArrayAdapter<RecyclerViewHolder, Tags>() {
@@ -42,6 +43,11 @@ class TagsSelectAdapter(private val context: Context):
     }
 
     fun getSelected(): List<Tags> = mCheckedItems
+
+    fun add(tag: String) {
+        val item = Tags(0, tag, UUID.randomUUID().toString())
+        add(item)
+    }
 
     override fun getItemId(position: Int): Long {
         return super.getItem(position)?.id ?: 0
