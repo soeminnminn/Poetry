@@ -19,19 +19,19 @@ class AdaptableMenu(private val menu: Menu): Menu {
             mAdapter = value
             adapter.registerDataSetObserver(object : DataSetObserver() {
                 override fun onChanged() {
-                    updateLayout()
+                    updateMenu()
                     super.onChanged()
                 }
 
                 override fun onInvalidated() {
-                    updateLayout()
+                    updateMenu()
                     super.onInvalidated()
                 }
             })
-            updateLayout()
+            updateMenu()
         }
 
-    private fun updateLayout() {
+    private fun updateMenu() {
         if (::mAdapter.isInitialized) {
             menu.clear()
 

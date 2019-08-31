@@ -167,7 +167,6 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
      * Sorts the content of this adapter using the specified comparator.
      *
      * @param comparator The comparator used to sort the objects contained
-     * @param notifyOnChange Indicates whether or not {@link #notifyDataSetChanged()} must be called
      * in this adapter.
      */
     fun sort(comparator: Comparator<in T>) {

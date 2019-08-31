@@ -20,7 +20,7 @@ class RecordsPagedAdapter:
         fun onItemClick(view: View, id: Long, position: Int)
     }
 
-    private val mCheckedItems: MutableList<Int> = mutableListOf()
+    private val mCheckedItems: MutableList<Record> = mutableListOf()
     private var mSelectMode = false
     private var mItemClickListener: OnItemClickListener? = null
     private var mItemSelectListener: OnItemSelectListener? = null
@@ -33,7 +33,7 @@ class RecordsPagedAdapter:
 
     override fun onBindViewHolder(holder: NoteItemViewHolder, position: Int) {
         getItem(position)?.let { record ->
-            holder.dataBind(record, mCheckedItems.contains(position))
+            holder.dataBind(record, mCheckedItems.contains(record))
         }
     }
 
@@ -51,6 +51,8 @@ class RecordsPagedAdapter:
 
     override fun isSelectedMode(): Boolean = mSelectMode
 
+    fun getSelectedItems() = mCheckedItems
+
     override fun onSelectStart() {
         if (!mSelectMode && mItemSelectListener != null) {
             mItemSelectListener!!.onItemSelectStart()
@@ -58,14 +60,16 @@ class RecordsPagedAdapter:
     }
 
     override fun onSelectionChange(position: Int, checked: Boolean) {
-        if (checked) {
-            if (!mCheckedItems.contains(position)) mCheckedItems.add(position)
-        } else {
-            if (mCheckedItems.contains(position)) mCheckedItems.remove(position)
-        }
+        getItem(position)?.let { record ->
+            if (checked) {
+                if (!mCheckedItems.contains(record)) mCheckedItems.add(record)
+            } else {
+                if (mCheckedItems.contains(record)) mCheckedItems.remove(record)
+            }
 
-        if (mItemSelectListener != null) {
-            mItemSelectListener!!.onItemSelectionChange(position, mCheckedItems.size)
+            if (mItemSelectListener != null) {
+                mItemSelectListener!!.onItemSelectionChange(position, mCheckedItems.size)
+            }
         }
     }
 

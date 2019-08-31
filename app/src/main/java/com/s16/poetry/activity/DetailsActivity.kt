@@ -394,8 +394,4 @@ class DetailsActivity : ThemeActivity() {
             }
         }
     }
-
-    companion object {
-        private const val SCALE_DELAY = 30
-    }
 }

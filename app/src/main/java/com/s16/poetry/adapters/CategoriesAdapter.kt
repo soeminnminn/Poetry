@@ -17,17 +17,18 @@ class CategoriesAdapter: RecyclerViewArrayAdapter<RecyclerViewHolder, Category>(
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_simple, parent, false)
 
-        val textView: TextView = view as TextView
-        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_gray, 0, 0, 0)
-        textView.compoundDrawablePadding = parent.context.dpToPixel(8)
-
+        (view as TextView).apply {
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_gray, 0, 0, 0)
+            compoundDrawablePadding = parent.context.dpToPixel(8)
+        }
         return RecyclerViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        getItem(position)?.let {
-            val textView: TextView = holder.itemView as TextView
-            textView.text = it.name
+        getItem(position)?.let { category ->
+            (holder.itemView as TextView).apply {
+                text = category.name
+            }
         }
     }
 

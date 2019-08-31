@@ -18,12 +18,11 @@ class TagsSelectAdapter(private val context: Context):
 
     private val mCheckedItems: MutableList<Tags> = mutableListOf()
 
-    private val checkMarkDrawable: Drawable
+    private val checkMarkDrawable: Drawable?
         get() {
             val attrs = intArrayOf(android.R.attr.listChoiceIndicatorMultiple)
-            var drawable: Drawable? = null
             val ta = context.theme.obtainStyledAttributes(attrs)
-            drawable = ta.getDrawable(0)
+            val drawable: Drawable? = ta.getDrawable(0)
             ta.recycle()
             return drawable
         }
@@ -57,30 +56,31 @@ class TagsSelectAdapter(private val context: Context):
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_simple_selectable, parent, false)
 
-        val textView: CheckedTextView = view.findViewById(android.R.id.text1)
-        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tag_gray, 0, 0, 0)
-        textView.compoundDrawablePadding = parent.context.dpToPixel(8)
-        textView.checkMarkDrawable = checkMarkDrawable
+        view.findViewById<CheckedTextView>(android.R.id.text1).apply {
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tag_gray, 0, 0, 0)
+            compoundDrawablePadding = parent.context.dpToPixel(8)
+            checkMarkDrawable = this@TagsSelectAdapter.checkMarkDrawable
+        }
 
         return RecyclerViewHolder(view, android.R.id.text1)
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         getItem(position)?.let { tags ->
-            val textView: CheckedTextView = holder[android.R.id.text1]
-            textView.text = tags.name
-            textView.isChecked = mCheckedItems.contains(tags)
+            holder.findViewById<CheckedTextView>(android.R.id.text1).apply {
+                text = tags.name
+                isChecked = mCheckedItems.contains(tags)
+            }
 
             holder.itemView.setOnClickListener {
-                val found = getItem(position)
-                if (found != null) {
+                getItem(position)?.let { found ->
                     if (mCheckedItems.contains(found)) {
                         mCheckedItems.remove(found)
                     } else {
                         mCheckedItems.add(found)
                     }
+                    notifyItemChanged(position)
                 }
-                notifyItemChanged(position)
             }
         }
     }

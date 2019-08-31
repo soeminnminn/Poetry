@@ -19,12 +19,11 @@ class CategoriesSelectAdapter(private val context: Context):
 
     private var selectedPosition: Int = -1
 
-    private val checkMarkDrawable: Drawable
+    private val checkMarkDrawable: Drawable?
         get() {
             val attrs = intArrayOf(android.R.attr.listChoiceIndicatorSingle)
-            var drawable: Drawable? = null
             val ta = context.theme.obtainStyledAttributes(attrs)
-            drawable = ta.getDrawable(0)
+            val drawable: Drawable? = ta.getDrawable(0)
             ta.recycle()
             return drawable
         }
@@ -60,11 +59,11 @@ class CategoriesSelectAdapter(private val context: Context):
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_simple_selectable, parent, false)
 
-        val textView: CheckedTextView = view.findViewById(android.R.id.text1)
-        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_gray, 0, 0, 0)
-        textView.compoundDrawablePadding = context.dpToPixel(8)
-        textView.checkMarkDrawable = checkMarkDrawable
-
+        view.findViewById<CheckedTextView>(android.R.id.text1).apply {
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_gray, 0, 0, 0)
+            compoundDrawablePadding = context.dpToPixel(8)
+            checkMarkDrawable = this@CategoriesSelectAdapter.checkMarkDrawable
+        }
         return RecyclerViewHolder(view, android.R.id.text1)
     }
 

@@ -23,14 +23,13 @@ import com.s16.poetry.R
 import com.s16.poetry.adapters.NavMenuAdapter
 import com.s16.poetry.adapters.RecordsPagedAdapter
 import com.s16.poetry.adapters.setItemClickListener
-import com.s16.poetry.data.Category
-import com.s16.poetry.data.CategoryModel
-import com.s16.poetry.data.Record
-import com.s16.poetry.data.RecordPagedModel
+import com.s16.poetry.data.*
 import com.s16.poetry.fragments.AboutFragment
+import com.s16.utils.confirmDialog
 import com.s16.utils.makeSceneTransitionAnimation
 import com.s16.utils.startActivity
 import com.s16.view.AdaptableMenu
+import kotlinx.coroutines.*
 
 
 class MainActivity : ThemeActivity(),
@@ -43,6 +42,9 @@ class MainActivity : ThemeActivity(),
 
     private lateinit var layoutManager: StaggeredGridLayoutManager
     private var menuItemViewMode: MenuItem? = null
+
+    private var uiScope = CoroutineScope(Dispatchers.Main)
+    private var deleteJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +60,10 @@ class MainActivity : ThemeActivity(),
         toolbarEdit.setNavigationOnClickListener {
             doSelectionEnd()
         }
-        toolbarEdit.setOnMenuItemClickListener {
+        toolbarEdit.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.action_delete) {
+                doDeleteSelected()
+            }
             true
         }
 
@@ -102,7 +107,6 @@ class MainActivity : ThemeActivity(),
         layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = recordsAdapter
-        // recyclerView.itemAnimator = SlideInItemAnimator()
 
         recordsModel = ViewModelProviders.of(this).get(RecordPagedModel::class.java)
         recordsModel.filterData.observe(this, Observer<PagedList<Record>> {
@@ -132,6 +136,11 @@ class MainActivity : ThemeActivity(),
                 super.onBackPressed()
             }
         }
+    }
+
+    override fun onDestroy() {
+        deleteJob?.cancel()
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -222,6 +231,29 @@ class MainActivity : ThemeActivity(),
                 }
             })
         recordsAdapter.endSelection()
+    }
+
+    private fun doDeleteSelected() {
+        if (recordsAdapter.isSelectedMode()) {
+            confirmDialog(R.string.title_delete_confirm,
+                R.string.message_delete_confirm) { dialog, _ ->
+                dialog.dismiss()
+                deleteItems(recordsAdapter.getSelectedItems())
+            }
+        }
+    }
+
+    private fun deleteItems(items: List<Record>) {
+        if (items.isNotEmpty()) {
+            val manager = DbManager(applicationContext)
+            deleteJob = uiScope.launch {
+                withContext(Dispatchers.IO) {
+                    val ids = items.map { it.id }.toLongArray()
+                    manager.provider().deleteRecordAll(*ids)
+                }
+                doSelectionEnd()
+            }
+        }
     }
 
     private fun filterRecords(categoryId: Int) {
