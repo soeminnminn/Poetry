@@ -3,6 +3,8 @@ package com.s16.poetry.data
 import android.content.Context
 import android.os.Environment
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.OnLifecycleEvent
 import com.s16.poetry.Constants
 import kotlinx.coroutines.*
 import java.io.File
@@ -12,18 +14,16 @@ import java.lang.Exception
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-abstract class BackupTask(private val context: Context): Runnable {
+internal class BackupTask(
+    private val context: Context,
+    private val onStartBackup: (file: File) -> Unit,
+    private val onOverride: (sender: BackupTask, file: File) -> Unit,
+    private val onCanceled: (message: String) -> Unit,
+    private val onComplete: () -> Unit
+): Runnable {
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
     private var job: Job? = null
-
-    abstract fun onStartBackup(file: File)
-
-    abstract fun onOverride(sender: BackupTask, file: File)
-
-    abstract fun onCanceled(message: String)
-
-    abstract fun onComplete()
 
     override fun run() {
         if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
@@ -53,6 +53,7 @@ abstract class BackupTask(private val context: Context): Runnable {
 
     fun cancel() {
         job?.cancel()
+
     }
 
     private fun runTask(file: File) {

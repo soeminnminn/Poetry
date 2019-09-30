@@ -43,8 +43,8 @@ class RestoreFragment : ThemeDialogFragment() {
 
         isCancelable = false
 
-        dialogButtons.setNegativeButton(android.R.string.cancel) { _, _ ->
-            dialog.cancel()
+        dialogButtons.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+            dialog!!.cancel()
         }
         dialogButtons.setPositiveButton(android.R.string.ok) { _, _ ->
             doRestore()
@@ -77,16 +77,15 @@ class RestoreFragment : ThemeDialogFragment() {
     }
 
     private fun runRestoreTask(file: File) {
-        restoreTask = object: RestoreTask(context!!, file) {
-            override fun onCanceled(message: String) {
+        restoreTask = RestoreTask(
+            context!!, file,
+            onCanceled = { message ->
                 showMessage(message)
-            }
-
-            override fun onComplete() {
+            },
+            onComplete = {
                 showMessage(R.string.message_restore_complete)
             }
-
-        }
+        )
         restoreTask?.run()
     }
 

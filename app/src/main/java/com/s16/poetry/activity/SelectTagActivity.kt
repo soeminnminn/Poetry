@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.s16.app.ThemeActivity
@@ -22,10 +23,15 @@ import com.s16.poetry.data.Tags
 import com.s16.poetry.data.TagsModel
 import com.s16.poetry.view.EditInputDialog
 import com.s16.widget.SupportRecyclerView
+import dagger.android.AndroidInjection
 import kotlinx.coroutines.*
 import java.util.*
+import javax.inject.Inject
 
 class SelectTagActivity : ThemeActivity() {
+
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
     private var saveJob: Job? = null
@@ -35,6 +41,8 @@ class SelectTagActivity : ThemeActivity() {
     private lateinit var adapter: TagsSelectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_tag)
         updateSystemUiColor()
@@ -68,9 +76,9 @@ class SelectTagActivity : ThemeActivity() {
         })
 
         val tagsModel by lazy {
-            ViewModelProviders.of(this).get(TagsModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory).get(TagsModel::class.java)
         }
-        tagsModel.tags.observe(this, Observer<List<Tags>> {
+        tagsModel.data.observe(this, Observer<List<Tags>> {
             adapter.submitList(it)
 
             if (inserted != null) {

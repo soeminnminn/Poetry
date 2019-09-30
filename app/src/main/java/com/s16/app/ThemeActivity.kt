@@ -109,15 +109,15 @@ abstract class ThemeActivity: AppCompatActivity(), SharedPreferences.OnSharedPre
             when(sharedPreferences?.getString(key, "2") ?: "2") {
                 "0" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 "1" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
+                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
             recreate()
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putBoolean("previousDarkTheme", previousDarkTheme)
+        outState.putBoolean("previousDarkTheme", previousDarkTheme)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {

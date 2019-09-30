@@ -55,7 +55,7 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
      * @throws UnsupportedOperationException if the underlying data collection is immutable
      */
     fun add(element: T) {
-        var index = -1
+        var index: Int
         synchronized(mLock) {
             mOriginalValues?.add(element) ?: mObjects.add(element)
             index = mOriginalValues?.indexOf(element) ?: mObjects.indexOf(element)
@@ -127,7 +127,7 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
      * @throws UnsupportedOperationException if the underlying data collection is immutable
      */
     fun remove(element: T) {
-        var index = -1
+        var index: Int
         synchronized(mLock) {
             index = mOriginalValues?.indexOf(element) ?: mObjects.indexOf(element)
             mOriginalValues?.remove(element) ?: mObjects.remove(element)

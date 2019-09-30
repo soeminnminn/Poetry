@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
@@ -29,12 +30,17 @@ import com.s16.utils.confirmDialog
 import com.s16.utils.makeSceneTransitionAnimation
 import com.s16.utils.startActivity
 import com.s16.view.AdaptableMenu
+import dagger.android.AndroidInjection
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 
 class MainActivity : ThemeActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     RecordsPagedAdapter.OnItemSelectListener {
+
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var navAdapter: NavMenuAdapter
     private lateinit var recordsAdapter: RecordsPagedAdapter
@@ -47,6 +53,8 @@ class MainActivity : ThemeActivity(),
     private var deleteJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         updateSystemUiColor()
@@ -73,7 +81,6 @@ class MainActivity : ThemeActivity(),
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
             R.string.navigation_drawer_open,
@@ -82,8 +89,29 @@ class MainActivity : ThemeActivity(),
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        val navView: NavigationView = findViewById(R.id.nav_view)
         navView.setNavigationItemSelectedListener(this)
+        bindNavMenu(navView)
 
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        bindRecords(recyclerView)
+    }
+
+    private fun bindNavMenu(navView: NavigationView) {
+        navAdapter = NavMenuAdapter()
+        val categoryModel by lazy {
+            ViewModelProviders.of(this, viewModelFactory).get(CategoryModel::class.java)
+        }
+        categoryModel.data.observe(this, Observer<List<Category>> {
+            navAdapter.items = it
+            navAdapter.notifyDataSetChanged()
+        })
+
+        val menu = AdaptableMenu(navView.menu)
+        menu.adapter = navAdapter
+    }
+
+    private fun bindRecords(recyclerView: RecyclerView) {
         recordsAdapter = RecordsPagedAdapter()
         recordsAdapter.setItemSelectListener(this)
         recordsAdapter.setItemClickListener { view, id, _ ->
@@ -103,26 +131,14 @@ class MainActivity : ThemeActivity(),
             ActivityCompat.startActivity(this, intent, options)
         }
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = recordsAdapter
 
-        recordsModel = ViewModelProviders.of(this).get(RecordPagedModel::class.java)
-        recordsModel.filterData.observe(this, Observer<PagedList<Record>> {
+        recordsModel = ViewModelProviders.of(this, viewModelFactory).get(RecordPagedModel::class.java)
+        recordsModel.data.observe(this, Observer<PagedList<Record>> {
             recordsAdapter.submitList(it)
         })
-
-        navAdapter = NavMenuAdapter()
-        val categoryModel by lazy {
-            ViewModelProviders.of(this).get(CategoryModel::class.java)
-        }
-        categoryModel.categories.observe(this, Observer<List<Category>> {
-            navAdapter.items = it
-            navAdapter.notifyDataSetChanged()
-        })
-        val menu = AdaptableMenu(navView.menu)
-        menu.adapter = navAdapter
     }
 
     override fun onBackPressed() {

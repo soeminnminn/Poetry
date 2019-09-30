@@ -14,15 +14,15 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 
-abstract class RestoreTask(private val context: Context, private val file: File)
-    : Runnable {
+internal class RestoreTask(
+    private val context: Context,
+    private val file: File,
+    private val onCanceled: (message: String) -> Unit,
+    private val onComplete: () -> Unit
+): Runnable {
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
     private var job: Job? = null
-
-    abstract fun onCanceled(message: String)
-
-    abstract fun onComplete()
 
     override fun run() {
         val manager = DbManager(context.applicationContext)

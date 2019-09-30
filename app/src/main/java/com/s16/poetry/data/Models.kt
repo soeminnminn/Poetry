@@ -1,50 +1,35 @@
 package com.s16.poetry.data
 
-import android.app.Application
 import androidx.lifecycle.*
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
+import javax.inject.Inject
 
-class CategoryModel(application: Application) : AndroidViewModel(application) {
-    private var provider = DbManager(application).provider()
-    val categories: LiveData<List<Category>> = provider.listCategories()
+class CategoryModel @Inject constructor(provider: DataProvider): ViewModel() {
+    val data: LiveData<List<Category>> = provider.listCategories()
 }
 
-class TagsModel(application: Application) : AndroidViewModel(application) {
-    private var provider = DbManager(application).provider()
-    val tags: LiveData<List<Tags>> = provider.listTags()
+class TagsModel @Inject constructor(provider: DataProvider): ViewModel() {
+    val data: LiveData<List<Tags>> = provider.listTags()
 }
 
-class RecordPagedModel(application: Application) : AndroidViewModel(application) {
-    private var provider = DbManager(application).provider()
+class RecordPagedModel @Inject constructor(private val provider: DataProvider): ViewModel() {
+    private val filterData = MutableLiveData<String?>()
 
-    private var records: LiveData<PagedList<Record>> = MutableLiveData()
-    private var allRecords: LiveData<PagedList<Record>>
-
-    val filterData: MediatorLiveData<PagedList<Record>> = MediatorLiveData()
-
-    init {
-        allRecords = provider.listPagedRecords().toLiveData(PAGE_SIZE)
-        filterData.addSource(allRecords) {
-            filterData.value = it
+    val data: LiveData<PagedList<Record>> = Transformations.switchMap(filterData) { category ->
+        if (category == null || category.isEmpty()) {
+            provider.listPagedRecords().toLiveData(PAGE_SIZE)
+        } else {
+            provider.listPagedRecordsByCategory(category).toLiveData(PAGE_SIZE)
         }
     }
 
-    fun filter(category: String?): RecordPagedModel {
-        if (category == null || category.isEmpty()) {
-            filterData.removeSource(records)
-            allRecords = provider.listPagedRecords().toLiveData(PAGE_SIZE)
-            filterData.addSource(allRecords) {
-                filterData.value = it
-            }
-        } else {
-            filterData.removeSource(allRecords)
-            records = provider.listPagedRecordsByCategory(category).toLiveData(PAGE_SIZE)
-            filterData.addSource(records) {
-                filterData.value = it
-            }
-        }
-        return this
+    init {
+        filterData.value = null
+    }
+
+    fun filter(category: String?) {
+        filterData.value = category
     }
 
     companion object {
@@ -52,14 +37,15 @@ class RecordPagedModel(application: Application) : AndroidViewModel(application)
     }
 }
 
-@Suppress("UNCHECKED_CAST")
-class DetailsModelFactory(private val application: Application, val id: Long) : ViewModelProvider.AndroidViewModelFactory(application) {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return DetailsModel(application, id) as T
-    }
-}
+class DetailsModel @Inject constructor(private val provider: DataProvider): ViewModel() {
+    private val idData = MutableLiveData<Long>()
 
-class DetailsModel(application: Application, id: Long) : AndroidViewModel(application) {
-    private var provider = DbManager(application).provider()
-    val data: LiveData<DetailRecord> = provider.getDetailRecord(id)
+    val data: LiveData<DetailRecord> = Transformations.switchMap(idData) { id ->
+        provider.getDetailRecord(id)
+    }
+
+    fun get(id: Long): LiveData<DetailRecord> {
+        idData.value = id
+        return data
+    }
 }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.s16.app.ProgressDialog
 import com.s16.poetry.Constants
@@ -34,33 +35,33 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        findPreference(Constants.PREFS_MANAGE_CATEGORY)?.setOnPreferenceClickListener {
+        findPreference<Preference>(Constants.PREFS_MANAGE_CATEGORY)?.setOnPreferenceClickListener {
             startActivity<ManageCategoriesActivity>()
             true
         }
 
-        findPreference(Constants.PREFS_MANAGE_TAG)?.setOnPreferenceClickListener {
+        findPreference<Preference>(Constants.PREFS_MANAGE_TAG)?.setOnPreferenceClickListener {
             startActivity<ManageTagsActivity>()
             true
         }
 
-        findPreference(Constants.PREFS_BACKUP)?.setOnPreferenceClickListener {
+        findPreference<Preference>(Constants.PREFS_BACKUP)?.setOnPreferenceClickListener {
             requestPermission(Constants.PERMISSION_RESULT_BACKUP)
             true
         }
 
-        findPreference(Constants.PREFS_RESTORE)?.setOnPreferenceClickListener {
+        findPreference<Preference>(Constants.PREFS_RESTORE)?.setOnPreferenceClickListener {
             requestPermission(Constants.PERMISSION_RESULT_RESTORE)
             true
         }
 
-        val prefsAbout = findPreference(Constants.PREFS_ABOUT)
+        val prefsAbout = findPreference<Preference>(Constants.PREFS_ABOUT)
         val versionText = context?.getText(R.string.version_text)
         if (versionText != null) {
-            prefsAbout.summary = String.format(versionText.toString(), versionName)
+            prefsAbout!!.summary = String.format(versionText.toString(), versionName)
         }
 
-        prefsAbout.setOnPreferenceClickListener {
+        prefsAbout!!.setOnPreferenceClickListener {
             showAboutDialog()
             true
         }
@@ -130,29 +131,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
             setMessage(getText(R.string.message_backup_process))
         }
 
-        backupTask = object: BackupTask(context!!) {
-            override fun onOverride(sender: BackupTask, file: File) {
+        backupTask = BackupTask(
+            context!!,
+            onStartBackup = {
+                progressDialog.show()
+            },
+            onOverride = { sender, file ->
                 context!!.confirmDialog(
                     R.string.title_backup_dialog,
                     R.string.message_backup_override) { _, _ ->
                     sender.override(file)
                 }
-            }
-
-            override fun onStartBackup(file: File) {
-                progressDialog.show()
-            }
-
-            override fun onCanceled(message: String) {
+            },
+            onCanceled = { message ->
                 progressDialog.hide()
                 context!!.alertDialog(R.string.title_backup_dialog, message)
-            }
-
-            override fun onComplete() {
+            },
+            onComplete = {
                 progressDialog.hide()
                 context!!.alertDialog(R.string.title_backup_dialog, R.string.message_backup_complete)
             }
-        }
+        )
         backupTask?.run()
     }
 
