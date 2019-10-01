@@ -77,7 +77,7 @@ class MainActivity : ThemeActivity(),
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {
-            startActivity<DetailsActivity>(Pair(Constants.ARG_PARAM_ADD, 1))
+            startActivity<DetailsActivity>(Constants.ARG_PARAM_ADD to 1)
         }
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -114,21 +114,24 @@ class MainActivity : ThemeActivity(),
     private fun bindRecords(recyclerView: RecyclerView) {
         recordsAdapter = RecordsPagedAdapter()
         recordsAdapter.setItemSelectListener(this)
-        recordsAdapter.setItemClickListener { view, id, _ ->
-            val intent = Intent(this, DetailsActivity::class.java)
-            intent.putExtra(Constants.ARG_PARAM_ID, id)
-
-            val cardView: View = view.findViewById(R.id.cardView)
-            val noteTitle: View = view.findViewById(R.id.noteTitle)
-            val noteContent: View = view.findViewById(R.id.noteContent)
-
-            val options = makeSceneTransitionAnimation(
-                Pair(cardView, getString(R.string.transition_root)),
-                Pair(noteTitle, getString(R.string.transition_title)),
-                Pair(noteContent, getString(R.string.transition_note))
-            ).toBundle()
-
-            ActivityCompat.startActivity(this, intent, options)
+//        recordsAdapter.setItemClickListener { view, id, _ ->
+//            val intent = Intent(this, DetailsActivity::class.java)
+//            intent.putExtra(Constants.ARG_PARAM_ID, id)
+//
+//            val cardView: View = view.findViewById(R.id.cardView)
+//            val noteTitle: View = view.findViewById(R.id.noteTitle)
+//            val noteContent: View = view.findViewById(R.id.noteContent)
+//
+//            val options = makeSceneTransitionAnimation(
+//                Pair(cardView, getString(R.string.transition_root)),
+//                Pair(noteTitle, getString(R.string.transition_title)),
+//                Pair(noteContent, getString(R.string.transition_note))
+//            ).toBundle()
+//
+//            ActivityCompat.startActivity(this, intent, options)
+//        }
+        recordsAdapter.setItemClickListener { _, id, _ ->
+            startActivity<DetailsActivity>(Pair(Constants.ARG_PARAM_ID, id))
         }
 
         layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)

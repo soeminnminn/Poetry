@@ -43,7 +43,7 @@ class RestoreFragment : ThemeDialogFragment() {
 
         isCancelable = false
 
-        dialogButtons.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+        dialogButtons.setNegativeButton(android.R.string.cancel) { _, _ ->
             dialog!!.cancel()
         }
         dialogButtons.setPositiveButton(android.R.string.ok) { _, _ ->

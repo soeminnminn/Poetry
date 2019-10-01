@@ -33,7 +33,6 @@ class DetailsActivity : ThemeActivity() {
     private lateinit var chipAdd: Chip
 
     private var recordId: Long = 0
-        get() = intent.getLongExtra(Constants.ARG_PARAM_ID, 0)
 
     private var uuid: String = UUID.randomUUID().toString()
 
@@ -88,7 +87,9 @@ class DetailsActivity : ThemeActivity() {
             uuid = savedInstanceState.getString(Constants.ARG_PARAM_UUID)!!
         }
 
-        if (recordId != -1L) {
+        recordId = intent.getLongExtra(Constants.ARG_PARAM_ID, 0)
+
+        if (recordId > 0L) {
             val model: DetailsModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(DetailsModel::class.java)
             model.get(recordId).observe(this, Observer<DetailRecord> { record ->
@@ -164,6 +165,9 @@ class DetailsActivity : ThemeActivity() {
                 true
             }
             R.id.action_make_copy -> {
+                currentMode = 1
+                recordId = 0L
+                switchMode(1)
                 true
             }
             R.id.action_save -> {
