@@ -1,19 +1,18 @@
 package com.s16.poetry
 
-import android.app.Activity
 import android.app.Application
 import com.s16.poetry.injector.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class MainApp : Application(), HasActivityInjector {
+class MainApp : Application(), HasAndroidInjector {
 
     @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-    override fun activityInjector(): DispatchingAndroidInjector<Activity>? {
-        return dispatchingAndroidInjector
+    override fun androidInjector(): DispatchingAndroidInjector<Any>? {
+        return androidInjector
     }
 
     override fun onCreate() {

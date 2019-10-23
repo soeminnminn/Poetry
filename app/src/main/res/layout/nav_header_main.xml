@@ -43,6 +43,6 @@
             android:layout_marginLeft="@dimen/dimen_16dp"
             android:layout_below="@id/navTitle"
             android:layout_marginTop="@dimen/dimen_16dp"
-            android:text="@string/nav_header_subtitle"/>
+            android:text="@string/author_name"/>
 
 </RelativeLayout>

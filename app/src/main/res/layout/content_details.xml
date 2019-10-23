@@ -29,6 +29,7 @@
                     android:textAppearance="?android:textAppearanceLarge"
                     android:background="@null"
                     android:hint="@string/hint_edit_title"
+                    android:importantForAutofill="no"
                     android:inputType="textCapSentences"
                     android:visibility="gone" />
 
@@ -52,7 +53,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/noteTitleContainer"
                 android:layout_marginTop="@dimen/dimen_16dp" >
 
-            <com.commonsware.cwac.richedit.RichEditText
+            <EditText
                     android:id="@+id/editContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -62,6 +63,7 @@
                     android:minLines="2"
                     android:gravity="top|start|left"
                     android:hint="@string/hint_edit_note"
+                    android:importantForAutofill="no"
                     android:inputType="textMultiLine|textCapSentences"
                     android:visibility="gone" />
 

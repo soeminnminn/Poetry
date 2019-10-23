@@ -27,6 +27,12 @@
                 app:entries="@array/prefs_select_theme_titles"
                 app:entryValues="@array/prefs_select_theme_values" />
 
+        <EditTextPreference
+            app:key="author_name"
+            app:title="@string/prefs_author"
+            app:summary="@string/prefs_author_summary"
+            app:defaultValue="@string/author_name" />
+
         <Preference
             app:key="manage_category"
             app:title="@string/prefs_manage_category"

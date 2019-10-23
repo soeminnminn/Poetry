@@ -18,6 +18,7 @@ class Constants {
         const val DISPLAY_DATE_FORMAT = "dd/MM/yyyy"
 
         const val PREFS_SELECT_THEME = "select_theme"
+        const val PREFS_AUTHOR_NAME = "author_name"
         const val PREFS_MANAGE_CATEGORY = "manage_category"
         const val PREFS_MANAGE_TAG = "manage_tags"
         const val PREFS_BACKUP = "backup"

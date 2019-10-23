@@ -1,1 +1,1 @@
-include ':app', ':richedit', ':datetimepicker'
+include ':app', ':datetimepicker'

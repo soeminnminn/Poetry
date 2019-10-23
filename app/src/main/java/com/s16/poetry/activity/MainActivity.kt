@@ -2,12 +2,14 @@ package com.s16.poetry.activity
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -26,8 +28,9 @@ import com.s16.poetry.adapters.RecordsPagedAdapter
 import com.s16.poetry.adapters.setItemClickListener
 import com.s16.poetry.data.*
 import com.s16.poetry.fragments.AboutFragment
+import com.s16.preferences.StringLiveSharedPreference
 import com.s16.utils.confirmDialog
-import com.s16.utils.makeSceneTransitionAnimation
+import com.s16.utils.nullableStringOf
 import com.s16.utils.startActivity
 import com.s16.view.AdaptableMenu
 import dagger.android.AndroidInjection
@@ -92,6 +95,7 @@ class MainActivity : ThemeActivity(),
         val navView: NavigationView = findViewById(R.id.nav_view)
         navView.setNavigationItemSelectedListener(this)
         bindNavMenu(navView)
+        bindAuthorName(navView)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         bindRecords(recyclerView)
@@ -141,6 +145,19 @@ class MainActivity : ThemeActivity(),
         recordsModel = ViewModelProviders.of(this, viewModelFactory).get(RecordPagedModel::class.java)
         recordsModel.data.observe(this, Observer<PagedList<Record>> {
             recordsAdapter.submitList(it)
+        })
+    }
+
+    private fun bindAuthorName(navView: NavigationView) {
+        val headerView = navView.getHeaderView(0)
+
+        val textAuthorName: TextView = headerView.findViewById(R.id.navSubTitle)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val defAuthorName = getString(R.string.author_name)
+        val prefsLiveData = StringLiveSharedPreference(sharedPreferences, Constants.PREFS_AUTHOR_NAME, defAuthorName)
+
+        prefsLiveData.observe(this, Observer {
+            textAuthorName.text = it
         })
     }
 
