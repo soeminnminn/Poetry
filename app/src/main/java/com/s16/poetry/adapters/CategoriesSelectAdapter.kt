@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckedTextView
 import com.s16.poetry.R
+import com.s16.poetry.TypeFaceUtil
 import com.s16.poetry.data.Category
 import com.s16.utils.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
@@ -70,6 +71,7 @@ class CategoriesSelectAdapter(private val context: Context):
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         getItem(position)?.let { category ->
             val textView: CheckedTextView = holder[android.R.id.text1]
+            textView.typeface = TypeFaceUtil.getPreferencesTypeFace(holder.context)
             textView.text = category.name
             textView.isChecked = (position == selectedPosition)
 

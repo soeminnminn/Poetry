@@ -1,6 +1,7 @@
 package com.s16.poetry.activity
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
@@ -16,6 +17,7 @@ import com.google.android.material.chip.ChipGroup
 import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
+import com.s16.poetry.TypeFaceUtil
 import com.s16.poetry.data.*
 import com.s16.utils.*
 import com.takisoft.datetimepicker.DatePickerDialog
@@ -71,6 +73,11 @@ class DetailsActivity : ThemeActivity() {
         val noteDate: TextView = findViewById(R.id.noteDate)
         val editTitle: EditText = findViewById(R.id.editTitle)
         val editContent: EditText = findViewById(R.id.editContent)
+
+        noteTitle.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
+        noteContent.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
+        editTitle.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
+        editContent.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
 
         val dateNote = Calendar.getInstance()
         noteDate.text = dateNote.format(Constants.DISPLAY_DATE_FORMAT)

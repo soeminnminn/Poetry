@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.s16.poetry.R
+import com.s16.poetry.TypeFaceUtil
 import com.s16.poetry.data.Category
 import com.s16.utils.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
@@ -27,6 +28,7 @@ class CategoriesAdapter: RecyclerViewArrayAdapter<RecyclerViewHolder, Category>(
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         getItem(position)?.let { category ->
             (holder.itemView as TextView).apply {
+                typeface = TypeFaceUtil.getPreferencesTypeFace(holder.context)
                 text = category.name
             }
         }

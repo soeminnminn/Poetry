@@ -1,15 +1,17 @@
 package com.s16.poetry.adapters
 
 
+import android.content.Context
 import android.view.Menu
 import android.view.MenuItem
 import com.s16.poetry.R
+import com.s16.poetry.TypeFaceUtil
 import com.s16.poetry.data.Category
 import com.s16.view.AdaptableMenu
 import com.s16.view.BaseMenuAdapter
 
 
-class NavMenuAdapter: BaseMenuAdapter() {
+class NavMenuAdapter(private val context: Context): BaseMenuAdapter() {
     var items: List<Category> = mutableListOf()
 
     override fun getCount(): Int = items.size + 3
@@ -23,7 +25,9 @@ class NavMenuAdapter: BaseMenuAdapter() {
             }
             position < maxSize -> {
                 val item = items[position - 1]
-                menu.add(categoryGroupId, item.id.toInt(), 0, item.name).apply {
+                val spannableString = TypeFaceUtil.makePreferencesTypeFaceSpan(context, item.name)
+
+                menu.add(categoryGroupId, item.id.toInt(), 0, spannableString).apply {
                     setIcon(R.drawable.ic_category_gray)
                 }
             }

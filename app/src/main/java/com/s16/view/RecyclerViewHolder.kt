@@ -1,5 +1,6 @@
 package com.s16.view
 
+import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
@@ -12,6 +13,8 @@ open class RecyclerViewHolder(itemView: View, vararg ids: Int) : RecyclerView.Vi
             mViewHolder[it] = itemView.findViewById(it)
         }
     }
+
+    val context: Context = itemView.context
 
     open fun <T: View> findViewById(id: Int): T {
         return if (mViewHolder.containsKey(id)) {

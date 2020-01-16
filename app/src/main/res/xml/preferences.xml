@@ -43,6 +43,12 @@
                 app:title="@string/prefs_manage_tags"
                 app:summary="@string/prefs_manage_tags_summary"/>
 
+        <CheckBoxPreference
+                app:key="prefs_mmfont"
+                app:title="@string/prefs_mmfont"
+                app:summary="@string/prefs_mmfont_summary"
+                app:defaultValue="true" />
+
         <Preference
                 app:key="backup"
                 app:title="@string/prefs_backup"

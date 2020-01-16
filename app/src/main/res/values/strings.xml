@@ -83,6 +83,8 @@
     <string name="prefs_manage_category_summary">Manage Categories of the user</string>
     <string name="prefs_manage_tags">@string/title_activity_manage_tag</string>
     <string name="prefs_manage_tags_summary">Manage Tags of the user</string>
+    <string name="prefs_mmfont">Embed font</string>
+    <string name="prefs_mmfont_summary">Embed Myanmar Text font</string>
     <string name="prefs_backup">Backup</string>
     <string name="prefs_backup_summary">Backing up the Poetry entities</string>
     <string name="prefs_restore">Restore</string>

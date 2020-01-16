@@ -1,11 +1,13 @@
 package com.s16.poetry.adapters
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.s16.poetry.R
+import com.s16.poetry.TypeFaceUtil
 import com.s16.poetry.data.Record
 
 class RecordsPagedAdapter:
@@ -33,7 +35,8 @@ class RecordsPagedAdapter:
 
     override fun onBindViewHolder(holder: NoteItemViewHolder, position: Int) {
         getItem(position)?.let { record ->
-            holder.dataBind(record, mCheckedItems.contains(record))
+            val fontFace: Typeface = TypeFaceUtil.getPreferencesTypeFace(holder.context)
+            holder.dataBind(record, fontFace, mCheckedItems.contains(record))
         }
     }
 

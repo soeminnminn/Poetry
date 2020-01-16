@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationView
 import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
+import com.s16.poetry.TypeFaceUtil
 import com.s16.poetry.adapters.NavMenuAdapter
 import com.s16.poetry.adapters.RecordsPagedAdapter
 import com.s16.poetry.adapters.setItemClickListener
@@ -102,7 +103,7 @@ class MainActivity : ThemeActivity(),
     }
 
     private fun bindNavMenu(navView: NavigationView) {
-        navAdapter = NavMenuAdapter()
+        navAdapter = NavMenuAdapter(this)
         val categoryModel by lazy {
             ViewModelProviders.of(this, viewModelFactory).get(CategoryModel::class.java)
         }
@@ -118,22 +119,6 @@ class MainActivity : ThemeActivity(),
     private fun bindRecords(recyclerView: RecyclerView) {
         recordsAdapter = RecordsPagedAdapter()
         recordsAdapter.setItemSelectListener(this)
-//        recordsAdapter.setItemClickListener { view, id, _ ->
-//            val intent = Intent(this, DetailsActivity::class.java)
-//            intent.putExtra(Constants.ARG_PARAM_ID, id)
-//
-//            val cardView: View = view.findViewById(R.id.cardView)
-//            val noteTitle: View = view.findViewById(R.id.noteTitle)
-//            val noteContent: View = view.findViewById(R.id.noteContent)
-//
-//            val options = makeSceneTransitionAnimation(
-//                Pair(cardView, getString(R.string.transition_root)),
-//                Pair(noteTitle, getString(R.string.transition_title)),
-//                Pair(noteContent, getString(R.string.transition_note))
-//            ).toBundle()
-//
-//            ActivityCompat.startActivity(this, intent, options)
-//        }
         recordsAdapter.setItemClickListener { _, id, _ ->
             startActivity<DetailsActivity>(Pair(Constants.ARG_PARAM_ID, id))
         }
@@ -152,6 +137,8 @@ class MainActivity : ThemeActivity(),
         val headerView = navView.getHeaderView(0)
 
         val textAuthorName: TextView = headerView.findViewById(R.id.navSubTitle)
+        textAuthorName.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
+
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val defAuthorName = getString(R.string.author_name)
         val prefsLiveData = StringLiveSharedPreference(sharedPreferences, Constants.PREFS_AUTHOR_NAME, defAuthorName)

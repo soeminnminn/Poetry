@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.s16.poetry.R
+import com.s16.poetry.TypeFaceUtil
 import com.s16.poetry.data.Tags
 import com.s16.utils.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
@@ -28,6 +29,7 @@ class TagsAdapter: RecyclerViewArrayAdapter<RecyclerViewHolder, Tags>() {
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         getItem(position)?.let { item ->
             (holder.itemView as TextView).apply {
+                typeface = TypeFaceUtil.getPreferencesTypeFace(holder.context)
                 text = item.name
             }
         }

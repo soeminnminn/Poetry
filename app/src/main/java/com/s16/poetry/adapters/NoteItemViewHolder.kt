@@ -1,5 +1,6 @@
 package com.s16.poetry.adapters
 
+import android.graphics.Typeface
 import android.view.View
 import android.widget.TextView
 import com.s16.poetry.Constants
@@ -62,14 +63,15 @@ class NoteItemViewHolder(view: View, private val adapter: LongClickSelectable)
         adapter.onSelectionChange(adapterPosition, isChecked)
     }
 
-    fun dataBind(record: Record, isChecked: Boolean) {
+    fun dataBind(record: Record, typeFace: Typeface, isChecked: Boolean) {
         recordId = record.id
 
         label.text = record.title
+        label.typeface = typeFace
 
         val linesCount = record.text?.split(Regex("\\n"))?.size ?: 0
         content.maxLines = max(linesCount / 2, 3)
-
+        content.typeface = typeFace
         content.text = record.text
 
         lastEdit.text = if (record.date != null) {

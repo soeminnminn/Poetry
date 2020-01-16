@@ -1,12 +1,14 @@
 package com.s16.poetry.adapters
 
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckedTextView
 import com.s16.poetry.R
+import com.s16.poetry.TypeFaceUtil
 import com.s16.poetry.data.Tags
 import com.s16.utils.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
@@ -67,7 +69,10 @@ class TagsSelectAdapter(private val context: Context):
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         getItem(position)?.let { tags ->
+            val fontFace: Typeface = TypeFaceUtil.getPreferencesTypeFace(holder.context)
+
             holder.findViewById<CheckedTextView>(android.R.id.text1).apply {
+                typeface = fontFace
                 text = tags.name
                 isChecked = mCheckedItems.contains(tags)
             }
