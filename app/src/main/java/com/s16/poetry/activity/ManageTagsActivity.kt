@@ -9,7 +9,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,25 +16,20 @@ import com.google.android.material.snackbar.Snackbar
 import com.s16.app.ThemeActivity
 import com.s16.poetry.R
 import com.s16.poetry.adapters.TagsAdapter
-import com.s16.poetry.data.*
+import com.s16.poetry.data.DbManager
+import com.s16.poetry.data.Tags
+import com.s16.poetry.data.TagsModel
 import com.s16.poetry.view.EditInputDialog
 import com.s16.poetry.view.SwipeToDeleteCallback
 import com.s16.widget.SupportRecyclerView
-import dagger.android.AndroidInjection
 import kotlinx.coroutines.*
-import javax.inject.Inject
 
 class ManageTagsActivity : ThemeActivity() {
-
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private var backgroundScope = CoroutineScope(Dispatchers.IO)
     private var saveJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_tags)
         updateSystemUiColor()
@@ -53,9 +47,7 @@ class ManageTagsActivity : ThemeActivity() {
         recyclerView.adapter = adapter
         enableSwipeToDeleteAndUndo(recyclerView)
 
-        val tagsModel by lazy {
-            ViewModelProviders.of(this, viewModelFactory).get(TagsModel::class.java)
-        }
+        val tagsModel = ViewModelProvider(this).get(TagsModel::class.java)
         tagsModel.data.observe(this, Observer<List<Tags>> {
             adapter.submitList(it)
         })

@@ -1,19 +1,25 @@
 package com.s16.poetry.data
 
+import android.app.Application
 import androidx.lifecycle.*
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import javax.inject.Inject
 
-class CategoryModel @Inject constructor(provider: DataProvider): ViewModel() {
+class CategoryModel(application: Application) : AndroidViewModel(application) {
+    private val dbManager = DbManager(application)
+    private val provider = dbManager.provider()
     val data: LiveData<List<Category>> = provider.listCategories()
 }
 
-class TagsModel @Inject constructor(provider: DataProvider): ViewModel() {
+class TagsModel(application: Application) : AndroidViewModel(application) {
+    private val dbManager = DbManager(application)
+    private val provider = dbManager.provider()
     val data: LiveData<List<Tags>> = provider.listTags()
 }
 
-class RecordPagedModel @Inject constructor(private val provider: DataProvider): ViewModel() {
+class RecordPagedModel(application: Application) : AndroidViewModel(application) {
+    private val dbManager = DbManager(application)
+    private val provider = dbManager.provider()
     private val filterData = MutableLiveData<String?>()
 
     val data: LiveData<PagedList<Record>> = Transformations.switchMap(filterData) { category ->
@@ -37,7 +43,9 @@ class RecordPagedModel @Inject constructor(private val provider: DataProvider): 
     }
 }
 
-class DetailsModel @Inject constructor(private val provider: DataProvider): ViewModel() {
+class DetailsModel(application: Application) : AndroidViewModel(application) {
+    private val dbManager = DbManager(application)
+    private val provider = dbManager.provider()
     private val idData = MutableLiveData<Long>()
 
     val data: LiveData<DetailRecord> = Transformations.switchMap(idData) { id ->

@@ -5,18 +5,8 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
-class U {
-    companion object {
-        @JvmStatic
-        fun isEmpty(value: Any?): Boolean {
-            return value == null || "$value".isEmpty()
-        }
-
-        @JvmStatic
-        inline fun <reified T> IIF(condition: Boolean, truePart: T?, falsePart: T?): T? {
-            return if (condition) truePart else falsePart
-        }
-    }
+inline fun <reified T> IIF(condition: Boolean, truePart: T?, falsePart: T?): T? {
+    return if (condition) truePart else falsePart
 }
 
 inline fun <reified T: Any> Any.letTo(fn: (value: T) -> Unit) = fn.invoke(this as T)

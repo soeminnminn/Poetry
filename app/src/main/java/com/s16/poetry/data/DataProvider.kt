@@ -11,61 +11,61 @@ import androidx.sqlite.db.SupportSQLiteQuery
 interface DataProvider {
 
     @RawQuery
-    fun execRawQuery(query: SupportSQLiteQuery): Int
+    suspend fun execRawQuery(query: SupportSQLiteQuery): Int
 
     @Transaction
-    fun truncateTable(tableName: String) {
+    suspend fun truncateTable(tableName: String) {
         execRawQuery(SimpleSQLiteQuery("DELETE FROM $tableName"))
         execRawQuery(SimpleSQLiteQuery("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='$tableName'"))
     }
 
     // Insert All
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllCategories(data: List<Category>): List<Long>
+    suspend fun insertAllCategories(data: List<Category>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllDeleted(data: List<Deleted>): List<Long>
+    suspend fun insertAllDeleted(data: List<Deleted>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllRecords(data: List<Record>): List<Long>
+    suspend fun insertAllRecords(data: List<Record>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllRecordAdd(data: List<RecordsAdd>): List<Long>
+    suspend fun insertAllRecordAdd(data: List<RecordsAdd>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllTags(data: List<Tags>): List<Long>
+    suspend fun insertAllTags(data: List<Tags>): List<Long>
 
     // Delete Insert
     @Transaction
-    fun deleteInsertAllCategories(data: List<Category>): List<Long> {
+    suspend fun deleteInsertAllCategories(data: List<Category>): List<Long> {
         execRawQuery(SimpleSQLiteQuery("DELETE FROM categories"))
         execRawQuery(SimpleSQLiteQuery("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='categories'"))
         return insertAllCategories(data)
     }
 
     @Transaction
-    fun deleteInsertAllDeleted(data: List<Deleted>): List<Long> {
+    suspend fun deleteInsertAllDeleted(data: List<Deleted>): List<Long> {
         execRawQuery(SimpleSQLiteQuery("DELETE FROM deleted"))
         execRawQuery(SimpleSQLiteQuery("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='deleted'"))
         return insertAllDeleted(data)
     }
 
     @Transaction
-    fun deleteInsertAllRecords(data: List<Record>): List<Long> {
+    suspend fun deleteInsertAllRecords(data: List<Record>): List<Long> {
         execRawQuery(SimpleSQLiteQuery("DELETE FROM records"))
         execRawQuery(SimpleSQLiteQuery("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='records'"))
         return insertAllRecords(data)
     }
 
     @Transaction
-    fun deleteInsertAllRecordsAdd(data: List<RecordsAdd>): List<Long> {
+    suspend fun deleteInsertAllRecordsAdd(data: List<RecordsAdd>): List<Long> {
         execRawQuery(SimpleSQLiteQuery("DELETE FROM records_add"))
         execRawQuery(SimpleSQLiteQuery("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='records_add'"))
         return insertAllRecordAdd(data)
     }
 
     @Transaction
-    fun deleteInsertAllTags(data: List<Tags>): List<Long> {
+    suspend fun deleteInsertAllTags(data: List<Tags>): List<Long> {
         execRawQuery(SimpleSQLiteQuery("DELETE FROM tags"))
         execRawQuery(SimpleSQLiteQuery("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='tags'"))
         return insertAllTags(data)
@@ -73,45 +73,45 @@ interface DataProvider {
 
     // Insert
     @Insert
-    fun insertCategory(data: Category): Long
+    suspend fun insertCategory(data: Category): Long
 
     @Insert
-    fun insertDeleted(data: Deleted): Long
+    suspend fun insertDeleted(data: Deleted): Long
 
     @Insert
-    fun insertRecord(data: Record): Long
+    suspend fun insertRecord(data: Record): Long
 
     @Insert
-    fun insertRecordAdd(data: RecordsAdd): Long
+    suspend fun insertRecordAdd(data: RecordsAdd): Long
 
     @Insert
-    fun insertTag(data: Tags): Long
+    suspend fun insertTag(data: Tags): Long
 
     // Update
     @Update
-    fun updateCategory(data: Category)
+    suspend fun updateCategory(data: Category)
 
     @Update
-    fun updateDeleted(data: Deleted)
+    suspend fun updateDeleted(data: Deleted)
 
     @Update
-    fun updateRecord(data: Record)
+    suspend fun updateRecord(data: Record)
 
     @Update
-    fun updateRecordAdd(data: RecordsAdd)
+    suspend fun updateRecordAdd(data: RecordsAdd)
 
     @Update
-    fun updateTag(data: Tags)
+    suspend fun updateTag(data: Tags)
 
     // delete
     @Query("DELETE FROM records WHERE _id IS :id")
-    fun deleteRecord(id: Long)
+    suspend fun deleteRecord(id: Long)
 
     @Query("DELETE FROM records_add WHERE record_id IS :recordId")
-    fun deleteRecordAdd(recordId: Long)
+    suspend fun deleteRecordAdd(recordId: Long)
 
     @Transaction
-    fun deleteRecordAll(vararg recordId: Long) {
+    suspend fun deleteRecordAll(vararg recordId: Long) {
         recordId.forEach { id ->
             deleteRecord(id)
             deleteRecordAdd(id)
@@ -120,7 +120,7 @@ interface DataProvider {
 
     // save
     @Transaction
-    fun saveRecord(record: Record, recordAdd: List<RecordsAdd>): Long {
+    suspend fun saveRecord(record: Record, recordAdd: List<RecordsAdd>): Long {
         val id: Long = if (record.id != 0L) {
             updateRecord(record)
             record.id

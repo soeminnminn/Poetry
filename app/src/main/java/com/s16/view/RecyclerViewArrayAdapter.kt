@@ -42,7 +42,8 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
      */
     fun submitList(collection: Collection<T>) {
         synchronized(mLock) {
-            mObjects = ArrayList(collection)
+            mObjects = mutableListOf()
+            mObjects.addAll(collection)
             mOriginalValues = null
         }
         if (mNotifyOnChange) notifyDataSetChanged()
@@ -234,23 +235,24 @@ abstract class RecyclerViewArrayAdapter<VH: RecyclerView.ViewHolder, T>:
             val results = FilterResults()
             if (mOriginalValues == null) {
                 synchronized(mLock) {
-                    mOriginalValues = ArrayList(mObjects)
+                    mOriginalValues = mutableListOf()
+                    mOriginalValues!!.addAll(mObjects)
                 }
             }
 
             if (prefix == null || prefix.isEmpty()) {
-                val list: ArrayList<T>
+                val list: MutableList<T> = mutableListOf()
                 synchronized(mLock) {
-                    list = ArrayList(mOriginalValues)
+                    list.addAll(mOriginalValues!!)
                 }
                 results.values = list
                 results.count = list.size
 
             } else {
-                val prefixString = "$prefix".toLowerCase()
-                val values: ArrayList<T>
+                val prefixString = "$prefix".toLowerCase(Locale.getDefault())
+                val values: MutableList<T> = mutableListOf()
                 synchronized(mLock) {
-                    values = ArrayList(mOriginalValues)
+                    values.addAll(mOriginalValues!!)
                 }
 
                 val newValues = values.filter { value ->

@@ -2,19 +2,16 @@ package com.s16.poetry.activity
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -31,20 +28,14 @@ import com.s16.poetry.data.*
 import com.s16.poetry.fragments.AboutFragment
 import com.s16.preferences.StringLiveSharedPreference
 import com.s16.utils.confirmDialog
-import com.s16.utils.nullableStringOf
 import com.s16.utils.startActivity
 import com.s16.view.AdaptableMenu
-import dagger.android.AndroidInjection
 import kotlinx.coroutines.*
-import javax.inject.Inject
 
 
 class MainActivity : ThemeActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     RecordsPagedAdapter.OnItemSelectListener {
-
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var navAdapter: NavMenuAdapter
     private lateinit var recordsAdapter: RecordsPagedAdapter
@@ -57,8 +48,6 @@ class MainActivity : ThemeActivity(),
     private var deleteJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         updateSystemUiColor()
@@ -104,9 +93,7 @@ class MainActivity : ThemeActivity(),
 
     private fun bindNavMenu(navView: NavigationView) {
         navAdapter = NavMenuAdapter(this)
-        val categoryModel by lazy {
-            ViewModelProviders.of(this, viewModelFactory).get(CategoryModel::class.java)
-        }
+        val categoryModel = ViewModelProvider(this).get(CategoryModel::class.java)
         categoryModel.data.observe(this, Observer<List<Category>> {
             navAdapter.items = it
             navAdapter.notifyDataSetChanged()
@@ -127,7 +114,7 @@ class MainActivity : ThemeActivity(),
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = recordsAdapter
 
-        recordsModel = ViewModelProviders.of(this, viewModelFactory).get(RecordPagedModel::class.java)
+        recordsModel = ViewModelProvider(this).get(RecordPagedModel::class.java)
         recordsModel.data.observe(this, Observer<PagedList<Record>> {
             recordsAdapter.submitList(it)
         })

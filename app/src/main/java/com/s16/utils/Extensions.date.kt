@@ -17,7 +17,7 @@ object ISO8601DateParser {
         "I" to "GMT+09:00", "I†" to "GMT+09:30", "K" to "GMT+10:00", "K†" to "GMT+10:30", "L" to "GMT+11:00",
         "M" to "GMT+12:00", "M*" to "GMT+12:45", "M†" to "GMT+13:00")
 
-    fun parse(dateStr: String): Date {
+    fun parse(dateStr: String): Date? {
         var pattern: String? = null
         var buffer = StringBuffer(dateStr.trim { it <= ' ' })
 
@@ -48,7 +48,7 @@ object ISO8601DateParser {
             }
         }
 
-        var parsedDate = Date()
+        var parsedDate: Date? = null
         if (pattern != null) {
             val format = SimpleDateFormat(pattern, Locale.ENGLISH)
 
@@ -114,8 +114,8 @@ fun Date.addSeconds(seconds: Int): Date{
     return add(Calendar.SECOND, seconds)
 }
 
-fun Date.format(pattern: String): String {
-    val sdf = SimpleDateFormat(pattern, Locale.getDefault())
+fun Date.format(pattern: String, locale: Locale = Locale.getDefault()): String {
+    val sdf = SimpleDateFormat(pattern, locale)
     return sdf.format(this)
 }
 
@@ -130,6 +130,10 @@ fun Date.toCalendar(): Calendar {
     return cal
 }
 
+fun Date.setISO8601(dateStr: String) {
+    time = ISO8601DateParser.parse(dateStr)?.time ?: time
+}
+
 /**
  * Calendar Extensions
  */
@@ -142,8 +146,8 @@ fun Calendar.set(dateStr: String, pattern: String) {
     time = sdf.parse(dateStr)
 }
 
-fun Calendar.format(pattern: String): String {
-    val sdf = SimpleDateFormat(pattern, Locale.getDefault())
+fun Calendar.format(pattern: String, locale: Locale = Locale.getDefault()): String {
+    val sdf = SimpleDateFormat(pattern, locale)
     return sdf.format(this.time)
 }
 

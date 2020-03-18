@@ -12,7 +12,6 @@ import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
@@ -23,15 +22,10 @@ import com.s16.poetry.data.CategoryModel
 import com.s16.poetry.data.DbManager
 import com.s16.poetry.view.EditInputDialog
 import com.s16.widget.SupportRecyclerView
-import dagger.android.AndroidInjection
 import kotlinx.coroutines.*
 import java.util.*
-import javax.inject.Inject
 
 class SelectCategoryActivity : ThemeActivity() {
-
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
     private var saveJob: Job? = null
@@ -41,8 +35,6 @@ class SelectCategoryActivity : ThemeActivity() {
     private lateinit var adapter: CategoriesSelectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_category)
         updateSystemUiColor()
@@ -75,9 +67,7 @@ class SelectCategoryActivity : ThemeActivity() {
             }
         })
 
-        val categoryModel by lazy {
-            ViewModelProviders.of(this, viewModelFactory).get(CategoryModel::class.java)
-        }
+        val categoryModel = ViewModelProvider(this).get(CategoryModel::class.java)
         categoryModel.data.observe(this, Observer<List<Category>> {
             adapter.submitList(it)
 

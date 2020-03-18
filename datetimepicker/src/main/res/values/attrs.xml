@@ -20,37 +20,37 @@
 
     <declare-styleable name="DatePicker">
         <!-- The first day of week according to {@link java.util.Calendar}. -->
-        <attr name="firstDayOfWeek" />
+        <attr name="firstDayOfWeek" format="integer" />
         <!-- The minimal date shown by this calendar view in mm/dd/yyyy format. -->
-        <attr name="minDate" />
+        <attr name="minDate" format="string" />
         <!-- The maximal date shown by this calendar view in mm/dd/yyyy format. -->
-        <attr name="maxDate" />
+        <attr name="maxDate" format="string" />
 
         <!-- Whether the spinners are shown. Only valid for "spinner" mode. -->
-        <attr name="spinnersShown" />
+        <attr name="spinnersShown" format="boolean" />
         <!-- Whether the calendar view is shown. Only valid for "spinner" mode. -->
-        <attr name="calendarViewShown" />
+        <attr name="calendarViewShown" format="boolean" />
 
         <!-- @hide The layout of the date picker. -->
         <attr name="dtp_internalLayout" format="reference" />
         <!-- @hide The layout of the legacy DatePicker. -->
-        <attr name="dtp_legacyLayout" />
+        <attr name="dtp_legacyLayout" format="reference" />
 
         <!-- The text color for the selected date header text, ex. "2014" or
              "Tue, Mar 18". This should be a color state list where the
              activated state will be used when the year picker or day picker is
              active.-->
-        <attr name="dtp_headerTextColor" format="color" />
+        <attr name="dtp_headerTextColor" format="color|reference" />
         <!-- The background for the selected date header. -->
-        <attr name="headerBackground" />
+        <attr name="headerBackground" format="color|reference" />
 
         <!-- The text color list of the calendar. -->
-        <attr name="calendarTextColor" />
+        <attr name="calendarTextColor" format="color|reference" />
 
         <!-- Defines the look of the widget. Prior to the L release, the only choice was
              spinner. As of L, with the Material theme selected, the default layout is calendar,
              but this attribute can be used to force spinner to be used instead. -->
-        <attr name="datePickerMode" />
+        <attr name="datePickerMode" format="integer|string" />
 
         <!-- Whether this time picker is being displayed within a dialog,
              in which case it may ignore the requested time picker mode due to
@@ -74,20 +74,20 @@
         <!-- The color for the hours/minutes numbers. This should be a color
              state list where the activated state will be used when the number
              is active.-->
-        <attr name="numbersTextColor" />
+        <attr name="numbersTextColor" format="color|reference" />
         <!-- The color for the inner hours numbers used in 24-hour mode. This
              should be a color state list where the activated state will be
              used when the number is active.-->
-        <attr name="numbersInnerTextColor" />
+        <attr name="numbersInnerTextColor" format="color|reference" />
         <!-- The background color for the hours/minutes numbers. -->
-        <attr name="numbersBackgroundColor" />
+        <attr name="numbersBackgroundColor" format="color|reference" />
         <!-- The color for the hours/minutes selector. -->
-        <attr name="numbersSelectorColor" />
+        <attr name="numbersSelectorColor" format="color|reference" />
 
         <!-- Defines the look of the widget. Prior to the L release, the only choice was
              spinner. As of L, with the Material theme selected, the default layout is clock,
              but this attribute can be used to force spinner to be used instead. -->
-        <attr name="timePickerMode" />
+        <attr name="timePickerMode" format="integer|string" />
 
         <!-- @hide Whether this time picker is being displayed within a dialog,
              in which case it may ignore the requested time picker mode due to
@@ -105,13 +105,13 @@
         <!-- The text appearance for the month and year in the calendar header. -->
         <attr name="dtp_monthTextAppearance" format="reference" />
         <!-- The text appearance for the week day abbreviation in the calendar header. -->
-        <attr name="weekDayTextAppearance" />
+        <attr name="weekDayTextAppearance" format="reference" />
         <!-- The text appearance for the day numbers in the calendar grid. -->
-        <attr name="dateTextAppearance" />
+        <attr name="dateTextAppearance" format="reference" />
         <!-- @hide The background color used for the day selection indicator. -->
-        <attr name="dtp_daySelectorColor" format="color" />
+        <attr name="dtp_daySelectorColor" format="color|reference" />
         <!-- @hide The background color used for the day highlight indicator. -->
-        <attr name="dtp_dayHighlightColor" format="color" />
+        <attr name="dtp_dayHighlightColor" format="color|reference" />
         <!-- @hide Which style of calendar delegate to use. -->
         <attr name="dtp_calendarViewMode">
             <enum name="holo" value="0" />

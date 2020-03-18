@@ -91,19 +91,19 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
 
-    <style name="AppTheme.AppBarOverlay.Light" parent="ThemeOverlay.AppCompat.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay.Light" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents"/>
 
-    <style name="AppTheme.PopupOverlay.Light" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay.Light" parent="ThemeOverlay.MaterialComponents.Light"/>
 
     <style name="AppTheme.AppBarHeader" parent="ThemeOverlay.AppCompat">
         <item name="android:background">@drawable/side_nav_bar</item>
     </style>
 
-    <style name="AppTheme.AppBarHeader.Light" parent="ThemeOverlay.AppCompat.Light">
+    <style name="AppTheme.AppBarHeader.Light" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="android:background">@drawable/side_nav_bar_light</item>
     </style>
 
@@ -116,11 +116,11 @@
     <style name="AppWidget.ActionbarButton" parent="@style/Widget.AppCompat.ActionButton">
     </style>
 
-    <style name="AppWidget.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+    <style name="AppWidget.Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="android:background">@drawable/border_background</item>
     </style>
 
-    <style name="AppWidget.Toolbar.Light" parent="@style/Widget.AppCompat.Toolbar">
+    <style name="AppWidget.Toolbar.Light" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="android:background">@drawable/border_background_light</item>
     </style>
 

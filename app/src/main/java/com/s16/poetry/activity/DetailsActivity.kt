@@ -1,7 +1,6 @@
 package com.s16.poetry.activity
 
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
@@ -11,7 +10,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.s16.app.ThemeActivity
@@ -21,16 +19,11 @@ import com.s16.poetry.TypeFaceUtil
 import com.s16.poetry.data.*
 import com.s16.utils.*
 import com.takisoft.datetimepicker.DatePickerDialog
-import dagger.android.AndroidInjection
 import kotlinx.coroutines.*
 import java.util.*
-import javax.inject.Inject
 
 
 class DetailsActivity : ThemeActivity() {
-
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var chipAdd: Chip
 
@@ -48,8 +41,6 @@ class DetailsActivity : ThemeActivity() {
     private var deleteJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         updateSystemUiColor()
@@ -95,10 +86,9 @@ class DetailsActivity : ThemeActivity() {
         }
 
         recordId = intent.getLongExtra(Constants.ARG_PARAM_ID, 0)
+        val model = ViewModelProvider(this).get(DetailsModel::class.java)
 
         if (recordId > 0L) {
-            val model: DetailsModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(DetailsModel::class.java)
             model.get(recordId).observe(this, Observer<DetailRecord> { record ->
                 if (record != null) {
                     uuid = record.guid ?: uuid
@@ -136,7 +126,7 @@ class DetailsActivity : ThemeActivity() {
             })
 
         } else {
-            chipAdd = findViewById(R.id.action_add_tags)
+            chipAdd = this.findViewById(R.id.action_add_tags)
             chipAdd.tag = listOf<String>()
 
             chipAdd.setOnClickListener {

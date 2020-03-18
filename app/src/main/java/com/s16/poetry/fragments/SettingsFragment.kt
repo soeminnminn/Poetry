@@ -92,10 +92,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun requestPermission(requestCode: Int) {
-        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                AlertDialog.Builder(context!!).apply {
+                AlertDialog.Builder(requireContext()).apply {
                     setTitle(R.string.title_request_permission)
                     setMessage(R.string.message_request_permission)
                     setNegativeButton(android.R.string.cancel, null)
@@ -124,7 +124,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     @SuppressLint("StaticFieldLeak")
     private fun doBackup() {
-        val progressDialog = ProgressDialog(context!!).apply {
+        val progressDialog = ProgressDialog(requireContext()).apply {
             isIndeterminate = true
             setCancelable(false)
             setProgressStyle(ProgressDialog.STYLE_SPINNER)
@@ -132,12 +132,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         backupTask = BackupTask(
-            context!!,
+            requireContext(),
             onStartBackup = {
                 progressDialog.show()
             },
             onOverride = { sender, file ->
-                context!!.confirmDialog(
+                requireContext().confirmDialog(
                     R.string.title_backup_dialog,
                     R.string.message_backup_override) { _, _ ->
                     sender.override(file)
@@ -145,11 +145,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             },
             onCanceled = { message ->
                 progressDialog.hide()
-                context!!.alertDialog(R.string.title_backup_dialog, message)
+                requireContext().alertDialog(R.string.title_backup_dialog, message)
             },
             onComplete = {
                 progressDialog.hide()
-                context!!.alertDialog(R.string.title_backup_dialog, R.string.message_backup_complete)
+                requireContext().alertDialog(R.string.title_backup_dialog, R.string.message_backup_complete)
             }
         )
         backupTask?.run()

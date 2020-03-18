@@ -78,7 +78,7 @@ class RestoreFragment : ThemeDialogFragment() {
 
     private fun runRestoreTask(file: File) {
         restoreTask = RestoreTask(
-            context!!, file,
+            requireContext(), file,
             onCanceled = { message ->
                 showMessage(message)
             },
