@@ -3,10 +3,7 @@ Poetry
 
 Notes Poetry
 
-![Light Screenshot][1]
-
-![Dark Screenshot][2]
-
+<img src="https://raw.github.com/soeminnminn/Poetry/master/screenshot-light.png" width="250" alt="Light Screenshot"/> <img src="https://raw.github.com/soeminnminn/Poetry/master/screenshot-dark.png" width="250" alt="Dark Screenshot"/>
 
 License
 -------
@@ -24,6 +21,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-    
-[1]: https://raw.github.com/soeminnminn/Poetry/master/screenshot-light.png
-[2]: https://raw.github.com/soeminnminn/Poetry/master/screenshot-dark.png
