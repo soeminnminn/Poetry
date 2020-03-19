@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.*
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.s16.app.ThemeActivity
@@ -86,7 +86,7 @@ class DetailsActivity : ThemeActivity() {
         }
 
         recordId = intent.getLongExtra(Constants.ARG_PARAM_ID, 0)
-        val model = ViewModelProvider(this).get(DetailsModel::class.java)
+        val model : DetailsModel by viewModels()
 
         if (recordId > 0L) {
             model.get(recordId).observe(this, Observer<DetailRecord> { record ->

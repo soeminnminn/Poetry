@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.*
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -30,6 +32,7 @@ import com.s16.preferences.StringLiveSharedPreference
 import com.s16.utils.confirmDialog
 import com.s16.utils.startActivity
 import com.s16.view.AdaptableMenu
+import com.s16.view.FloatingActionButtonBehavior
 import kotlinx.coroutines.*
 
 
@@ -69,6 +72,10 @@ class MainActivity : ThemeActivity(),
         }
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
+        val fabParams = fab.layoutParams as CoordinatorLayout.LayoutParams
+        fabParams.behavior = FloatingActionButtonBehavior(this)
+        fab.layoutParams = fabParams
+
         fab.setOnClickListener {
             startActivity<DetailsActivity>(Constants.ARG_PARAM_ADD to 1)
         }
@@ -93,7 +100,7 @@ class MainActivity : ThemeActivity(),
 
     private fun bindNavMenu(navView: NavigationView) {
         navAdapter = NavMenuAdapter(this)
-        val categoryModel = ViewModelProvider(this).get(CategoryModel::class.java)
+        val categoryModel : CategoryModel by viewModels()
         categoryModel.data.observe(this, Observer<List<Category>> {
             navAdapter.items = it
             navAdapter.notifyDataSetChanged()

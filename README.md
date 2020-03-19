@@ -1,14 +1,22 @@
-Poetry
-=================
+## Poetry
 
 Notes Poetry
 
 <img src="https://raw.github.com/soeminnminn/Poetry/master/screenshot-light.png" width="250" alt="Light Screenshot"/> <img src="https://raw.github.com/soeminnminn/Poetry/master/screenshot-dark.png" width="250" alt="Dark Screenshot"/>
 
+#### Used features
+- Kotlin
+- Androidx
+- Day Night Themes
+- Architecture components
+    - Room Persistence Library
+    - Lifecycle lifedata
+    - Paging library
+
 License
 -------
 
-    Copyright 2014 Soe Minn Minn
+    Copyright 2019 Soe Minn Minn
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

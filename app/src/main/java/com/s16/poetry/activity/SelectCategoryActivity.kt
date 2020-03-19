@@ -9,9 +9,9 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
@@ -67,7 +67,7 @@ class SelectCategoryActivity : ThemeActivity() {
             }
         })
 
-        val categoryModel = ViewModelProvider(this).get(CategoryModel::class.java)
+        val categoryModel : CategoryModel by viewModels()
         categoryModel.data.observe(this, Observer<List<Category>> {
             adapter.submitList(it)
 

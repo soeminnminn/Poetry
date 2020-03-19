@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,7 +47,7 @@ class ManageCategoriesActivity : ThemeActivity() {
         recyclerView.adapter = adapter
         enableSwipeToDeleteAndUndo(recyclerView)
 
-        val categoryModel = ViewModelProvider(this).get(CategoryModel::class.java)
+        val categoryModel : CategoryModel by viewModels()
         categoryModel.data.observe(this, Observer<List<Category>> {
             adapter.submitList(it)
         })
