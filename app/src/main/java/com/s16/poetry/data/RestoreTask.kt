@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.s16.poetry.Constants
-import com.s16.utils.*
+import com.s16.ktx.*
 import kotlinx.coroutines.*
 import java.io.*
 import java.lang.Exception

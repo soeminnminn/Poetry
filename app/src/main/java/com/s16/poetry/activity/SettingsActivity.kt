@@ -2,17 +2,16 @@ package com.s16.poetry.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.s16.app.ThemeActivity
 import com.s16.poetry.R
 import com.s16.poetry.fragments.SettingsFragment
 
-class SettingsActivity : ThemeActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
-        updateSystemUiColor()
+        setContentView(R.layout.activity_settings)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

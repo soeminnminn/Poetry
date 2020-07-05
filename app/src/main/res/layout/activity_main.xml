@@ -20,12 +20,12 @@
                 android:id="@+id/appBar"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:background="?attr/activityBackground"
+                android:background="@drawable/window_background"
                 app:elevation="@dimen/dimen_0dp" >
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
-                    style="?toolbarMain"
+                    style="@style/AppWidget.Toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_marginTop="@dimen/dimen_4dp"
@@ -33,8 +33,9 @@
                     android:layout_marginStart="@dimen/dimen_16dp"
                     android:layout_marginRight="@dimen/dimen_16dp"
                     android:layout_marginEnd="@dimen/dimen_16dp"
-                    app:layout_scrollFlags="scroll"
-                    app:popupTheme="?attr/popupMenuStyle"/>
+                    android:theme="@style/AppTheme.AppBarOverlay"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:layout_scrollFlags="scroll"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -50,7 +51,9 @@
                     android:id="@+id/toolbarEdit"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:popupTheme="?attr/popupMenuStyle"/>
+                    app:navigationIcon="@drawable/ic_close"
+                    android:theme="@style/AppTheme.AppBarOverlay"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -63,8 +66,8 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/dimen_16dp"
                 app:backgroundTint="?attr/colorPrimary"
-                app:tint="@color/background_holo_light"
-                app:srcCompat="@drawable/ic_add_white"/>
+                app:tint="@color/dim_foreground_holo_light"
+                app:srcCompat="@drawable/ic_add"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

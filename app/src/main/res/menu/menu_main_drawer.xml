@@ -6,10 +6,10 @@
     <group>
         <item android:id="@+id/action_settings"
                 android:title="@string/action_settings"
-                android:icon="@drawable/ic_settings_gray"/>
+                android:icon="@drawable/ic_settings"/>
 
         <item android:id="@+id/action_about"
                 android:title="@string/action_about"
-                android:icon="@drawable/ic_about_gray"/>
+                android:icon="@drawable/ic_about"/>
     </group>
 </menu>

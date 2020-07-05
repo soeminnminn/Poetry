@@ -18,7 +18,10 @@
     <string name="action_make_copy">Make a copy</string>
     <string name="action_add_category">Add Category</string>
     <string name="action_add_tags">Add Tag</string>
+    <string name="action_manual_sync">Sync manually</string>
     <string name="action_about">About</string>
+    <string name="action_signout">Sign out</string>
+    <string name="action_disconnect">Disconnect</string>
 
     <string name="menu_all">[all]</string>
 
@@ -32,6 +35,7 @@
     <string name="title_activity_settings">@string/action_settings</string>
     <string name="title_activity_manage_category">Manage Categories</string>
     <string name="title_activity_manage_tag">Manage Tags</string>
+    <string name="title_activity_sync">Sync Data</string>
     <string name="title_request_permission">Poetry needs your permission</string>
     <string name="title_restore_dialog">Restore Poetry data</string>
     <string name="title_backup_dialog">Backup Poetry data</string>
@@ -43,6 +47,10 @@
         "Please allow us to access:\n\n"
         "- External Storage Access Permission for read/write backup file"
     </string>
+    <string name="message_request_permission_sync">
+        "Please allow us to access:\n\n"
+        "- Sync settings Access Permission for data sync."
+    </string>
     <string name="message_loading">Loading …</string>
     <string name="message_restore_process">Restoring data …</string>
     <string name="message_backup_file_not_found">Backup file not found in your storage</string>
@@ -53,6 +61,7 @@
     <string name="message_backup_complete">Backup complete</string>
     <string name="message_no_data">Empty</string>
     <string name="message_delete_confirm">Are you sure to delete?</string>
+    <string name="message_sign_in_failed">Can not sign in to account.</string>
 
     <string name="transition_root">transition_root</string>
     <string name="transition_title">transition_title</string>
@@ -60,20 +69,30 @@
 
     <!-- Preference Titles -->
     <string name="prefs_category_general">General</string>
+    <string name="prefs_category_manage">Manage</string>
     <string name="prefs_category_about">About</string>
 
     <!-- General Preferences -->
     <string name="prefs_select_theme">Select Theme</string>
+
+    <string name="prefs_theme_light">Light theme</string>
+    <string name="prefs_theme_dark">Dark theme</string>
+    <string name="prefs_theme_battery">Auto battery</string>
+    <string name="prefs_theme_system">Follow system</string>
+
     <string name="prefs_select_theme_def">0</string>
+
     <string-array name="prefs_select_theme_titles">
-        <item>System</item>
-        <item>Light</item>
-        <item>Dark</item>
+        <item>@string/prefs_theme_light</item>
+        <item>@string/prefs_theme_dark</item>
+        <item>@string/prefs_theme_battery</item>
+        <item>@string/prefs_theme_system</item>
     </string-array>
     <string-array name="prefs_select_theme_values">
-        <item>2</item>
-        <item>0</item>
-        <item>1</item>
+        <item>light</item>
+        <item>dark</item>
+        <item>battery</item>
+        <item>system</item>
     </string-array>
 
     <string name="prefs_author">Author Name</string>
@@ -86,9 +105,11 @@
     <string name="prefs_mmfont">Embed font</string>
     <string name="prefs_mmfont_summary">Embed Myanmar Text font</string>
     <string name="prefs_backup">Backup</string>
-    <string name="prefs_backup_summary">Backing up the Poetry entities</string>
+    <string name="prefs_backup_summary">Backing up the Poetry data</string>
     <string name="prefs_restore">Restore</string>
-    <string name="prefs_restore_summary">Restoring the Poetry entities</string>
+    <string name="prefs_restore_summary">Restoring the Poetry data</string>
+    <string name="prefs_sync">Sync Data</string>
+    <string name="prefs_sync_summary">Firebase firestore sync</string>
 
     <!-- About Preferences -->
     <string name="prefs_about">About Poetry</string>
@@ -98,7 +119,7 @@
         "&lt;p&gt;Copyright \u00A9 2019 The Android Open Source Project&lt;/p&gt;"
     </string>
 
-    <string name="large_text">
+    <string name="large_text" translatable="false">
         "Material is the metaphor.\n\n"
 
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."

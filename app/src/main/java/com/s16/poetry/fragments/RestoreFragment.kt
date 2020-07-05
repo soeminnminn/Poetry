@@ -2,13 +2,13 @@ package com.s16.poetry.fragments
 
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.StringRes
-import com.s16.app.ThemeDialogFragment
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 import com.s16.poetry.data.RestoreTask
@@ -18,12 +18,17 @@ import com.s16.widget.setPositiveButton
 import java.io.File
 
 
-class RestoreFragment : ThemeDialogFragment() {
+class RestoreFragment : DialogFragment() {
 
     private var restoreTask: RestoreTask? = null
     private lateinit var message: TextView
     private lateinit var loading: ViewGroup
     private lateinit var dialogButtons: DialogButtonBar
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_FRAME, R.style.AppTheme_Dialog)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,12 +66,31 @@ class RestoreFragment : ThemeDialogFragment() {
         loading.visibility = View.VISIBLE
         dialogButtons.visibility = View.GONE
 
-        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-            val extDir = Environment.getExternalStorageDirectory()
-            Log.i("doRestore", "extDir = ${extDir.absolutePath}")
+        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+                && Environment.isExternalStorageEmulated()) {
 
-            val files = extDir.listFiles { _, name -> name == "${Constants.BACKUP_FILE_NAME}.zip" }
-            if (files.isEmpty()) {
+            var files: Array<File>? = null
+
+            var extDir = Environment.getExternalStorageDirectory()
+            if (extDir.exists()) {
+                files = extDir.absoluteFile.listFiles { _, name ->
+                    name == "${Constants.BACKUP_FILE_NAME}.zip"
+                }
+            }
+
+            if (files == null || files.isEmpty()) {
+                val externalStorageVolumes: Array<out File> =
+                    ContextCompat.getExternalFilesDirs(requireContext().applicationContext, null)
+
+                extDir = externalStorageVolumes.first()
+                if (extDir.exists()) {
+                    files = extDir.absoluteFile.listFiles { _, name ->
+                        name == "${Constants.BACKUP_FILE_NAME}.zip"
+                    }
+                }
+            }
+
+            if (files == null || files.isEmpty()) {
                 showMessage(R.string.message_backup_file_not_found)
             } else {
                 runRestoreTask(files.first())

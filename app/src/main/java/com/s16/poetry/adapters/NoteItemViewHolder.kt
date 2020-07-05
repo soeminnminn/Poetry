@@ -6,7 +6,7 @@ import android.widget.TextView
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 import com.s16.poetry.data.Record
-import com.s16.utils.format
+import com.s16.ktx.format
 import com.s16.widget.CheckedCardView
 import com.s16.view.RecyclerViewHolder
 import java.util.*

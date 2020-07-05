@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/background_dark</color>
+    <color name="colorPrimaryDark">@color/background_holo_dark</color>
+
+    <color name="colorForeground">@color/white_33_opacity</color>
+    <color name="colorIcon">#F3F3F3</color>
+    <color name="colorBorder">@color/white_33_opacity</color>
+</resources>

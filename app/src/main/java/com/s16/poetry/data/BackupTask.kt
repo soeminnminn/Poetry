@@ -3,6 +3,7 @@ package com.s16.poetry.data
 import android.content.Context
 import android.os.Environment
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import com.s16.poetry.Constants
@@ -26,17 +27,32 @@ internal class BackupTask(
     private var job: Job? = null
 
     override fun run() {
-        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-            val extDir = Environment.getExternalStorageDirectory()
+        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+                && Environment.isExternalStorageEmulated()) {
+            var extDir = Environment.getExternalStorageDirectory()
 
-            val files = extDir.listFiles { _, name -> name == "${Constants.BACKUP_FILE_NAME}.zip" }
-            if (files.isNotEmpty()) {
-                onOverride(this, files[0])
-            } else {
-                val file = File(extDir, "${Constants.BACKUP_FILE_NAME}.zip")
-                onStartBackup(file)
-                runTask(file)
+            if (!extDir.exists() || !extDir.canWrite()) {
+                val externalStorageVolumes: Array<out File> =
+                    ContextCompat.getExternalFilesDirs(context.applicationContext, null)
+
+                extDir = externalStorageVolumes.first()
             }
+
+            if (!extDir.exists() || !extDir.canWrite()) {
+                onCanceled("Can not write backup file.")
+
+            } else {
+                val files = extDir.absoluteFile.listFiles { _, name -> name == "${Constants.BACKUP_FILE_NAME}.zip" }
+
+                if (files != null && files.isNotEmpty()) {
+                    onOverride(this, files[0])
+                } else {
+                    val file = File(extDir, "${Constants.BACKUP_FILE_NAME}.zip")
+                    onStartBackup(file)
+                    runTask(file)
+                }
+            }
+
         } else {
             onCanceled("Can not write backup file.")
         }

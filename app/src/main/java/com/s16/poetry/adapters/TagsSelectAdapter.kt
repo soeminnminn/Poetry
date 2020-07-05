@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckedTextView
 import com.s16.poetry.R
-import com.s16.poetry.TypeFaceUtil
+import com.s16.poetry.utils.TypeFaceManager
 import com.s16.poetry.data.Tags
-import com.s16.utils.dpToPixel
+import com.s16.poetry.utils.ThemeManager
+import com.s16.ktx.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
 import com.s16.view.RecyclerViewHolder
 import java.util.*
@@ -59,7 +60,8 @@ class TagsSelectAdapter(private val context: Context):
             .inflate(R.layout.list_item_simple_selectable, parent, false)
 
         view.findViewById<CheckedTextView>(android.R.id.text1).apply {
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tag_gray, 0, 0, 0)
+            val icon = ThemeManager.getThemedIcon(parent.context, R.drawable.ic_tag)
+            setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
             compoundDrawablePadding = parent.context.dpToPixel(8)
             checkMarkDrawable = this@TagsSelectAdapter.checkMarkDrawable
         }
@@ -69,7 +71,7 @@ class TagsSelectAdapter(private val context: Context):
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         getItem(position)?.let { tags ->
-            val fontFace: Typeface = TypeFaceUtil.getPreferencesTypeFace(holder.context)
+            val fontFace: Typeface = TypeFaceManager.getPreferencesTypeFace(holder.context)
 
             holder.findViewById<CheckedTextView>(android.R.id.text1).apply {
                 typeface = fontFace

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_color_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/grid_detail_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/grid_detail_transition</item>
+
+        <item name="android:colorBackground">@color/colorPrimaryDark</item>
+        <item name="iconTint">@color/colorIcon</item>
+
+        <item name="dialogTheme">@style/AppTheme.Dialog</item>
+        <item name="bottomAppBarStyle">@style/AppWidget.BottomAppBar</item>
+        <item name="checkedCardViewStyle">@style/AppWidget.ListCard</item>
+        <item name="chipStyle">@style/AppWidget.Chip</item>
+    </style>
+
+    <style name="AppTheme.AppBarHeader" parent="ThemeOverlay.MaterialComponents">
+        <item name="android:background">@drawable/side_nav_bar</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:tint">@color/bright_foreground_holo_dark</item>
+        <item name="iconTint">@color/bright_foreground_holo_dark</item>
+    </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark" />
+
+    <style name="AppWidget.Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@drawable/border_background</item>
+    </style>
+
+    <style name="AppWidget.OutlinedButton" parent="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="strokeColor">@color/white_33_opacity</item>
+        <item name="strokeWidth">@dimen/dimen_1dp</item>
+        <item name="iconPadding">@dimen/dimen_4dp</item>
+        <item name="iconTint">?android:textColorSecondary</item>
+    </style>
+
+    <style name="AppWidget.ListCard" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="android:checkable">true</item>
+        <item name="strokeColor">@color/cardview_stroke_color</item>
+        <item name="strokeWidth">@dimen/dimen_1dp</item>
+        <item name="cardCornerRadius">@dimen/dimen_10dp</item>
+        <item name="cardElevation">@dimen/dimen_0dp</item>
+        <item name="cardBackgroundColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppWidget.Chip" parent="@style/Widget.MaterialComponents.Chip.Filter">
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="chipBackgroundColor">@color/colorPrimary</item>
+        <item name="chipStrokeColor">@color/cardview_stroke_color</item>
+        <item name="chipStrokeWidth">@dimen/dimen_1dp</item>
+        <item name="chipIconTint">?android:textColorSecondary</item>
+    </style>
+</resources>

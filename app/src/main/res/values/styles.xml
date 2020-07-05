@@ -1,54 +1,27 @@
-<resources>
-
-    <!-- https://medium.com/androiddevelopers/appcompat-v23-2-daynight-d10f90c83e94 -->
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents">
-        <item name="isLightTheme">false</item>
-
-        <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryDark">@color/colorAccentDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
-
-        <item name="iconTint">@color/white</item>
-        <item name="dimIconTint">@color/grey_90</item>
-        <item name="dividerColor">@color/white_33_opacity</item>
-        <item name="borderColor">@color/white_33_opacity</item>
-
-        <item name="activityBackground">@color/bright_foreground_holo_light</item>
-        <item name="brightBackground">@color/background_default</item>
-        <item name="dialogTheme">@style/AppTheme.Dialog</item>
-        <item name="popupMenuStyle">@style/AppTheme.PopupOverlay.Light</item>
-        <item name="bottomAppBarStyle">@style/AppWidget.BottomAppBar</item>
-        <item name="navigationHeaderStyle">@style/AppTheme.AppBarHeader</item>
-        <item name="navigationHeader">@style/AppTheme.PopupOverlay</item>
-        <item name="toolbarMain">@style/AppWidget.Toolbar</item>
-        <item name="checkedCardViewStyle">@style/AppWidget.ListCard</item>
-        <item name="chipStyle">@style/AppWidget.Chip</item>
-    </style>
-
-    <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="isLightTheme">true</item>
-
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_color_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="iconTint">@color/grey_30</item>
-        <item name="dimIconTint">@color/grey_90</item>
-        <item name="dividerColor">@color/grey_80</item>
-        <item name="borderColor">@color/grey_90</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
-        <item name="activityBackground">@color/background_holo_light</item>
-        <item name="brightBackground">@color/white</item>
-        <item name="dialogTheme">@style/AppTheme.Dialog.Light</item>
-        <item name="popupMenuStyle">@style/AppTheme.PopupOverlay.Light</item>
-        <item name="bottomAppBarStyle">@style/AppWidget.BottomAppBar.Light</item>
-        <item name="navigationHeaderStyle">@style/AppTheme.AppBarHeader.Light</item>
-        <item name="navigationHeader">@style/AppTheme.PopupOverlay.Light</item>
-        <item name="toolbarMain">@style/AppWidget.Toolbar.Light</item>
-        <item name="checkedCardViewStyle">@style/AppWidget.ListCard.Light</item>
-        <item name="chipStyle">@style/AppWidget.Chip.Light</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/grid_detail_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/grid_detail_transition</item>
+
+        <item name="android:colorBackground">@color/colorPrimaryDark</item>
+        <item name="iconTint">@color/colorIcon</item>
+
+        <item name="dialogTheme">@style/AppTheme.Dialog</item>
+        <item name="bottomAppBarStyle">@style/AppWidget.BottomAppBar</item>
+        <item name="checkedCardViewStyle">@style/AppWidget.ListCard</item>
+        <item name="chipStyle">@style/AppWidget.Chip</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -56,120 +29,62 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.TranslucentStatus">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBarOverlay">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@null</item>
-    </style>
-
-    <style name="AppTheme.Translucent">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/transparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
-
-    <style name="AppTheme.Dialog" parent="@style/Theme.MaterialComponents.Dialog">
-    </style>
-
-    <style name="AppTheme.Dialog.Light" parent="@style/Theme.MaterialComponents.Light.Dialog">
-    </style>
-
-    <style name="AppTheme.Dialog.NoTitle" parent="@android:style/Theme.Holo.Dialog.NoActionBar.MinWidth">
+    <style name="AppTheme.Dialog" parent="@style/Theme.AppCompat.DayNight.Dialog.MinWidth">
+        <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_color_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:background">@drawable/dialog_background</item>
     </style>
 
-    <style name="AppTheme.Dialog.Light.NoTitle" parent="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth">
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
-
-    <style name="AppTheme.AppBarOverlay.Light" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents"/>
-
-    <style name="AppTheme.PopupOverlay.Light" parent="ThemeOverlay.MaterialComponents.Light"/>
-
-    <style name="AppTheme.AppBarHeader" parent="ThemeOverlay.AppCompat">
-        <item name="android:background">@drawable/side_nav_bar</item>
-    </style>
-
-    <style name="AppTheme.AppBarHeader.Light" parent="ThemeOverlay.MaterialComponents.Light">
+    <style name="AppTheme.AppBarHeader" parent="ThemeOverlay.MaterialComponents">
         <item name="android:background">@drawable/side_nav_bar_light</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:tint">@color/bright_foreground_holo_light</item>
+        <item name="iconTint">@color/bright_foreground_holo_light</item>
+    </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <style name="AppWidget">
     </style>
 
-    <style name="AppWidget.BorderlessButton" parent="@style/Widget.AppCompat.Button.Borderless">
-    </style>
-
-    <style name="AppWidget.ActionbarButton" parent="@style/Widget.AppCompat.ActionButton">
-    </style>
-
     <style name="AppWidget.Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
-        <item name="android:background">@drawable/border_background</item>
-    </style>
-
-    <style name="AppWidget.Toolbar.Light" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="android:background">@drawable/border_background_light</item>
     </style>
 
     <style name="AppWidget.BottomAppBar" parent="@style/Widget.MaterialComponents.BottomAppBar">
-        <item name="backgroundTint">@color/bright_foreground_holo_light</item>
-    </style>
-
-    <style name="AppWidget.BottomAppBar.Light" parent="@style/Widget.MaterialComponents.BottomAppBar">
-        <item name="backgroundTint">@color/white</item>
     </style>
 
     <style name="AppWidget.OutlinedButton" parent="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon">
-        <item name="strokeColor">@color/white_33_opacity</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="strokeColor">@color/cardview_stroke_color_light</item>
         <item name="strokeWidth">@dimen/dimen_1dp</item>
-    </style>
-
-    <style name="AppWidget.OutlinedButton.Light" parent="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon">
-        <item name="strokeColor">@color/grey_90</item>
-        <item name="strokeWidth">@dimen/dimen_1dp</item>
+        <item name="iconPadding">@dimen/dimen_4dp</item>
+        <item name="iconTint">?android:textColorSecondary</item>
     </style>
 
     <style name="AppWidget.ListCard" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="android:checkable">true</item>
-        <item name="strokeColor">@color/cardview_stroke_color</item>
-        <item name="strokeWidth">@dimen/dimen_1dp</item>
-        <item name="cardCornerRadius">@dimen/dimen_10dp</item>
-        <item name="cardElevation">@dimen/dimen_0dp</item>
-    </style>
-
-    <style name="AppWidget.ListCard.Light" parent="@style/Widget.MaterialComponents.CardView">
         <item name="android:checkable">true</item>
         <item name="strokeColor">@color/cardview_stroke_color_light</item>
         <item name="strokeWidth">@dimen/dimen_1dp</item>
         <item name="cardCornerRadius">@dimen/dimen_10dp</item>
         <item name="cardElevation">@dimen/dimen_0dp</item>
+        <item name="cardBackgroundColor">@color/colorPrimary</item>
     </style>
 
     <style name="AppWidget.Chip" parent="@style/Widget.MaterialComponents.Chip.Filter">
         <item name="android:textColor">?android:textColorSecondary</item>
-        <item name="chipBackgroundColor">@color/transparent</item>
-        <item name="chipStrokeColor">@color/white_33_opacity</item>
-        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipBackgroundColor">@color/colorPrimary</item>
+        <item name="chipStrokeColor">@color/cardview_stroke_color_light</item>
+        <item name="chipStrokeWidth">@dimen/dimen_1dp</item>
+        <item name="chipIconTint">?android:textColorSecondary</item>
     </style>
-
-    <style name="AppWidget.Chip.Light" parent="@style/Widget.MaterialComponents.Chip.Filter">
-        <item name="android:textColor">?android:textColorSecondary</item>
-        <item name="chipBackgroundColor">@color/transparent</item>
-        <item name="chipStrokeColor">@color/grey_90</item>
-        <item name="chipStrokeWidth">1dp</item>
-    </style>
-
 </resources>

@@ -22,7 +22,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/editTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                     android:inputType="textCapSentences"
                     android:visibility="gone" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/noteTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/noteTitleContainer"
                 android:layout_marginTop="@dimen/dimen_16dp" >
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/editContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,13 +61,13 @@
                     android:textColor="?android:textColorSecondary"
                     android:background="@null"
                     android:minLines="2"
-                    android:gravity="top|start|left"
+                    android:gravity="top|start"
                     android:hint="@string/hint_edit_note"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine|textCapSentences"
                     android:visibility="gone" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/noteContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -84,13 +84,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="?android:textColorSecondary"
                 android:text="@string/action_add_category"
-                app:strokeColor="?attr/borderColor"
-                app:icon="@drawable/ic_category_gray"
-                app:iconPadding="@dimen/dimen_4dp"
-                app:iconTint="?attr/dimIconTint"
-                app:iconTintMode="multiply"
+                app:icon="@drawable/ic_category"
                 app:layout_constraintTop_toBottomOf="@+id/noteContentContainer"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="@dimen/dimen_16dp"/>
@@ -101,8 +96,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="?android:textColorSecondary"
-                app:strokeColor="?attr/borderColor"
                 android:lines="1"
                 tools:text="@string/app_name"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -125,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/action_add_tags"
                     android:checkable="false"
-                    app:chipIcon="@drawable/ic_add_gray"
+                    app:chipIcon="@drawable/ic_add"
                     app:chipIconVisible="true" />
 
         </com.google.android.material.chip.ChipGroup>

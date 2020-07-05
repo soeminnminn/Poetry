@@ -5,9 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.s16.poetry.R
-import com.s16.poetry.TypeFaceUtil
+import com.s16.poetry.utils.TypeFaceManager
 import com.s16.poetry.data.Tags
-import com.s16.utils.dpToPixel
+import com.s16.poetry.utils.ThemeManager
+import com.s16.ktx.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
 import com.s16.view.RecyclerViewHolder
 import java.util.*
@@ -19,7 +20,8 @@ class TagsAdapter: RecyclerViewArrayAdapter<RecyclerViewHolder, Tags>() {
             .inflate(R.layout.list_item_simple, parent, false)
 
         (view as TextView).apply {
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tag_gray, 0, 0, 0)
+            val icon = ThemeManager.getThemedIcon(parent.context, R.drawable.ic_tag)
+            setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
             compoundDrawablePadding = parent.context.dpToPixel(8)
         }
 
@@ -29,7 +31,7 @@ class TagsAdapter: RecyclerViewArrayAdapter<RecyclerViewHolder, Tags>() {
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         getItem(position)?.let { item ->
             (holder.itemView as TextView).apply {
-                typeface = TypeFaceUtil.getPreferencesTypeFace(holder.context)
+                typeface = TypeFaceManager.getPreferencesTypeFace(holder.context)
                 text = item.name
             }
         }

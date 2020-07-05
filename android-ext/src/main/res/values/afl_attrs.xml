@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <declare-styleable name="AspectFrameLayout">
+        <attr name="aflAspectRatioX" format="float" />
+        <attr name="aflAspectRatioY" format="float" />
+    </declare-styleable>
+    
+</resources>

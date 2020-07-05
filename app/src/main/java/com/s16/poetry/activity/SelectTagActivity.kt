@@ -10,22 +10,22 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
 import com.s16.poetry.adapters.TagsSelectAdapter
 import com.s16.poetry.data.DbManager
 import com.s16.poetry.data.Tags
 import com.s16.poetry.data.TagsModel
-import com.s16.poetry.view.EditInputDialog
+import com.s16.app.EditInputDialog
 import com.s16.widget.SupportRecyclerView
 import kotlinx.coroutines.*
 import java.util.*
 
-class SelectTagActivity : ThemeActivity() {
+class SelectTagActivity : AppCompatActivity() {
 
     private var uiScope = CoroutineScope(Dispatchers.Main)
     private var saveJob: Job? = null
@@ -37,7 +37,6 @@ class SelectTagActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_tag)
-        updateSystemUiColor()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

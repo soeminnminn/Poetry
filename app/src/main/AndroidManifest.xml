@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+
     <application
             android:name=".MainApp"
             android:allowBackup="true"
@@ -13,11 +17,10 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="false"
-            android:theme="@style/AppTheme.Light">
+            android:theme="@style/AppTheme.NoActionBar">
         <activity
                 android:name=".activity.MainActivity"
-                android:label="@string/app_name"
-                android:theme="@style/AppTheme.Light.NoActionBar">
+                android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -27,21 +30,41 @@
         </activity>
         <activity
                 android:name=".activity.DetailsActivity"
-                android:label="@string/empty_string"
-                android:theme="@style/AppTheme.Light.NoActionBar" />
+                android:label="@string/empty_string" />
         <activity
                 android:name=".activity.ManageCategoriesActivity"
                 android:label="@string/title_activity_manage_category" />
         <activity
                 android:name=".activity.ManageTagsActivity"
                 android:label="@string/title_activity_manage_tag" />
+        <activity android:name=".activity.SelectTagActivity" />
+        <activity android:name=".activity.SelectCategoryActivity" />
         <activity
-                android:name=".activity.SelectTagActivity" />
-        <activity
-                android:name=".activity.SelectCategoryActivity" />
+                android:name=".activity.SyncActivity"
+                android:label="@string/title_activity_sync" />
         <activity
                 android:name=".activity.SettingsActivity"
                 android:label="@string/title_activity_settings" />
+
+        <provider
+                android:name=".sync.SyncProvider"
+                android:authorities="com.s16.poetry.sync.provider"
+                android:exported="false"
+                android:syncable="true"/>
+
+        <service android:name=".sync.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                    android:name="android.accounts.AccountAuthenticator"
+                    android:resource="@xml/authenticator" />
+        </service>
+        <service
+                android:name=".sync.SyncService"
+                android:exported="true"
+                android:process=":sync" />
+
     </application>
 
 </manifest>

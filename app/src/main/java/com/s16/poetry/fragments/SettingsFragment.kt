@@ -2,6 +2,7 @@ package com.s16.poetry.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -11,29 +12,37 @@ import androidx.preference.PreferenceFragmentCompat
 import com.s16.app.ProgressDialog
 import com.s16.poetry.Constants
 import com.s16.poetry.R
+import com.s16.poetry.utils.ThemeManager
 import com.s16.poetry.activity.ManageCategoriesActivity
 import com.s16.poetry.activity.ManageTagsActivity
+import com.s16.poetry.activity.SyncActivity
 import com.s16.poetry.data.BackupTask
-import com.s16.utils.alertDialog
-import com.s16.utils.confirmDialog
-import com.s16.utils.startActivity
-import java.io.File
+import com.s16.ktx.alertDialog
+import com.s16.ktx.confirmDialog
+import com.s16.ktx.startActivity
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment : PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private var backupTask: BackupTask? = null
 
     private val versionName: String
         get() {
-            val pInfo = context?.packageManager?.getPackageInfo(context?.packageName, 0)
+            val pInfo = context?.packageManager?.getPackageInfo(requireContext().packageName, 0)
             if (pInfo != null) {
                 return pInfo.versionName
             }
             return ""
         }
 
+    private fun getSelectedTheme(sharedPreferences: SharedPreferences)
+         = sharedPreferences.getString(Constants.PREFS_SELECT_THEME, "system")
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
+
+        val selectedOption = getSelectedTheme(preferenceScreen.sharedPreferences)
+        setThemeSummary(selectedOption)
 
         findPreference<Preference>(Constants.PREFS_MANAGE_CATEGORY)?.setOnPreferenceClickListener {
             startActivity<ManageCategoriesActivity>()
@@ -55,6 +64,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
+        findPreference<Preference>(Constants.PREFS_SYNC)?.setOnPreferenceClickListener {
+            startActivity<SyncActivity>()
+            true
+        }
+
         val prefsAbout = findPreference<Preference>(Constants.PREFS_ABOUT)
         val versionText = context?.getText(R.string.version_text)
         if (versionText != null) {
@@ -67,9 +81,38 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
     override fun onDestroy() {
         backupTask?.cancel()
         super.onDestroy()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        if (key == Constants.PREFS_SELECT_THEME) {
+            val selectedOption = getSelectedTheme(sharedPreferences)
+            ThemeManager.setTheme(selectedOption)
+            setThemeSummary(selectedOption)
+        }
+    }
+
+    private fun setThemeSummary(selected: String?) {
+        findPreference<Preference>(Constants.PREFS_SELECT_THEME)?.apply {
+            summary = when(selected) {
+                Constants.PREFS_THEMES_LIGHT -> getString(R.string.prefs_theme_light)
+                Constants.PREFS_THEMES_DARK -> getString(R.string.prefs_theme_dark)
+                Constants.PREFS_THEMES_BATTERY -> getString(R.string.prefs_theme_battery)
+                else -> getString(R.string.prefs_theme_system)
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

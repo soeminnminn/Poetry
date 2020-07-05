@@ -8,6 +8,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
@@ -19,24 +20,23 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
-import com.s16.poetry.TypeFaceUtil
+import com.s16.poetry.utils.TypeFaceManager
 import com.s16.poetry.adapters.NavMenuAdapter
 import com.s16.poetry.adapters.RecordsPagedAdapter
 import com.s16.poetry.adapters.setItemClickListener
 import com.s16.poetry.data.*
 import com.s16.poetry.fragments.AboutFragment
 import com.s16.preferences.StringLiveSharedPreference
-import com.s16.utils.confirmDialog
-import com.s16.utils.startActivity
+import com.s16.ktx.confirmDialog
+import com.s16.ktx.startActivity
 import com.s16.view.AdaptableMenu
 import com.s16.view.FloatingActionButtonBehavior
 import kotlinx.coroutines.*
 
 
-class MainActivity : ThemeActivity(),
+class MainActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     RecordsPagedAdapter.OnItemSelectListener {
 
@@ -53,13 +53,11 @@ class MainActivity : ThemeActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        updateSystemUiColor()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         val toolbarEdit: Toolbar = findViewById(R.id.toolbarEdit)
-        toolbarEdit.setNavigationIcon(R.drawable.ic_close_gray)
         toolbarEdit.inflateMenu(R.menu.menu_main_edit)
         toolbarEdit.setNavigationOnClickListener {
             doSelectionEnd()
@@ -131,7 +129,7 @@ class MainActivity : ThemeActivity(),
         val headerView = navView.getHeaderView(0)
 
         val textAuthorName: TextView = headerView.findViewById(R.id.navSubTitle)
-        textAuthorName.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
+        textAuthorName.typeface = TypeFaceManager.getPreferencesTypeFace(this)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val defAuthorName = getString(R.string.author_name)
@@ -286,10 +284,10 @@ class MainActivity : ThemeActivity(),
         menuItemViewMode?.run {
             if (isChecked) {
                 layoutManager.spanCount = 2
-                setIcon(R.drawable.ic_view_list_gray)
+                setIcon(R.drawable.ic_view_list)
             } else {
                 layoutManager.spanCount = 1
-                setIcon(R.drawable.ic_view_grid_gray)
+                setIcon(R.drawable.ic_view_grid)
             }
             isChecked = !isChecked
         }

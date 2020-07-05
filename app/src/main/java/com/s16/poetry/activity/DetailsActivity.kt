@@ -6,24 +6,24 @@ import android.view.*
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.s16.app.ThemeActivity
 import com.s16.poetry.Constants
 import com.s16.poetry.R
-import com.s16.poetry.TypeFaceUtil
+import com.s16.poetry.utils.TypeFaceManager
 import com.s16.poetry.data.*
-import com.s16.utils.*
+import com.s16.ktx.*
 import com.takisoft.datetimepicker.DatePickerDialog
 import kotlinx.coroutines.*
 import java.util.*
 
 
-class DetailsActivity : ThemeActivity() {
+class DetailsActivity : AppCompatActivity() {
 
     private lateinit var chipAdd: Chip
 
@@ -43,7 +43,6 @@ class DetailsActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-        updateSystemUiColor()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -65,10 +64,10 @@ class DetailsActivity : ThemeActivity() {
         val editTitle: EditText = findViewById(R.id.editTitle)
         val editContent: EditText = findViewById(R.id.editContent)
 
-        noteTitle.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
-        noteContent.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
-        editTitle.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
-        editContent.typeface = TypeFaceUtil.getPreferencesTypeFace(this)
+        noteTitle.typeface = TypeFaceManager.getPreferencesTypeFace(this)
+        noteContent.typeface = TypeFaceManager.getPreferencesTypeFace(this)
+        editTitle.typeface = TypeFaceManager.getPreferencesTypeFace(this)
+        editContent.typeface = TypeFaceManager.getPreferencesTypeFace(this)
 
         val dateNote = Calendar.getInstance()
         noteDate.text = dateNote.format(Constants.DISPLAY_DATE_FORMAT)
@@ -268,7 +267,7 @@ class DetailsActivity : ThemeActivity() {
                     text = tag
                     isClickable = false
                     isCheckable = false
-                    setChipIconResource(R.drawable.ic_tag_gray)
+                    setChipIconResource(R.drawable.ic_tag)
                     isChipIconVisible = true
                 }
                 noteTags.addView(chip)
@@ -279,7 +278,7 @@ class DetailsActivity : ThemeActivity() {
             id = R.id.action_add_tags
             setText(R.string.action_add_tags)
             isCheckable = false
-            setChipIconResource(R.drawable.ic_add_gray)
+            setChipIconResource(R.drawable.ic_add)
             isChipIconVisible = true
             tag = values
         }

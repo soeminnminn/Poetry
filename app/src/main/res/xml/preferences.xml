@@ -24,40 +24,59 @@
                 app:key="select_theme"
                 app:title="@string/prefs_select_theme"
                 app:defaultValue="@string/prefs_select_theme_def"
+                app:icon="@drawable/ic_theme"
                 app:entries="@array/prefs_select_theme_titles"
                 app:entryValues="@array/prefs_select_theme_values" />
 
         <EditTextPreference
-            app:key="author_name"
-            app:title="@string/prefs_author"
-            app:summary="@string/prefs_author_summary"
-            app:defaultValue="@string/author_name" />
+                app:key="author_name"
+                app:title="@string/prefs_author"
+                app:summary="@string/prefs_author_summary"
+                app:icon="@drawable/ic_author"
+                app:defaultValue="@string/author_name" />
 
-        <Preference
-            app:key="manage_category"
-            app:title="@string/prefs_manage_category"
-            app:summary="@string/prefs_manage_category_summary"/>
-
-        <Preference
-                app:key="manage_tags"
-                app:title="@string/prefs_manage_tags"
-                app:summary="@string/prefs_manage_tags_summary"/>
 
         <CheckBoxPreference
                 app:key="prefs_mmfont"
                 app:title="@string/prefs_mmfont"
                 app:summary="@string/prefs_mmfont_summary"
+                app:icon="@drawable/ic_font"
                 app:defaultValue="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            app:title="@string/prefs_category_manage">
+
+        <Preference
+                app:key="manage_category"
+                app:title="@string/prefs_manage_category"
+                app:summary="@string/prefs_manage_category_summary"
+                app:icon="@drawable/ic_folder"/>
+
+        <Preference
+                app:key="manage_tags"
+                app:title="@string/prefs_manage_tags"
+                app:summary="@string/prefs_manage_tags_summary"
+                app:icon="@drawable/ic_label"/>
 
         <Preference
                 app:key="backup"
                 app:title="@string/prefs_backup"
-                app:summary="@string/prefs_backup_summary"/>
+                app:summary="@string/prefs_backup_summary"
+                app:icon="@drawable/ic_backup"/>
 
         <Preference
                 app:key="restore"
                 app:title="@string/prefs_restore"
-                app:summary="@string/prefs_restore_summary"/>
+                app:summary="@string/prefs_restore_summary"
+                app:icon="@drawable/ic_restore"/>
+
+        <Preference
+                app:key="sync"
+                app:title="@string/prefs_sync"
+                app:summary="@string/prefs_sync_summary"
+                app:icon="@drawable/ic_sync"/>
 
     </PreferenceCategory>
 
@@ -67,7 +86,8 @@
         <Preference
                 app:key="about"
                 app:title="@string/prefs_about"
-                app:summary="@string/version_text"/>
+                app:summary="@string/version_text"
+                app:icon="@drawable/ic_info" />
 
     </PreferenceCategory>
 

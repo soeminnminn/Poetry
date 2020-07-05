@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
@@ -13,18 +14,17 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.s16.app.ThemeActivity
 import com.s16.poetry.R
 import com.s16.poetry.adapters.TagsAdapter
 import com.s16.poetry.data.DbManager
 import com.s16.poetry.data.Tags
 import com.s16.poetry.data.TagsModel
-import com.s16.poetry.view.EditInputDialog
+import com.s16.app.EditInputDialog
 import com.s16.poetry.view.SwipeToDeleteCallback
 import com.s16.widget.SupportRecyclerView
 import kotlinx.coroutines.*
 
-class ManageTagsActivity : ThemeActivity() {
+class ManageTagsActivity : AppCompatActivity() {
 
     private var backgroundScope = CoroutineScope(Dispatchers.IO)
     private var saveJob: Job? = null
@@ -32,7 +32,6 @@ class ManageTagsActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_tags)
-        updateSystemUiColor()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

@@ -37,7 +37,7 @@ abstract class SwipeToDeleteCallback(private val context: Context): ItemTouchHel
     private val mBackground = ColorDrawable().apply {
         color = backgroundColor
     }
-    private val deleteDrawable = ContextCompat.getDrawable(context, R.drawable.ic_delete_gray)
+    private val deleteDrawable = ContextCompat.getDrawable(context, R.drawable.ic_delete)
     private val intrinsicWidth = deleteDrawable?.intrinsicWidth
     private val intrinsicHeight = deleteDrawable?.intrinsicHeight
 

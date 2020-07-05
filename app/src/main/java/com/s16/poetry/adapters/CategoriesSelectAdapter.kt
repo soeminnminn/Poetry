@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckedTextView
 import com.s16.poetry.R
-import com.s16.poetry.TypeFaceUtil
+import com.s16.poetry.utils.TypeFaceManager
 import com.s16.poetry.data.Category
-import com.s16.utils.dpToPixel
+import com.s16.poetry.utils.ThemeManager
+import com.s16.ktx.dpToPixel
 import com.s16.view.RecyclerViewArrayAdapter
 import com.s16.view.RecyclerViewHolder
 import java.util.*
@@ -61,7 +62,8 @@ class CategoriesSelectAdapter(private val context: Context):
             .inflate(R.layout.list_item_simple_selectable, parent, false)
 
         view.findViewById<CheckedTextView>(android.R.id.text1).apply {
-            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_category_gray, 0, 0, 0)
+            val icon = ThemeManager.getThemedIcon(parent.context, R.drawable.ic_category)
+            setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null)
             compoundDrawablePadding = context.dpToPixel(8)
             checkMarkDrawable = this@CategoriesSelectAdapter.checkMarkDrawable
         }
@@ -71,7 +73,7 @@ class CategoriesSelectAdapter(private val context: Context):
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         getItem(position)?.let { category ->
             val textView: CheckedTextView = holder[android.R.id.text1]
-            textView.typeface = TypeFaceUtil.getPreferencesTypeFace(holder.context)
+            textView.typeface = TypeFaceManager.getPreferencesTypeFace(holder.context)
             textView.text = category.name
             textView.isChecked = (position == selectedPosition)
 

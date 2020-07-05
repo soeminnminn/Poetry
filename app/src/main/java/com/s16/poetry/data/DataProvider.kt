@@ -141,6 +141,21 @@ interface DataProvider {
     }
 
     // Select
+    @Query("SELECT * FROM categories")
+    suspend fun getAllCategories(): List<Category>
+
+    @Query("SELECT * FROM tags")
+    suspend fun getAllTags(): List<Tags>
+
+    @Query("SELECT * FROM deleted")
+    suspend fun getAllDeleted(): List<Deleted>
+
+    @Query("SELECT * FROM records_add")
+    suspend fun getAllRecordAdd(): List<RecordsAdd>
+
+    @Query("SELECT * FROM records")
+    suspend fun getAllRecords(): List<Record>
+
     @Query("""SELECT categories.* FROM categories
         LEFT JOIN deleted ON categories.category_name = deleted.value AND deleted.type = 'Category'
         WHERE deleted.value IS NULL""")

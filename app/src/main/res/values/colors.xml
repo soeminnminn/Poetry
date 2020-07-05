@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorAccentDark">#880E4F</color>
+    <color name="colorPrimary">@color/background_light</color>
+    <color name="colorPrimaryDark">@color/background_holo_light</color>
+    <color name="colorAccent">@color/mtl_deep_teal_500</color>
+
+    <color name="colorForeground">@color/grey_90</color>
+    <color name="colorIcon">#333333</color>
+    <color name="colorBorder">@color/grey_90</color>
+
+    <color name="background_dark">#424242</color>
+    <color name="background_light">#FFFFFF</color>
+    <color name="bright_background_dark">#303030</color>
+    <color name="bright_background_light">#FFFFFF</color>
 
     <color name="accent_color">#ff333333</color>
     <color name="primary_color">#ffffbb00</color>

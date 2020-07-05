@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.Menu
 import android.view.MenuItem
 import com.s16.poetry.R
-import com.s16.poetry.TypeFaceUtil
+import com.s16.poetry.utils.TypeFaceManager
 import com.s16.poetry.data.Category
 import com.s16.view.AdaptableMenu
 import com.s16.view.BaseMenuAdapter
@@ -20,23 +20,23 @@ class NavMenuAdapter(private val context: Context): BaseMenuAdapter() {
         val maxSize = items.size + 1
         return when {
             position == 0 -> menu.add(categoryGroupId, 0, 0, R.string.menu_all).apply {
-                setIcon(R.drawable.ic_category_gray)
+                setIcon(R.drawable.ic_category)
                 isChecked = true
             }
             position < maxSize -> {
                 val item = items[position - 1]
-                val spannableString = TypeFaceUtil.makePreferencesTypeFaceSpan(context, item.name)
+                val spannableString = TypeFaceManager.makePreferencesTypeFaceSpan(context, item.name)
 
                 menu.add(categoryGroupId, item.id.toInt(), 0, spannableString).apply {
-                    setIcon(R.drawable.ic_category_gray)
+                    setIcon(R.drawable.ic_category)
                 }
             }
             else -> when(position - maxSize) {
                 0 -> menu.add(generalGroupId, R.id.action_settings, 0, R.string.action_settings).apply {
-                    setIcon(R.drawable.ic_settings_gray)
+                    setIcon(R.drawable.ic_settings)
                 }
                 else -> menu.add(generalGroupId, R.id.action_about, 0, R.string.action_about).apply {
-                    setIcon(R.drawable.ic_about_gray)
+                    setIcon(R.drawable.ic_about)
                 }
             }
         }
