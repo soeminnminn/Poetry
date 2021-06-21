@@ -136,6 +136,7 @@ class SyncProvider : ContentProvider() {
     private fun getContentTypeItem(name: String): String =
         "${ContentResolver.CURSOR_ITEM_BASE_TYPE}/${VND_PREFIX}.${name}"
 
+    // TODO: Sync
     inner class DbHelper {
         fun query(distinct: Boolean = false, table: String, columns: List<String>? = null,
                   selection: String? = null, selectionArgs: List<String>? = null,

@@ -67,7 +67,8 @@
                 android:layout_margin="@dimen/dimen_16dp"
                 app:backgroundTint="?attr/colorPrimary"
                 app:tint="@color/dim_foreground_holo_light"
-                app:srcCompat="@drawable/ic_add"/>
+                app:srcCompat="@drawable/ic_add"
+                android:contentDescription="@string/empty_string" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -78,6 +79,9 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
+            app:itemBackground="?android:attr/activatedBackgroundIndicator"
+            app:itemIconTint="?attr/iconTint"
+            app:itemTextColor="?attr/itemTextColor"
             app:menu="@menu/menu_main_drawer"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

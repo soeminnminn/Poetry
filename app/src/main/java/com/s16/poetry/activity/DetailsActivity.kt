@@ -2,9 +2,11 @@ package com.s16.poetry.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -40,6 +42,28 @@ class DetailsActivity : AppCompatActivity() {
     private var saveJob: Job? = null
     private var deleteJob: Job? = null
 
+    private val selectCategoryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_FIRST_USER) {
+            result.data?.let {
+                val name = it.getStringExtra(Constants.ARG_PARAM_NAME)
+                setCategory(name)
+            }
+        } else {
+            setCategory(null)
+        }
+    }
+
+    private val selectTagsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_FIRST_USER) {
+            result.data?.let {
+                val tags = it.getStringArrayExtra(Constants.ARG_PARAM_TAGS) ?: arrayOf()
+                buildTags(tags.toList())
+            }
+        } else {
+            buildTags(listOf())
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
@@ -53,9 +77,6 @@ class DetailsActivity : AppCompatActivity() {
 
         val noteTitleContainer: View = findViewById(R.id.noteTitleContainer)
         ViewCompat.setTransitionName(noteTitleContainer, getString(R.string.transition_title))
-
-        val noteContentContainer: View = findViewById(R.id.noteTitleContainer)
-        ViewCompat.setTransitionName(noteContentContainer, getString(R.string.transition_note))
 
         val noteTitle: TextView = findViewById(R.id.noteTitle)
         val noteContent: TextView = findViewById(R.id.noteContent)
@@ -200,34 +221,6 @@ class DetailsActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.RESULT_SELECT_CATEGORY) {
-            val noteCategory: TextView = findViewById(R.id.noteCategory)
-            if (resultCode == Constants.RESULT_OK) {
-                data?.let {
-                    val name = it.getStringExtra(Constants.ARG_PARAM_NAME)
-                    noteCategory.text = name
-                    noteCategory.tag = name
-                }
-            } else {
-                noteCategory.tag = null
-                noteCategory.setText(R.string.title_add_category)
-            }
-        }
-
-        if (requestCode == Constants.RESULT_SELECT_TAG) {
-            if (resultCode == Constants.RESULT_OK) {
-                data?.let {
-                    val tags = it.getStringArrayExtra(Constants.ARG_PARAM_TAGS)
-                    buildTags(tags.toList())
-                }
-            } else {
-                buildTags(listOf())
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
             putString(Constants.ARG_PARAM_UUID, uuid)
@@ -235,26 +228,33 @@ class DetailsActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState != null) {
-            uuid = savedInstanceState.getString(Constants.ARG_PARAM_UUID)!!
-        }
+        uuid = savedInstanceState.getString(Constants.ARG_PARAM_UUID)!!
     }
 
     private fun onAddCategoryClick(view: View) {
-        startActivityForResult<SelectCategoryActivity>(
-            Constants.RESULT_SELECT_CATEGORY,
-            bundleOf(Constants.ARG_PARAM_CATEGORY to "${view.tag ?: ""}")
-        )
+        val intent = Intent(this, SelectCategoryActivity::class.java)
+        intent.putExtras(bundleOf(Constants.ARG_PARAM_CATEGORY to "${view.tag ?: ""}"))
+        selectCategoryLauncher.launch(intent)
+    }
+
+    private fun setCategory(name: String?) {
+        val noteCategory: TextView = findViewById(R.id.noteCategory)
+        if (name != null) {
+            noteCategory.text = name
+            noteCategory.tag = name
+        } else {
+            noteCategory.tag = null
+            noteCategory.setText(R.string.title_add_category)
+        }
     }
 
     private fun onAddTagsClick(view: View) {
         val tags: List<String> = view.tagAs() ?: listOf()
-        startActivityForResult<SelectTagActivity>(
-            Constants.RESULT_SELECT_TAG,
-            bundleOf(Constants.ARG_PARAM_TAGS to tags.toTypedArray())
-        )
+        val intent = Intent(this, SelectTagActivity::class.java)
+        intent.putExtras(bundleOf(Constants.ARG_PARAM_TAGS to tags.toTypedArray()))
+        selectTagsLauncher.launch(intent)
     }
 
     private fun buildTags(values: List<String>): ChipGroup {

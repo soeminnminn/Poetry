@@ -16,7 +16,9 @@
         <item name="android:windowSharedElementExitTransition">@transition/grid_detail_transition</item>
 
         <item name="android:colorBackground">@color/colorPrimaryDark</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/drawer_item_background</item>
         <item name="iconTint">@color/colorIcon</item>
+        <item name="itemTextColor">@color/bright_foreground_mtl_light</item>
 
         <item name="dialogTheme">@style/AppTheme.Dialog</item>
         <item name="bottomAppBarStyle">@style/AppWidget.BottomAppBar</item>

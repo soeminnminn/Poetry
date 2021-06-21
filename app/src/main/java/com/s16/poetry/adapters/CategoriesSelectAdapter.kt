@@ -34,8 +34,9 @@ class CategoriesSelectAdapter(private val context: Context):
         val position = findIndex {
             it.name == category
         }
-        if (position > -1) {
-            selectedPosition = position
+
+        selectedPosition = position
+        if (selectedPosition > -1) {
             notifyItemChanged(selectedPosition)
         }
     }

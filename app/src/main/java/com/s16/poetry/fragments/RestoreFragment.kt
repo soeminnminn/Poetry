@@ -2,6 +2,7 @@ package com.s16.poetry.fragments
 
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,6 +62,7 @@ class RestoreFragment : DialogFragment() {
         super.onDestroy()
     }
 
+    @Suppress("DEPRECATION")
     private fun doRestore() {
         message.visibility = View.GONE
         loading.visibility = View.VISIBLE
@@ -68,33 +70,50 @@ class RestoreFragment : DialogFragment() {
 
         if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
                 && Environment.isExternalStorageEmulated()) {
-
             var files: Array<File>? = null
+            var file: File? = null
 
             var extDir = Environment.getExternalStorageDirectory()
-            if (extDir.exists()) {
+            if (extDir.exists() && extDir.isDirectory) {
                 files = extDir.absoluteFile.listFiles { _, name ->
                     name == "${Constants.BACKUP_FILE_NAME}.zip"
                 }
+                file = files?.first()
             }
 
-            if (files == null || files.isEmpty()) {
+            if (file == null || !file.canRead()) {
                 val externalStorageVolumes: Array<out File> =
                     ContextCompat.getExternalFilesDirs(requireContext().applicationContext, null)
 
                 extDir = externalStorageVolumes.first()
-                if (extDir.exists()) {
+                if (extDir.exists() && extDir.isDirectory) {
+                    files = extDir.absoluteFile.listFiles { _, name ->
+                        name == "${Constants.BACKUP_FILE_NAME}.zip"
+                    }
+                    file = files?.first()
+                }
+            }
+
+            if (file == null || !file.canRead()) {
+                file = File(extDir, "${Constants.BACKUP_FILE_NAME}.zip")
+            }
+
+            if (!file.exists() || !file.canRead()) {
+                extDir = requireContext().getExternalFilesDir(null)
+                if (extDir.exists() && extDir.isDirectory) {
                     files = extDir.absoluteFile.listFiles { _, name ->
                         name == "${Constants.BACKUP_FILE_NAME}.zip"
                     }
                 }
+                file = files?.first()
             }
 
-            if (files == null || files.isEmpty()) {
+            if (file == null || !file.exists() || !file.canRead()) {
                 showMessage(R.string.message_backup_file_not_found)
             } else {
-                runRestoreTask(files.first())
+                runRestoreTask(file)
             }
+
         } else {
             showMessage(R.string.message_backup_file_not_found)
         }

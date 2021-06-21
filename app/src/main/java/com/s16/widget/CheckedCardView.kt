@@ -57,42 +57,39 @@ open class CheckedCardView: CardView, Checkable {
 
     private fun initialize(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.CheckedCardView, defStyleAttr, 0)
-        applyCardViewAttributes(context, a)
+
+        radius = a.getDimension(R.styleable.CheckedCardView_cardCornerRadius, 0f)
+        cardElevation = a.getDimension(R.styleable.CheckedCardView_cardElevation, 0f)
+        maxCardElevation = a.getDimension(R.styleable.CheckedCardView_cardMaxElevation, 0f)
+
+        if (a.hasValue(R.styleable.CheckedCardView_cardBackgroundColor)) {
+            val bkgStateList = getColorStateList(context, a, R.styleable.CheckedCardView_cardBackgroundColor)
+            if (bkgStateList != null) {
+                setCardBackgroundColor(bkgStateList)
+            } else {
+                val bkgColor = a.getColor(R.styleable.CheckedCardView_cardBackgroundColor, -1)
+                setCardBackgroundColor(bkgColor)
+            }
+        }
+
+        useCompatPadding = a.getBoolean(R.styleable.CheckedCardView_cardUseCompatPadding, false)
+        preventCornerOverlap = a.getBoolean(R.styleable.CheckedCardView_cardPreventCornerOverlap, true)
+
+        val defaultPadding = a.getDimensionPixelSize(R.styleable.CheckedCardView_contentPadding, 0)
+        val paddingLeft = a.getDimensionPixelSize(R.styleable.CheckedCardView_contentPaddingLeft, defaultPadding)
+        val paddingTop = a.getDimensionPixelSize(R.styleable.CheckedCardView_contentPaddingTop, defaultPadding)
+        val paddingRight = a.getDimensionPixelSize(R.styleable.CheckedCardView_contentPaddingRight, defaultPadding)
+        val paddingBottom = a.getDimensionPixelSize(R.styleable.CheckedCardView_contentPaddingBottom, defaultPadding)
+        setContentPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+
+        minimumHeight = a.getDimensionPixelSize(R.styleable.CheckedCardView_android_minHeight, 0)
+        minimumWidth = a.getDimensionPixelSize(R.styleable.CheckedCardView_android_minWidth, 0)
 
         strokeColor = getColorStateList(context, a, R.styleable.CheckedCardView_strokeColor)
         strokeWidth = a.getDimensionPixelSize(R.styleable.CheckedCardView_strokeWidth, 0)
         checkable = a.getBoolean(R.styleable.CheckedCardView_android_checkable, false)
 
         a.recycle()
-    }
-
-    private fun applyCardViewAttributes(context: Context, attributes: TypedArray) {
-        radius = attributes.getDimension(R.styleable.CheckedCardView_cardCornerRadius, 0f)
-        cardElevation = attributes.getDimension(R.styleable.CheckedCardView_cardElevation, 0f)
-        maxCardElevation = attributes.getDimension(R.styleable.CheckedCardView_cardMaxElevation, 0f)
-
-        if (attributes.hasValue(R.styleable.CheckedCardView_cardBackgroundColor)) {
-            val bkgStateList = getColorStateList(context, attributes, R.styleable.CheckedCardView_cardBackgroundColor)
-            if (bkgStateList != null) {
-                setCardBackgroundColor(bkgStateList)
-            } else {
-                val bkgColor = attributes.getColor(R.styleable.CheckedCardView_cardBackgroundColor, -1)
-                setCardBackgroundColor(bkgColor)
-            }
-        }
-
-        useCompatPadding = attributes.getBoolean(R.styleable.CheckedCardView_cardUseCompatPadding, false)
-        preventCornerOverlap = attributes.getBoolean(R.styleable.CheckedCardView_cardPreventCornerOverlap, true)
-
-        val defaultPadding = attributes.getDimensionPixelSize(R.styleable.CheckedCardView_contentPadding, 0)
-        val paddingLeft = attributes.getDimensionPixelSize(R.styleable.CheckedCardView_contentPaddingLeft, defaultPadding)
-        val paddingTop = attributes.getDimensionPixelSize(R.styleable.CheckedCardView_contentPaddingTop, defaultPadding)
-        val paddingRight = attributes.getDimensionPixelSize(R.styleable.CheckedCardView_contentPaddingRight, defaultPadding)
-        val paddingBottom = attributes.getDimensionPixelSize(R.styleable.CheckedCardView_contentPaddingBottom, defaultPadding)
-        setContentPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
-
-        minimumHeight = attributes.getDimensionPixelSize(R.styleable.CheckedCardView_android_minHeight, 0)
-        minimumWidth = attributes.getDimensionPixelSize(R.styleable.CheckedCardView_android_minWidth, 0)
     }
 
     private fun getColorStateList(context: Context, attributes: TypedArray, index: Int): ColorStateList? {

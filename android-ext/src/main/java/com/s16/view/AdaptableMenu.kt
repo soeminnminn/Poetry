@@ -3,10 +3,12 @@ package com.s16.view
 import android.content.ComponentName
 import android.content.Intent
 import android.database.DataSetObserver
+import android.os.Build
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.SubMenu
+import androidx.annotation.RequiresApi
 
 class AdaptableMenu(private val menu: Menu): Menu {
 
@@ -61,6 +63,11 @@ class AdaptableMenu(private val menu: Menu): Menu {
                 }
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    override fun setGroupDividerEnabled(groupDividerEnabled: Boolean) {
+        menu.setGroupDividerEnabled(groupDividerEnabled)
     }
 
     override fun clear() {

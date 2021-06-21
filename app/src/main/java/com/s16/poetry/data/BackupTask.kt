@@ -26,6 +26,7 @@ internal class BackupTask(
     private var uiScope = CoroutineScope(Dispatchers.Main)
     private var job: Job? = null
 
+    @Suppress("DEPRECATION")
     override fun run() {
         if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
                 && Environment.isExternalStorageEmulated()) {
@@ -36,6 +37,10 @@ internal class BackupTask(
                     ContextCompat.getExternalFilesDirs(context.applicationContext, null)
 
                 extDir = externalStorageVolumes.first()
+            }
+
+            if (!extDir.exists() || !extDir.canWrite()) {
+                extDir = context.getExternalFilesDir(null)
             }
 
             if (!extDir.exists() || !extDir.canWrite()) {

@@ -17,6 +17,11 @@
     <color name="primary_color">#ffffbb00</color>
     <color name="primary_color_dark">#fff99f00</color>
 
+    <color name="drawer_selected_color">#fffeefc3</color>
+    <color name="drawer_selected_color_dark">#40fff475</color>
+    <color name="drawer_selected_icon_color">#ff202124</color>
+    <color name="drawing_lightbulb_tint">#ff000000</color>
+
     <color name="keep_border_default_color">#ffdadce0</color>
     <color name="keep_default_color">#ffffffff</color>
 

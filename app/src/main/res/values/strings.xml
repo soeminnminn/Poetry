@@ -23,7 +23,9 @@
     <string name="action_signout">Sign out</string>
     <string name="action_disconnect">Disconnect</string>
 
-    <string name="menu_all">[all]</string>
+    <string name="menu_notes">Notes</string>
+    <string name="menu_categories">Categories</string>
+    <string name="menu_add_category">Create new category</string>
 
     <string name="author_name">Anonymous</string>
 
@@ -43,9 +45,13 @@
     <string name="title_add_tag">Add Tag</string>
     <string name="title_delete_confirm">Delete</string>
 
-    <string name="message_request_permission">
+    <string name="message_request_permission_read">
         "Please allow us to access:\n\n"
-        "- External Storage Access Permission for read/write backup file"
+        "- External Storage Access Permission for read backup file"
+    </string>
+    <string name="message_request_permission_write">
+        "Please allow us to access:\n\n"
+        "- External Storage Access Permission for write backup file"
     </string>
     <string name="message_request_permission_sync">
         "Please allow us to access:\n\n"

@@ -92,7 +92,7 @@ class ManageTagsActivity : AppCompatActivity() {
         val swipeToDeleteCallback = object: SwipeToDeleteCallback(this) {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
+                val position = viewHolder.absoluteAdapterPosition
                 val adapter = recyclerView.adapter as TagsAdapter
                 val item = adapter.getItem(position)!!
 

@@ -42,7 +42,7 @@ class SelectCategoryActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val selectedCategory = intent.getStringExtra(Constants.ARG_PARAM_CATEGORY)
+        val selectedCategory = intent.getStringExtra(Constants.ARG_PARAM_CATEGORY) ?: ""
 
         val recyclerView: SupportRecyclerView = findViewById(R.id.recyclerView)
         val emptyView: ViewGroup = findViewById(R.id.emptyView)

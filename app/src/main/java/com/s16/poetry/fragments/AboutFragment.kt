@@ -31,7 +31,7 @@ class AboutFragment : AlertDialogFragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_about, container, false)
 
-        val aboutText = context!!.getText(R.string.about_text)
+        val aboutText = requireContext().getText(R.string.about_text)
         val message: TextView = rootView.findViewById(android.R.id.message)
         message.movementMethod = LinkMovementMethod.getInstance()
         message.text = HtmlCompat.fromHtml(aboutText.toString(), HtmlCompat.FROM_HTML_MODE_COMPACT)

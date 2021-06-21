@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.preference.Preference
@@ -25,6 +26,18 @@ class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     private var backupTask: BackupTask? = null
+
+    private val backupPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            doBackup()
+        }
+    }
+
+    private val restorePermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            showRestoreDialog()
+        }
+    }
 
     private val versionName: String
         get() {
@@ -55,12 +68,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
         }
 
         findPreference<Preference>(Constants.PREFS_BACKUP)?.setOnPreferenceClickListener {
-            requestPermission(Constants.PERMISSION_RESULT_BACKUP)
+            requestPermissionBackup()
             true
         }
 
         findPreference<Preference>(Constants.PREFS_RESTORE)?.setOnPreferenceClickListener {
-            requestPermission(Constants.PERMISSION_RESULT_RESTORE)
+            requestPermissionRestore()
             true
         }
 
@@ -115,49 +128,49 @@ class SettingsFragment : PreferenceFragmentCompat(),
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            onPermissionsGranted(requestCode)
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    private fun onPermissionsGranted(requestCode: Int) {
-        when(requestCode) {
-            Constants.PERMISSION_RESULT_BACKUP -> {
-                doBackup()
-            }
-            Constants.PERMISSION_RESULT_RESTORE -> {
-                showRestoreDialog()
-            }
-            else -> { }
-        }
-    }
-
-    private fun requestPermission(requestCode: Int) {
+    private fun requestPermissionRestore() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 AlertDialog.Builder(requireContext()).apply {
                     setTitle(R.string.title_request_permission)
-                    setMessage(R.string.message_request_permission)
+                    setMessage(R.string.message_request_permission_read)
                     setNegativeButton(android.R.string.cancel, null)
                     setPositiveButton(android.R.string.ok) { dialog, _ ->
-                        requestPermissions(
-                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                            requestCode)
+                        restorePermissionsLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                         dialog.dismiss()
                     }
                 }.show()
 
             } else {
-                requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    requestCode)
+                restorePermissionsLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
 
         } else {
-            onPermissionsGranted(requestCode)
+            showRestoreDialog()
+        }
+    }
+
+    private fun requestPermissionBackup() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                AlertDialog.Builder(requireContext()).apply {
+                    setTitle(R.string.title_request_permission)
+                    setMessage(R.string.message_request_permission_write)
+                    setNegativeButton(android.R.string.cancel, null)
+                    setPositiveButton(android.R.string.ok) { dialog, _ ->
+                        backupPermissionsLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        dialog.dismiss()
+                    }
+                }.show()
+
+            } else {
+                backupPermissionsLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+
+        } else {
+            doBackup()
         }
     }
 

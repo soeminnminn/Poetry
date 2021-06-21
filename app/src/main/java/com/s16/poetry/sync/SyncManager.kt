@@ -6,6 +6,8 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.SyncRequest
+import android.os.Build
 import android.os.Bundle
 import androidx.core.os.bundleOf
 
@@ -20,6 +22,7 @@ class SyncManager(context: Context) : ContextWrapper(context) {
     /**
      * Create a new dummy account for the sync adapter
      */
+    @SuppressLint("ObsoleteSdkInt")
     fun createAccount(email: String): Account {
         return syncAccount.also { account ->
             val userData = bundleOf(ACCOUNT_EMAIL to email)
@@ -34,10 +37,18 @@ class SyncManager(context: Context) : ContextWrapper(context) {
 
                 // Recommend a schedule for automatic synchronization. The system may modify this based
                 // on other scheduled syncs and network utilization.
-                ContentResolver.addPeriodicSync(account, AUTHORITY, Bundle.EMPTY, SYNC_FREQUENCY)
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                    val request = SyncRequest.Builder()
+                        .syncPeriodic(SYNC_FREQUENCY, SYNC_FREQUENCY / 3)
+                        .setSyncAdapter(account, AUTHORITY)
+                        .setExtras(Bundle.EMPTY)
+                        .build()
 
-                // Force a sync if the account was just created
-                // ContentResolver.requestSync(account, AUTHORITY, null)
+                    // Force a sync if the account was just created
+                    ContentResolver.requestSync(request)
+                } else {
+                    ContentResolver.addPeriodicSync(account, AUTHORITY, Bundle.EMPTY, SYNC_FREQUENCY)
+                }
             } else {
                 accountManager.setUserData(account, ACCOUNT_EMAIL, email)
             }

@@ -47,6 +47,18 @@ inline fun <reified T: Activity> Activity.startActivityForResult(requestCode: In
     startActivityForResult(intent, requestCode)
 }
 
+//inline fun <reified T: ComponentActivity> ComponentActivity.startActivityForResult(
+//        extras: Bundle? = null,
+//        crossinline fn: (result: ActivityResult) -> Unit) {
+//    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> fn(result) }
+//
+//    val intent = Intent(this, T::class.java)
+//    if (extras != null) {
+//        intent.putExtras(extras)
+//    }
+//    launcher.launch(intent)
+//}
+
 inline fun <reified T: Activity> Activity.startActivityForResult(requestCode: Int, vararg params: Pair<String, Any?>) {
     val intent = Intent(this, T::class.java)
     if (params.isNotEmpty()) {
@@ -54,6 +66,18 @@ inline fun <reified T: Activity> Activity.startActivityForResult(requestCode: In
     }
     startActivityForResult(intent, requestCode)
 }
+
+//inline fun <reified T: ComponentActivity> ComponentActivity.startActivityForResult(
+//        vararg params: Pair<String, Any?>,
+//        crossinline fn: (result: ActivityResult) -> Unit) {
+//
+//    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> fn(result) }
+//    val intent = Intent(this, T::class.java)
+//    if (params.isNotEmpty()) {
+//        intent.putExtras(bundleOf(*params))
+//    }
+//    launcher.launch(intent)
+//}
 
 fun Activity.showInputMethod(v: EditText) {
     v.requestFocus()
@@ -66,6 +90,7 @@ fun Activity.hideInputMethod() = window.peekDecorView()?.let {
     inputMethodManager.hideSoftInputFromWindow(window.peekDecorView().windowToken, 0)
 }
 
+@Suppress("DEPRECATION")
 fun Activity.translucentStatusBar(value: Boolean) = window.let {
     if (Build.VERSION.SDK_INT >= 19) {
         if (value) {
@@ -76,6 +101,7 @@ fun Activity.translucentStatusBar(value: Boolean) = window.let {
     }
 }
 
+@Suppress("DEPRECATION")
 fun Activity.translucentNavigationBar(value: Boolean) = window.let {
     if (Build.VERSION.SDK_INT >= 19) {
         if (value) {

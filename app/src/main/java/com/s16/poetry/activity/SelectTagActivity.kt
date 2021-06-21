@@ -42,7 +42,7 @@ class SelectTagActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val selectedTags = intent.getStringArrayExtra(Constants.ARG_PARAM_TAGS)
+        val selectedTags = intent.getStringArrayExtra(Constants.ARG_PARAM_TAGS) ?: arrayOf()
 
         val recyclerView: SupportRecyclerView = findViewById(R.id.recyclerView)
         val emptyView: ViewGroup = findViewById(R.id.emptyView)

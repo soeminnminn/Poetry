@@ -3,10 +3,27 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:showIn="navigation_view">
 
+    <item
+            android:id="@+id/action_notes"
+            android:icon="@drawable/ic_lightbulb"
+            android:title="@string/menu_notes" />
+
+    <item
+            android:id="@+id/action_category"
+            android:title="@string/menu_categories">
+
+        <menu>
+            <item
+                    android:id="@+id/action_add_category"
+                    android:icon="@drawable/ic_add"
+                    android:title="@string/menu_add_category" />
+        </menu>
+    </item>
+
     <group>
         <item android:id="@+id/action_settings"
                 android:title="@string/action_settings"
-                android:icon="@drawable/ic_settings"/>
+                android:icon="@drawable/ic_settings" />
 
         <item android:id="@+id/action_about"
                 android:title="@string/action_about"
