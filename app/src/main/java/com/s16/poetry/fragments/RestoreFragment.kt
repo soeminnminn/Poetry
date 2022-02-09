@@ -2,13 +2,14 @@ package com.s16.poetry.fragments
 
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.net.toFile
 import androidx.fragment.app.DialogFragment
 import com.s16.poetry.Constants
 import com.s16.poetry.R
@@ -25,6 +26,19 @@ class RestoreFragment : DialogFragment() {
     private lateinit var message: TextView
     private lateinit var loading: ViewGroup
     private lateinit var dialogButtons: DialogButtonBar
+
+    private val chooseFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { result ->
+        try {
+            val file = result.toFile()
+            if (file.exists() && file.canRead()) {
+                runRestoreTask(file)
+            } else {
+                showMessage(R.string.message_backup_file_not_found)
+            }
+        } catch (ex: Exception) {
+            showMessage(ex.localizedMessage ?: getString(R.string.message_backup_file_not_found))
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +92,7 @@ class RestoreFragment : DialogFragment() {
                 files = extDir.absoluteFile.listFiles { _, name ->
                     name == "${Constants.BACKUP_FILE_NAME}.zip"
                 }
-                file = files?.first()
+                file = if (files?.isNotEmpty() == true) files.first() else null
             }
 
             if (file == null || !file.canRead()) {
@@ -90,7 +104,7 @@ class RestoreFragment : DialogFragment() {
                     files = extDir.absoluteFile.listFiles { _, name ->
                         name == "${Constants.BACKUP_FILE_NAME}.zip"
                     }
-                    file = files?.first()
+                    file = if (files?.isNotEmpty() == true) files.first() else null
                 }
             }
 
@@ -105,11 +119,11 @@ class RestoreFragment : DialogFragment() {
                         name == "${Constants.BACKUP_FILE_NAME}.zip"
                     }
                 }
-                file = files?.first()
+                file = if (files?.isNotEmpty() == true) files.first() else null
             }
 
             if (file == null || !file.exists() || !file.canRead()) {
-                showMessage(R.string.message_backup_file_not_found)
+                chooseFileLauncher.launch(arrayOf("application/zip"))
             } else {
                 runRestoreTask(file)
             }
